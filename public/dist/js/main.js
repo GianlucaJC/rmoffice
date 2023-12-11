@@ -100,20 +100,21 @@ function render_all(data) {
 	obj=JSON.parse(data)
 	console.log(obj)
 	html="";
-	html+="<button type='button' class='btn btn-primary' onclick=\"$('#c_all').val('');$('#resp_cerca_o').hide(300);$('#div_main').show();\">Chiudi Elenco</button>";
-	html+="<table id='tb_resp' class='table table-bordered table-striped'>";
-		html+="<thead>";
-			html+="<tr>";
-				html+="<th>Nominativo</th>";
-				html+="<th>Nato il</th>";
-				html+="<th>Codice fiscale</th>";
-				html+="<th>Località</th>";
-				html+="<th>Pro</th>";
-				html+="<th>Telefoni</th>";
-			html+="</tr>";
-		html+="</thead>";
-		html+="<tbody>";
+	html+=`<button type='button' class='btn btn-primary' onclick=\"$('#c_all').val('');$('#resp_cerca_o').hide(300);$('#div_main').show();\">Chiudi Elenco</button>
+		<table id='tb_resp' class='table table-bordered table-striped'>
+		<thead>
+			<tr>
+				<th>Nominativo</th>
+				<th>Nato il</th>
+				<th>Codice fiscale</th>
+				<th>Località</th>
+				<th>Pro</th>
+				<th>Telefoni</th>
+			</tr>
+		</thead>
+		<tbody>`
 			for (sca=0;sca<=obj.length-1;sca++) {
+				id_anagr=obj[sca].id_anagr
 				nome="";datanasc="";codfisc="";loc="";pro="";tel="";
 				if (obj[sca].nome) nome=obj[sca].nome
 				
@@ -123,27 +124,16 @@ function render_all(data) {
 				if (obj[sca].pro) pro=obj[sca].pro
 				if (obj[sca].c1) tel=obj[sca].c1
 
-				html+="<tr data-cognome=\""+nome+"\">"
-					html+="<td>";
-						html+="<b>"+nome+"</b>"
-					html+="</td>"
-					html+="<td>";
-						html+=datanasc
-					html+="</td>"
-					html+="<td>";
-						html+=codfisc
-					html+="</td>"
-					html+="<td>";
-						html+=loc
-					html+="</td>"					
-					html+="<td>";
-							html+=pro
-					html+="</td>"					
-					html+="<td>";
-							html+=tel
-					html+="</td>"					
-
-				html+="</tr>"; 
+				html+=`<tr data-cognome=\"`+nome+`\">
+					<td>
+						<button type="button" class="btn  btn-primary btn-sm btn-block" onclick="$('#cerca_nome').val(`+id_anagr+`)">`+nome+`</button>
+					</td>
+					<td>`+datanasc+`</td>
+					<td>`+codfisc+`</td>
+					<td>`+loc+`</td>
+					<td>`+pro+`</td>
+					<td>`+tel+`</td>
+				</tr>`
 
 			}
 		html+="</tbody>";	

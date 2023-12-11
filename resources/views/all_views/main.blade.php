@@ -44,6 +44,8 @@
 			<input name="_token" type="hidden" value="{{ csrf_token() }}" id='token_csrf'>	  
 			<input type='hidden' name='ref_ordine' id='ref_ordine' value='{{$ref_ordine}}'>
 			<input type="hidden" value="{{url('/')}}" id="url" name="url">
+			<input type='hidden' name='cerca_nome' id='cerca_nome'>
+			
 			<?php
 				$check="";
 				if ($view_null=="1") $check="checked";
@@ -317,7 +319,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.027"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.045"></script>
 
 @endsection
 

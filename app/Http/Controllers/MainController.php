@@ -16,7 +16,7 @@ private $id_user;
 
 public function __construct()
 	{
-		//echo "------------------------------------------------------------->pw: ".bcrypt('123456');
+		//echo "------------------------------------------------------------->pw: ".bcrypt('damiani');
 		
 		$this->middleware('auth')->except(['index']);
 
