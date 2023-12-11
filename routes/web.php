@@ -30,6 +30,11 @@ Route::middleware('auth')->group(function () {
 
 //onlylog
 Route::middleware('auth')->group(function () {
+	//ajax routing
+	Route::post('cerca_fo', 'App\Http\Controllers\AjaxController@cerca_fo');
+	//
+	
+	
 	Route::get('/main_view', [ 'as' => 'main_view', 'uses' => 'App\Http\Controllers\MainController@main_view']);
 
 	Route::post('/main_view', [ 'as' => 'main_view', 'uses' => 'App\Http\Controllers\MainController@main_view']);

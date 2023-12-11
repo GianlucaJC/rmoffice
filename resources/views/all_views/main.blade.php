@@ -43,149 +43,168 @@
 		<form method='post' action="" id='frm_tab' name='frm_tab' autocomplete="off">
 			<input name="_token" type="hidden" value="{{ csrf_token() }}" id='token_csrf'>	  
 			<input type='hidden' name='ref_ordine' id='ref_ordine' value='{{$ref_ordine}}'>
+			<input type="hidden" value="{{url('/')}}" id="url" name="url">
 			<?php
 				$check="";
 				if ($view_null=="1") $check="checked";
-			?>			
-			<div class="row">
-				<div class="col-lg-3">
-					<div class="form-check form-switch mt-3 ml-3">
-					  <input class="form-check-input" type="checkbox" id="view_null" name="view_null" onchange="$('#frm_tab').submit()" {{$check}}>
-					  <label class="form-check-label" for="view_null">Non mostrare righe con campo di ricerca nullo</label>
-					</div>
+				
+			?>		
+			<div class='row mt-2'>
+				<div class="input-group mb-3">
+				  <span class="input-group-text" id="basic-addon1">Ricerca rapida</span>
+				  <input type="text" name='c_all' id='c_all' class="form-control" placeholder="Cerca Nominativo globalmente">
 				</div>
-				<?php
-					$check="";
-					if ($tipo_ord=="1") $check="checked";
-				?>					
-				<div class="col-lg-3">
-					<div class="form-check form-switch mt-3 ml-3">
-					  <input class="form-check-input" type="checkbox" id="tipo_ord" name="tipo_ord" onchange="$('#frm_tab').submit()" {{$check}}>
-					  <label class="form-check-label" for="tipo_ord">Ordinamento decrescente</label>
-					</div>
-				</div>				
+				<div id='resp_cerca_o'></div>			
 			</div>
 			
-			<div class="row mt-2">
-			  <div class="col-lg-12">
-				{{ $tabulato->links() }}
+			<div id='div_main'>
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-check form-switch mt-3 ml-3">
+						  <input class="form-check-input" type="checkbox" id="view_null" name="view_null" onchange="$('#frm_tab').submit()" {{$check}}>
+						  <label class="form-check-label" for="view_null">Non mostrare righe con campo di ricerca nullo</label>
+						</div>
+					</div>
+					<?php
+						$check="";
+						if ($tipo_ord=="1") $check="checked";
+					?>					
+					<div class="col-lg-3">
+						<div class="form-check form-switch mt-3 ml-3">
+						  <input class="form-check-input" type="checkbox" id="tipo_ord" name="tipo_ord" onchange="$('#frm_tab').submit()" {{$check}}>
+						  <label class="form-check-label" for="tipo_ord">Ordinamento decrescente</label>
+						</div>
+					</div>				
+				</div>
+
+
+
+				<div class="row mt-2">
+				  <div class="col-lg-12">
+					{{ $tabulato->links() }}
 					
-				<table id='tbl_list' class="display">
-					<thead>
-						<tr>
-							<th>Operazioni</th>
-							<th>FRT</th>
-							<th>Contatto</th>
-							<th>IBAN</th>
-							<th>Giacenza</th>
-							<th>Codice</th>
-							<th>Nominativo</th>
-							<th>Luogo nascita</th>
-							<th>Data nascita</th>
-							<th>CF</th>
-							<th>Località</th>
-							<th>Provincia</th>
-							<th>Telefoni</th>
-							<th>Sindacato</th>
-							<th>Azienda</th>
-							<th>Ente</th>
-							<th>Zona</th>
-						</tr>
-					</thead>
-					<tbody>
-			
-						@foreach ($tabulato as $tab)
-						<tr>
-
-							<td>
-								<a href="#">
-									<button type="button" class="btn btn-secondary" alt='Scheda'><i class="fas fa-edit" title="Visualizza tutti tutti i dati"></i></button>
-								</a>
-							<td>FRT</td>
-							<td>Contatto</td>
-							<td>IBAN</td>
-							<td>Giacenza</td>
-							<td>Codice</td>
-
-							<td>
-								<?php 
-								echo renderview($campo_ord,$tab->NOME,"nome");
-								?>
-							</td>	
-
-							<td>
-								<?php 
-								echo renderview($campo_ord,$tab->COMUNENASC,"comunenasc");
-								?>
-							</td>
-						
-							
-							<td>
-								<?php
-									if (isset($tab->DATANASC))
-									echo renderview($campo_ord,substr($tab->DATANASC,0,10),"datanasc");
-								?>
-							</td>
-
-							<td>
-								<?php 
-								echo renderview($campo_ord,$tab->CODFISC,"codfisc");
-								?>
-							</td>	
-							<td>
-								<?php 
-								echo renderview($campo_ord,$tab->LOC,"loc");
-								?>
-							</td>
-							<td>
-								<?php 
-								echo renderview($campo_ord,$tab->PRO,"pro");
-								?>
-							</td>
-							<td>
-								<?php 
-									$telefoni=telefoni($tab);
-									for ($all_t=0;$all_t<=count($telefoni)-1;$all_t++) {
-										if ($all_t>0) echo "<hr>";
-										echo $telefoni[$all_t];
-									}
-									
-								?>
-							
-							</td>
-							<td>
-								<?php 
-								echo renderview($campo_ord,$tab->SINDACATO,"sindacato");
-								?>
-							
-							</td>
-							<td>
-								<?php 
-								echo renderview($campo_ord,$tab->DENOM,"denom");
-								?>
-							
-							</td>
-							<td>
-								<?php 
-								$ente=renderview($campo_ord,$tab->ENTE,"ente");
-								if ($tab->ENTE=="A") $ente=str_replace("A","edilcassa",$ente);
-								if ($tab->ENTE=="C") $ente=str_replace("C","cassaedile",$ente);
-								echo $ente;
-								?>
-							
-							</td>
-							<td>Zona</td>
-						</tr>
-						@endforeach
-					
-					</tbody>
+					<table id='tbl_list' class="display">
+						<thead>
+							<tr>
+								<th>Operazioni</th>
+								<th>FRT</th>
+								<th>Contatto</th>
+								<th>IBAN</th>
+								<th>Giacenza</th>
+								<th>Codice</th>
+								<th>Nominativo</th>
+								<th>Luogo nascita</th>
+								<th>Data nascita</th>
+								<th>CF</th>
+								<th>Località</th>
+								<th>Provincia</th>
+								<th>Telefoni</th>
+								<th>Sindacato</th>
+								<th>Azienda</th>
+								<th>Ente</th>
+								<th>Zona</th>
+							</tr>
+						</thead>
+						<tbody>
 				
-				</table>
-				{{ $tabulato->links() }}	
-			  </div>
-			  
-			  
+							@foreach ($tabulato as $tab)
+							<tr>
 
+								<td>
+									<a href="#">
+										<button type="button" class="btn btn-secondary" alt='Scheda'><i class="fas fa-edit" title="Visualizza tutti tutti i dati"></i></button>
+									</a>
+								<td>
+									<?php
+										if (isset($frt[$tab->ID_anagr]))
+											echo render_frt($frt,$tab,$user_frt);
+									?>
+								</td>
+								<td>Contatto</td>
+								<td>IBAN</td>
+								<td>Giacenza</td>
+								<td>Codice</td>
+
+								<td>
+									<?php 
+									echo renderview($campo_ord,$tab->NOME,"nome");
+									?>
+								</td>	
+
+								<td>
+									<?php 
+									echo renderview($campo_ord,$tab->COMUNENASC,"comunenasc");
+									?>
+								</td>
+							
+								
+								<td>
+									<?php
+										if (isset($tab->DATANASC))
+										echo renderview($campo_ord,substr($tab->DATANASC,0,10),"datanasc");
+									?>
+								</td>
+
+								<td>
+									<?php 
+									echo renderview($campo_ord,$tab->CODFISC,"codfisc");
+									?>
+								</td>	
+								<td>
+									<?php 
+									echo renderview($campo_ord,$tab->LOC,"loc");
+									?>
+								</td>
+								<td>
+									<?php 
+									echo renderview($campo_ord,$tab->PRO,"pro");
+									?>
+								</td>
+								<td>
+									<?php 
+										$telefoni=telefoni($tab);
+										for ($all_t=0;$all_t<=count($telefoni)-1;$all_t++) {
+											if ($all_t>0) echo "<hr>";
+											echo $telefoni[$all_t];
+										}
+										
+									?>
+								
+								</td>
+								<td>
+									<?php 
+									echo renderview($campo_ord,$tab->SINDACATO,"sindacato");
+									?>
+								
+								</td>
+								<td>
+									<?php 
+									echo renderview($campo_ord,$tab->DENOM,"denom");
+									?>
+								
+								</td>
+								<td>
+									<?php 
+									$ente=renderview($campo_ord,$tab->ENTE,"ente");
+									if ($tab->ENTE=="A") $ente=str_replace("A","edilcassa",$ente);
+									if ($tab->ENTE=="C") $ente=str_replace("C","cassaedile",$ente);
+									echo $ente;
+									?>
+								
+								</td>
+								<td>Zona</td>
+							</tr>
+							@endforeach
+						
+						</tbody>
+					
+					</table>
+					{{ $tabulato->links() }}	
+				  </div>
+				  
+				  
+
+				</div>
 			</div>
 			<!-- /.row -->
 
@@ -202,7 +221,34 @@
  @endsection
  
  <?php
-
+	function render_frt($frt,$tab,$user_frt) {
+		
+		
+		$view=null;
+		
+		$view.="<table>";
+			$view.="<tr>";
+				$view.="<th>Utente</th>";
+				$view.="<th>Data</th>";
+			$view.="</tr>";
+			foreach($frt[$tab->ID_anagr] as $frt_dati) {
+				$view.="<tr>";
+					$view.="<td>";
+						$view.=$frt_dati['utente'];
+						if (isset($user_frt[$frt_dati['utente']]))
+							$view.="<br><small><i>".$user_frt[$frt_dati['utente']]."</i></small>";
+					$view.="</td>";	
+					$view.="<td>";
+						$view.=$frt_dati['data_update'];
+					$view.="</td>";	
+											
+				$view.="</tr>";
+			}
+		$view.="</table>";
+		
+		return $view;
+	}
+	
 	function renderview($campo_ord,$campo,$field) {
 		if($campo_ord==$field)
 			return "<b>$campo</b>";
@@ -271,7 +317,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.017"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.027"></script>
 
 @endsection
 

@@ -75,9 +75,38 @@ public function __construct()
 		
 		//per inviare altri parametri in $_GET oltre la paginazione
 		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord]);
-		
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord'));
+		$frt=$this->frt($tabulato);
+		$user_frt=$this->user_frt();
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt'));
 	}
 
-
+	public function user_frt() {
+		$info = DB::table('online.db')->select('n_tessera','utentefillea')->get();
+		$user=array();
+		foreach($info as $utente) {
+			$user[$utente->n_tessera]=$utente->utentefillea;
+		}
+		return $user;
+	}
+	
+	public function frt($tabulato) {
+		$frt=array();$sca=0;
+		foreach ($tabulato as $tab)	{
+			$nome=$tab->NOME;
+			$datanasc=substr($tab->DATANASC,0,10);
+			$info = DB::table('frt.generale')
+			->select('utente',DB::raw("DATE_FORMAT(data_update,'%d-%m-%Y') as data_update"))
+			->where('nome','=',$nome)
+			->where('natoil','=',$datanasc)
+			->orderBy("data_update","desc")
+			->get();
+			foreach ($info as $extra)	{
+				$frt[$tab->ID_anagr][$sca]['utente']=strtoupper($extra->utente);
+				$frt[$tab->ID_anagr][$sca]['data_update']=$extra->data_update;
+			}
+			$sca++;
+			
+		}
+		return $frt;
+	}
 }
