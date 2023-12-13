@@ -1,3 +1,4 @@
+let arr_sele=[]
 $(document).ready( function () {
     /*
 	$('#tbl_list tfoot th').each(function () {
@@ -10,14 +11,14 @@ $(document).ready( function () {
 		}	
     });
 	*/
-	$('body').addClass("sidebar-collapse");
+	//$('body').addClass("sidebar-collapse");
     var table=$('#tbl_list').DataTable({
 		
 		"paging": false,
 		dom: 'Bfrtip',
 		buttons: [
+			'excel'
 		],		
-		
         language: {
 			"search": "Cerca nella pagina:",
             lengthMenu: 'Visualizza _MENU_ records per pagina',
@@ -50,8 +51,91 @@ $(document).ready( function () {
 		}, delay );	
 	} );		
 		
+	/*
+	if( typeof localStorage.elem_sele != 'undefined' )  {
+		elem_sele=localStorage.elem_sele.split(";")
+		$('.selezione').each(function(index, obj){
+			if (elem_sele.includes($(this).val())) {
+				$(this).prop('checked', true)
+			}
+		});		
+	}
+	*/
+		
 } );
 
+function sele_anagr(id_anagr,stato) {
+	if (stato==true) 
+		arr_sele.push(id_anagr)	
+	else {
+		arr_sele = arr_sele.filter(item => item !== id_anagr)
+	}
+	elem_sele="";
+	for (sca=0;sca<=arr_sele.length-1;sca++) {
+		if (sca>0) elem_sele+=";"
+		elem_sele+=arr_sele[sca]
+	}
+	//localStorage.elem_sele=elem_sele
+}	
+	
+function edit_element(id_anagr) {
+	$("#btn_save").html('Salva'); 
+	$("#btn_save").prop('disabled', false);
+	
+	ref=$("#id_ref"+id_anagr)
+	nome=ref.data('nome')
+	datanasc=ref.data('datanasc')
+	ente=ref.data('ente')
+	$("#note").val('')
+	$("#ref_edit").val(id_anagr)
+	$("#nome_edit").val(nome)
+	$("#datanasc_edit").val(datanasc)
+	$("#ente_edit").val(ente)
+	
+	$('#modal_edit').modal('toggle')
+	$("#title_modal_edit").html("Impostazione Note/Contatti per: <b>"+nome+"</b>")
+	//$("#body_modal_edit").html("Caricamento informazioni in corso...")	
+}
+
+function save_note() {
+	ref_edit=$("#ref_edit").val()
+	nome_edit=$("#nome_edit").val()
+	datanasc_edit=$("#datanasc_edit").val()
+	ente_edit=$("#ente_edit").val()
+	note=$("#note").val()
+	
+	if (note.length>0) 
+		event.preventDefault()
+	else return false;
+	$("#btn_save").html('Attendere...'); 
+	$("#btn_save").prop('disabled', true);
+	
+	var timer,delay = 800;	
+
+	clearTimeout(timer);
+	timer = setTimeout(function() {	
+		base_path = $("#url").val();
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		let CSRF_TOKEN = $("#token_csrf").val();
+		$.ajax({
+			type: 'POST',
+			url: base_path+"/save_note",
+			data: {_token: CSRF_TOKEN,nome_edit:nome_edit,datanasc_edit:datanasc_edit,ente_edit:ente_edit,note:note},
+			success: function (data) {
+				html="";
+				html+=`<a href='#' onclick="$('#frm_tab').submit()">
+						Refresh pagina dopo inserimento
+					</a>`	
+				$("#contact"+ref_edit).html(html)
+				$('#modal_edit').modal('toggle')			
+			}
+		})	
+	}, delay)
+}
 
 function dele_element(value) {
 	if(!confirm('Sicuri di eliminare l\'elemento?')) 

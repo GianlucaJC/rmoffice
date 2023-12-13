@@ -12,15 +12,14 @@
 
 
 <style>
-<!-- crea problemi con il footer di fine pagina !-->
-<!-- 
-	foot input {
-        width: 100%;
-        padding: 3px;
-        box-sizing: border-box;
-    }
-!-->	
+.filtri {
+  border: 2px outset blue;
+  padding:10px;
+  background-color: lightblue;
+ 
+}
 </style>
+
 @section('content_main')
 
   <!-- Content Wrapper. Contains page content -->
@@ -38,6 +37,7 @@
 
     <!-- Main content -->
     <div class="content">
+
       <div class="container-fluid">
 
 		<form method='post' action="" id='frm_tab' name='frm_tab' autocomplete="off">
@@ -46,23 +46,79 @@
 			<input type="hidden" value="{{url('/')}}" id="url" name="url">
 			<input type='hidden' name='cerca_nome' id='cerca_nome'>
 			
-			<?php
-				$check="";
-				if ($view_null=="1") $check="checked";
-				
-			?>		
-			<div class='row mt-2'>
-				<div class="input-group mb-3">
-				  <span class="input-group-text" id="basic-addon1">Ricerca rapida</span>
-				  <input type="text" name='c_all' id='c_all' class="form-control" placeholder="Cerca Nominativo globalmente">
-				</div>
-				<div id='resp_cerca_o'></div>			
-			</div>
+			<input type='hidden' name='elem_sele' id='elem_sele' value='{{$elem_sele}}'>
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="#">Impostazioni</a>
+			<button onclick="$('.class_view').toggle()" type="button" class="btn btn-outline-primary">Mostra/Nascondi informazioni extra</button>
 			
-			<div id='div_main'>
+			<button onclick="$('#div_speed').toggle(150)" type="button" class="btn btn-outline-primary ml-3">Mostra/Nascondi ricerca rapida</button>
+						
+			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse" id="navbarText">
+				<ul class="navbar-nav mr-auto">
+				  <li class="nav-item">
+					<a class="nav-link" href="#" onclick="$('#div_filtri').show(150)">Filtri</a>
+				  </li>
+
+				</ul>
+				
+				<span class="navbar-text">
+					Nominativi per pagina 
+				</span>				
+				
+				<select class="form-select form-select-xs ml-2" aria-label=".form-select-lg" style='width:200px' name='per_page' id='per_page' onchange="$('#frm_tab').submit()">
+					
+					<option value='20'
+					@if ($per_page=='20') selected @endif
+					>20</option>
+					<option value='50'
+					@if ($per_page=='50') selected @endif
+					>50</option>
+					<option value='100'
+					@if ($per_page=='100') selected @endif
+					>100</option>
+					<option value='200'
+					@if ($per_page=='200') selected @endif
+					>200</option>
+					<option value='500' 
+					@if ($per_page=='500') selected @endif
+					>500</option>
+					<option value='1000'
+					@if ($per_page=='1000') selected @endif
+					>1000</option>
+
+
+				</select>
+			  </div>
+
+			</nav>
+			
+			
+			<div class='filtri mb-3' id='div_filtri'>
+
 				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-check form-switch mt-3 ml-3">
+					<?php
+						$check="";
+						if ($solo_contatti=="1") $check="checked";
+						
+					?>	
+					<div class="col-lg-2 ml-5">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="solo_contatti" name="solo_contatti" onchange="$('#frm_tab').submit()" {{$check}}>
+						  <label class="form-check-label" for="solo_contatti">Solo contattati</label>
+						</div>
+					</div>
+
+					<?php
+						$check="";
+						if ($view_null=="1") $check="checked";
+						
+					?>	
+					<div class="col-lg-3 ml-5">
+						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="view_null" name="view_null" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="view_null">Non mostrare righe con campo di ricerca nullo</label>
 						</div>
@@ -71,15 +127,38 @@
 						$check="";
 						if ($tipo_ord=="1") $check="checked";
 					?>					
-					<div class="col-lg-3">
-						<div class="form-check form-switch mt-3 ml-3">
+					<div class="col-lg-3 ml-5">
+						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="tipo_ord" name="tipo_ord" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="tipo_ord">Ordinamento decrescente</label>
 						</div>
-					</div>				
+					</div>
+					
+					<?php
+						$check="";
+						if ($filtro_sele=="1") $check="checked";
+					?>					
+					<div class="col-lg-3 ml-5" style='display:none'>
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="filtro_sele" name="filtro_sele" onchange="$('#elem_sele').val(localStorage.elem_sele)" {{$check}}>
+						  <label class="form-check-label" for="filtro_sele">Filtra selezionati</label>
+						</div>
+					</div>					
+					
+				</div>			
+			
+			</div>
+			
+				
+			<div class='row mt-2' id='div_speed' style='display:none'>
+				<div class="input-group mb-3">
+				  <span class="input-group-text" id="basic-addon1">Ricerca rapida</span>
+				  <input type="text" name='c_all' id='c_all' class="form-control" placeholder="Cerca Nominativo globalmente">
 				</div>
-
-
+				<div id='resp_cerca_o'></div>			
+			</div>
+			
+			<div id='div_main'>
 
 				<div class="row mt-2">
 				  <div class="col-lg-12">
@@ -88,9 +167,9 @@
 					<table id='tbl_list' class="display">
 						<thead>
 							<tr>
-								<th>Operazioni</th>
-								<th>FRT</th>
-								<th>Contatto</th>
+								<th style='min-width:80px'>Operazioni</th>
+								<th class='class_view'>FRT</th>
+								<th class='class_view'>Contatto</th>
 								<th>IBAN</th>
 								<th>Giacenza</th>
 								<th>Codice</th>
@@ -108,26 +187,51 @@
 							</tr>
 						</thead>
 						<tbody>
-				
+
 							@foreach ($tabulato as $tab)
 							<tr>
 
-								<td>
-									<a href="#">
-										<button type="button" class="btn btn-secondary" alt='Scheda'><i class="fas fa-edit" title="Visualizza tutti tutti i dati"></i></button>
+								<td style='min-width:80px;text-align:center'>
+									<input class="form-check-input selezione" type="checkbox" onclick="sele_anagr(this.value,$(this).is(':checked'))" value="{{$tab->ID_anagr}}">
+								
+									<a href="javascript:void(0)" onclick="edit_element({{$tab->ID_anagr}})">
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
 									</a>
-								<td>
+									<a href="javascript:void(0)" onclick="edit_element(0)">
+										<i class="fas fa-list-alt fa-lg" style="color:#6385c5;" title="Visualizza note"></i>
+									</a>
+								</td>
+								<td class='class_view'>
+									
 									<?php
 										if (isset($frt[$tab->ID_anagr]))
 											echo render_frt($frt,$tab,$user_frt);
 									?>
+									
 								</td>
-								<td>Contatto</td>
+								<td  class='class_view' id='contact{{$tab->ID_anagr}}'>
+									
+									<?php
+										if (isset($note[$tab->ID_anagr]))
+											echo render_note($note,$tab);
+									?>
+								
+								</td>
 								<td>IBAN</td>
 								<td>Giacenza</td>
 								<td>Codice</td>
 
-								<td>
+								<?php 
+									$backg="";
+									if ($tab->C3 && $tab->C3=="1") {
+										$backg="background-color:lightgoldenrodyellow";
+									}
+									if ($tab->C3 && $tab->C3=="2") {
+										$backg="background-color:lightsalmon";
+									}
+								?>
+
+								<td style='{{$backg}}'>
 									<?php 
 									echo renderview($campo_ord,$tab->NOME,"nome");
 									?>
@@ -173,7 +277,15 @@
 									?>
 								
 								</td>
-								<td>
+								<?php
+									$sind=$tab->SINDACATO;
+									$backg="color:white;background-color:gray";
+									if ($sind=="0") $backg="background-color:yellow";
+									if ($sind=="1") $backg="color:white;background-color:red";
+									if ($sind=="2") $backg="color:white;background-color:green";
+									if ($sind=="3") $backg="color:white;background-color:blue";
+								?>
+								<td style='{{$backg}}'>
 									<?php 
 									echo renderview($campo_ord,$tab->SINDACATO,"sindacato");
 									?>
@@ -195,6 +307,10 @@
 								
 								</td>
 								<td>Zona</td>
+								<span id='id_ref{{$tab->ID_anagr}}' data-nome='{{ $tab->NOME }}'
+								data-datanasc='{{ $tab->DATANASC }}'
+								data-ente='{{ $tab->ENTE }}'>
+								
 							</tr>
 							@endforeach
 						
@@ -211,28 +327,102 @@
 			<!-- /.row -->
 
 
-			<input type='hidden' id='dele_cand' name='dele_cand'>
-
 		</form>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+		<form method='post' action="" id='frm_tab1' name='frm_tab1' autocomplete="off">
+			<input name="_token" type="hidden" value="{{ csrf_token() }}" id='token_csrf'>
+			<!-- Modal for edit note/contatti -->
+			<div class="modal fade bd-example-modal-lg" id="modal_edit" tabindex="-1" role="dialog" aria-labelledby="info" aria-hidden="true">
+			  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+				<div class="modal-content">
+				<input type='hidden' name='ref_edit' id='ref_edit'>
+				<input type='hidden' name='nome_edit' id='nome_edit'>
+				<input type='hidden' name='datanasc_edit' id='datanasc_edit'>
+				<input type='hidden' name='ente_edit' id='ente_edit'>
+				
+				  <div class="modal-header">
+					<h5 class="modal-title" id="title_modal_edit">Note/Contatti</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+				  </div>
+				  <div class="modal-body" id='body_modal_edit'>
+					<div class='row mt-2'>
+						<div class='col-sm-12'>
+							<div class='form-floating'>					
+							<textarea class='form-control' id='note' name='note' rows='6' style='height:100px' required></textarea>
+							<label for='note'>Note</label>
+							</div>
+						</div>
+					</div>						
+				  </div>
+				  <div class="modal-footer">
+					
+					<button type="submit" onclick='save_note()' class="btn btn-primary" id='btn_save'>Salva</button>
+					
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+					
+				  </div>
+				</div>
+			  </div>
+			</div>
+		</form>
   </div>
   <!-- /.content-wrapper -->
   
  @endsection
  
  <?php
-	function render_frt($frt,$tab,$user_frt) {
-		
-		
+	function render_note($note,$tab) {
 		$view=null;
 		
-		$view.="<table>";
-			$view.="<tr>";
-				$view.="<th>Utente</th>";
-				$view.="<th>Data</th>";
-			$view.="</tr>";
+		$view.="<table class='table table-bordered'>";
+			$view.="<thead>";
+				$view.="<tr>";
+					$view.="<th>Utente</th>";
+					$view.="<th>Data</th>";
+					$view.="<th>Nota</th>";
+				$view.="</tr>";
+			$view.="</thead>";
+
+			foreach($note[$tab->ID_anagr] as $note_dati) {
+				
+				
+				$view.="<tr>";
+					$view.="<td>";
+						$view.=$note_dati['id_user'];
+					$view.="</td>";	
+
+					
+					$view.="<td>";
+						$view.=$note_dati['data'];
+					$view.="</td>";	
+
+					$view.="<td>";
+						$view.="<br><small><i>".$note_dati['note']."</i></small>";
+					$view.="</td>";
+											
+				$view.="</tr>";
+				
+				
+			}
+			
+		$view.="</table>";
+		
+		return $view;
+	}
+	function render_frt($frt,$tab,$user_frt) {
+		$view=null;
+		
+		$view.="<table class='table table-bordered'>";
+			$view.="<thead>";
+				$view.="<tr>";
+					$view.="<th>Utente</th>";
+					$view.="<th>Data</th>";
+				$view.="</tr>";
+			$view.="</thead>";
 			foreach($frt[$tab->ID_anagr] as $frt_dati) {
 				$view.="<tr>";
 					$view.="<td>";
@@ -252,6 +442,14 @@
 	}
 	
 	function renderview($campo_ord,$campo,$field) {
+		if ($field=="sindacato") {
+			$c=$campo;
+			$campo="Non Spec.";
+			if ($c=="0") $campo="Libero";
+			if ($c=="1") $campo="FilleaCGIL";
+			if ($c=="2") $campo="FilcaCISL";
+			if ($c=="3") $campo="FenealUIL";
+		}
 		if($campo_ord==$field)
 			return "<b>$campo</b>";
 		else
@@ -319,7 +517,8 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.045"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.074
+	"></script>
 
 @endsection
 
