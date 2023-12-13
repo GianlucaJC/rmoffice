@@ -167,14 +167,14 @@ public function __construct()
 			$nome=$tab->NOME;
 			$datanasc=substr($tab->DATANASC,0,10);
 			$info = DB::table('frt.generale')
-			->select('utente',DB::raw("DATE_FORMAT(data_update,'%d-%m-%Y') as data_update"))
+			->select('utente','data_update',DB::raw("DATE_FORMAT(data_update,'%d-%m-%Y') as data_update_it"))
 			->where('nome','=',$nome)
 			->where('natoil','=',$datanasc)
 			->orderBy("data_update","desc")
 			->get();
 			foreach ($info as $extra)	{
 				$frt[$tab->ID_anagr][$sca]['utente']=strtoupper($extra->utente);
-				$frt[$tab->ID_anagr][$sca]['data_update']=$extra->data_update;
+				$frt[$tab->ID_anagr][$sca]['data_update']=$extra->data_update_it;
 				$sca++;
 			}
 			
