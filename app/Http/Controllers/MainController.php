@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\Paginator;
 use DB;
 
 class mainController extends Controller
@@ -34,9 +35,18 @@ public function __construct()
 		
 	}	
 
-
+	public function utenti($tipo_richiesta) {
+		$users = User::from('users as u')->get();
+		$utenti=array();
+		foreach($users as $user) {
+			$utenti[$user->id]['name']=$user->name;
+			$utenti[$user->id]['tessera']=$user->email;
+		}
+		return $utenti;
+	}
 	
 	public function main_view(Request $request) {
+		$nome_speed=$request->input('nome_speed');
 		$elem_sele=$request->input('elem_sele');
 		$per_page=$request->input('per_page');
 		if (strlen($per_page)==0) $per_page=500;
@@ -75,35 +85,65 @@ public function __construct()
 		if ($ref_ordine==14) $campo_ord="denom";
 		if ($ref_ordine==15) $campo_ord="ente";
 		
-		$users=user::select('id','name')->orderBy('name')->get();
+		
 		$tb="t4_lazi_a";
 		
-		if ($solo_contatti=="1")
+		if ($solo_contatti==1)
 			$only_contact=$this->only_contact();
 		else
 			$only_contact=array();
 		
+		$only_select=explode(";",$elem_sele);
+		/*
+		if ($filtro_sele==1) {
+			$cPage=1;
+			Paginator::currentPageResolver(function () use ($cPage) {
+				return $cPage;
+			});
+		}
+		*/
+		$cerca_nome="";$cerca_speed=0;
+		if (request()->has("nome_speed")) {
+			$cerca_speed=1;
+			$cerca_nome=request()->input("cerca_nome");
+		}
+
+		$filtro_base=true;
+		if ($solo_contatti==1 || $filtro_sele==1 || $cerca_speed==1) {
+			$filtro_base=false;
+		}
+
+		
 		$tabulato = DB::table('anagrafe.'.$tb)
 		//->where('attivi','=','S') -->aggiungere condizione semestre
-		->orWhereNotNull('c3')
+		->when($filtro_base==true, function ($tabulato) {
+			return $tabulato->orWhereNotNull('c3');
+		})
 		->when($view_null=="1", function ($tabulato) use ($campo_ord) {
 			return $tabulato->whereRaw("LENGTH($campo_ord) > 0");
 		})
-		->when($solo_contatti=="1", function ($tabulato) use ($only_contact) {
+		->when($solo_contatti==1 && $filtro_sele==0, function ($tabulato) use ($only_contact) {
 			return $tabulato->whereIn('id_anagr',$only_contact);
+		})
+		->when($filtro_sele==1, function ($tabulato) use ($only_select) {
+			return $tabulato->whereIn('id_anagr',$only_select);
+		})
+		->when($cerca_speed==1, function ($tabulato) use ($cerca_nome) {
+			return $tabulato->where('id_anagr','=',$cerca_nome);
 		})
 		->orderBy('c3','asc')
 		->orderBy($campo_ord,$t_ord)
 		->paginate($per_page)
 		->withQueryString();
-		
 
 		//per inviare altri parametri in $_GET oltre la paginazione
 		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele]);
 		$frt=$this->frt($tabulato);
 		$note=$this->note($tabulato);
 		$user_frt=$this->user_frt();
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele'));
+		
+		$utenti=$this->utenti("all");
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti'));
 	}
 
 	public function only_contact() {

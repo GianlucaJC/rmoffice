@@ -105,7 +105,7 @@
 						if ($solo_contatti=="1") $check="checked";
 						
 					?>	
-					<div class="col-lg-2 ml-5">
+					<div class="col-lg-2 ml-4">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="solo_contatti" name="solo_contatti" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="solo_contatti">Solo contattati</label>
@@ -117,7 +117,7 @@
 						if ($view_null=="1") $check="checked";
 						
 					?>	
-					<div class="col-lg-3 ml-5">
+					<div class="col-lg-3">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="view_null" name="view_null" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="view_null">Non mostrare righe con campo di ricerca nullo</label>
@@ -127,7 +127,7 @@
 						$check="";
 						if ($tipo_ord=="1") $check="checked";
 					?>					
-					<div class="col-lg-3 ml-5">
+					<div class="col-lg-3">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="tipo_ord" name="tipo_ord" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="tipo_ord">Ordinamento decrescente</label>
@@ -138,10 +138,21 @@
 						$check="";
 						if ($filtro_sele=="1") $check="checked";
 					?>					
-					<div class="col-lg-3 ml-5" style='display:none'>
+					<div class="col-lg-3">
 						<div class="form-check form-switch">
-						  <input class="form-check-input" type="checkbox" id="filtro_sele" name="filtro_sele" onchange="$('#elem_sele').val(localStorage.elem_sele)" {{$check}}>
+						  <input class="form-check-input" type="checkbox" id="filtro_sele" name="filtro_sele" onchange="$('#elem_sele').val(localStorage.elem_sele);$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="filtro_sele">Filtra selezionati</label>
+							
+							<div id='div_alert_sele' style='display:none'>
+								<span class='ml-3'>
+									<font color='blue'>
+										Selezione attiva
+									</font>
+									<button type="button" class="btn btn-primary ml-3" onclick="dele_sele()">Annulla selezione</button>
+								</span>
+							</div>
+						
+						
 						</div>
 					</div>					
 					
@@ -155,11 +166,23 @@
 				  <span class="input-group-text" id="basic-addon1">Ricerca rapida</span>
 				  <input type="text" name='c_all' id='c_all' class="form-control" placeholder="Cerca Nominativo globalmente">
 				</div>
+				
 				<div id='resp_cerca_o'></div>			
 			</div>
 			
 			<div id='div_main'>
+				<?php
+					if (strlen($cerca_nome)!=0) {
+						$referer = $_SERVER['HTTP_REFERER'] ?? null;
+						$uri_complete = request()->path();
+						$referer="#";
+						echo "<a href='$referer' onclick='history.back()' >";	
+							echo "<button type='button' class='btn btn-secondary btn-sm'>Torna elenco precedente</button>";
+						echo "</a>";
+					}
 
+					
+				?>
 				<div class="row mt-2">
 				  <div class="col-lg-12">
 					{{ $tabulato->links() }}
@@ -202,7 +225,11 @@
 									</a>
 								</td>
 								<td class='class_view'>
-									
+									<a href="https://www.filleaoffice.it/FRT/index.php/sito/accesso" target="_blank" onclick="alert_frt({{$tab->ID_anagr}})">
+										<button type="button" class="btn btn-success btn-sm mb-2">Iscrivi FRT</button>
+									</a>
+									<div id='div_anagr{{$tab->ID_anagr}}' class='div_frt'>
+									<div>
 									<?php
 										if (isset($frt[$tab->ID_anagr]))
 											echo render_frt($frt,$tab,$user_frt);
@@ -213,7 +240,7 @@
 									
 									<?php
 										if (isset($note[$tab->ID_anagr]))
-											echo render_note($note,$tab);
+											echo render_note($note,$tab,$utenti);
 									?>
 								
 								</td>
@@ -375,7 +402,7 @@
  @endsection
  
  <?php
-	function render_note($note,$tab) {
+	function render_note($note,$tab,$utenti) {
 		$view=null;
 		
 		$view.="<table class='table table-bordered'>";
@@ -388,11 +415,16 @@
 			$view.="</thead>";
 
 			foreach($note[$tab->ID_anagr] as $note_dati) {
-				
-				
 				$view.="<tr>";
 					$view.="<td>";
-						$view.=$note_dati['id_user'];
+						if (isset($utenti[$note_dati['id_user']])) {
+							$view.=$utenti[$note_dati['id_user']]['tessera'];
+							$view.="<br><small><i>";
+							$view.=$utenti[$note_dati['id_user']]['name'];
+							$view.="</i></small>";
+						}	
+						else
+							$view.=$note_dati['id_user'];
 					$view.="</td>";	
 
 					
@@ -517,8 +549,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.074
-	"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.087"></script>
 
 @endsection
 

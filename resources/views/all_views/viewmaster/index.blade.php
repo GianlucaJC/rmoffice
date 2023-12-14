@@ -80,7 +80,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <ul class="navbar-nav ml-auto">
 
 
-      <?php if (1==1) { ?>
+      <?php if (1==2) { ?>
 		  <!-- Messages Dropdown Menu -->
 		  <li class="nav-item dropdown">
 			<a class="nav-link" data-toggle="dropdown" href="#">

@@ -51,18 +51,38 @@ $(document).ready( function () {
 		}, delay );	
 	} );		
 		
-	/*
+	
 	if( typeof localStorage.elem_sele != 'undefined' )  {
 		elem_sele=localStorage.elem_sele.split(";")
+		elem=localStorage.elem_sele
+		$("#elem_sele").val(elem)
+		if (elem.length!=0) $("#div_alert_sele").show()
+		else  $("#div_alert_sele").hide()
+		for (sca=0;sca<=elem_sele.length-1;sca++) {
+			arr_sele.push(elem_sele[sca])
+		}	
+		
 		$('.selezione').each(function(index, obj){
 			if (elem_sele.includes($(this).val())) {
 				$(this).prop('checked', true)
 			}
-		});		
+		});
+		
 	}
-	*/
+	
 		
 } );
+
+function dele_sele() {
+	if (!confirm("Sicuri di annullare la selezione in corso?")) return false;
+	$("#elem_sele").val('')
+	$('.selezione').each(function(index, obj){
+		$(this).prop('checked', false)
+	});	
+	localStorage.elem_sele=""
+	$("#div_alert_sele").hide(150)
+	
+}
 
 function sele_anagr(id_anagr,stato) {
 	if (stato==true) 
@@ -75,7 +95,9 @@ function sele_anagr(id_anagr,stato) {
 		if (sca>0) elem_sele+=";"
 		elem_sele+=arr_sele[sca]
 	}
-	//localStorage.elem_sele=elem_sele
+	localStorage.elem_sele=elem_sele
+	if (elem_sele.length!=0) $("#div_alert_sele").show(150)
+	else  $("#div_alert_sele").hide(150)
 }	
 	
 function edit_element(id_anagr) {
@@ -135,6 +157,17 @@ function save_note() {
 			}
 		})	
 	}, delay)
+}
+function alert_frt(id_anagr) {
+	$("#div_frt").empty()
+	html="";
+	html+=`<small>
+		<a href='#' onclick="$('#frm_tab').submit()">
+			<i>Per vedere l'impegno in realtime fai il refresh (se hai inserito la delega)</i>
+		</a>
+	</small>`
+	$("#div_anagr"+id_anagr).html(html)
+	
 }
 
 function dele_element(value) {
@@ -210,7 +243,7 @@ function render_all(data) {
 
 				html+=`<tr data-cognome=\"`+nome+`\">
 					<td>
-						<button type="button" class="btn  btn-primary btn-sm btn-block" onclick="$('#cerca_nome').val(`+id_anagr+`)">`+nome+`</button>
+						<button type="submit" name='nome_speed' class="btn  btn-primary btn-sm btn-block" onclick="$('#cerca_nome').val(`+id_anagr+`)">`+nome+`</button>
 					</td>
 					<td>`+datanasc+`</td>
 					<td>`+codfisc+`</td>
