@@ -17,7 +17,7 @@ private $id_user;
 
 public function __construct()
 	{
-		//echo "------------------------------------------------------------->pw: ".bcrypt('damiani');
+		//echo "------------------------------------------------------------->pw: ".bcrypt('120011');
 		
 		$this->middleware('auth')->except(['index']);
 
@@ -94,18 +94,19 @@ public function __construct()
 			$only_contact=array();
 		
 		$only_select=explode(";",$elem_sele);
-		/*
-		if ($filtro_sele==1) {
-			$cPage=1;
-			Paginator::currentPageResolver(function () use ($cPage) {
-				return $cPage;
-			});
-		}
-		*/
+		
+
+		
 		$cerca_nome="";$cerca_speed=0;
 		if (request()->has("nome_speed")) {
 			$cerca_speed=1;
 			$cerca_nome=request()->input("cerca_nome");
+		
+			$cPage=1;
+			Paginator::currentPageResolver(function () use ($cPage) {
+				return $cPage;
+			});
+					
 		}
 
 		$filtro_base=true;

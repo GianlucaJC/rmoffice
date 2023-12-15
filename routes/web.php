@@ -33,6 +33,9 @@ Route::middleware('auth')->group(function () {
 	//ajax routing
 	Route::post('cerca_fo', 'App\Http\Controllers\AjaxController@cerca_fo');
 	Route::post('save_note', 'App\Http\Controllers\AjaxController@save_note');
+	
+	Route::post('ins_frt', 'App\Http\Controllers\AjaxController@ins_frt');
+	
 	//
 	
 	

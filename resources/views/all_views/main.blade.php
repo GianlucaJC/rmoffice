@@ -41,7 +41,10 @@
       <div class="container-fluid">
 
 		<form method='post' action="" id='frm_tab' name='frm_tab' autocomplete="off">
-			<input name="_token" type="hidden" value="{{ csrf_token() }}" id='token_csrf'>	  
+		<input name="_token" type="hidden" value="{{ csrf_token() }}" id='token_csrf'>	  
+		
+
+  
 			<input type='hidden' name='ref_ordine' id='ref_ordine' value='{{$ref_ordine}}'>
 			<input type="hidden" value="{{url('/')}}" id="url" name="url">
 			<input type='hidden' name='cerca_nome' id='cerca_nome'>
@@ -177,7 +180,7 @@
 						$uri_complete = request()->path();
 						$referer="#";
 						echo "<a href='$referer' onclick='history.back()' >";	
-							echo "<button type='button' class='btn btn-secondary btn-sm'>Torna elenco precedente</button>";
+							echo "<button type='button' class='btn btn-success btn-sm'>Torna elenco precedente</button>";
 						echo "</a>";
 					}
 
@@ -224,8 +227,8 @@
 										<i class="fas fa-list-alt fa-lg" style="color:#6385c5;" title="Visualizza note"></i>
 									</a>
 								</td>
-								<td class='class_view'>
-									<a href="https://www.filleaoffice.it/FRT/index.php/sito/accesso" target="_blank" onclick="alert_frt({{$tab->ID_anagr}})">
+								<td class='class_view'  id='frt_{{$tab->ID_anagr}}'>
+									<a href="javascript:void(0)"  onclick="insert_frt({{$tab->ID_anagr}})">
 										<button type="button" class="btn btn-success btn-sm mb-2">Iscrivi FRT</button>
 									</a>
 									<div id='div_anagr{{$tab->ID_anagr}}' class='div_frt'>
@@ -273,8 +276,11 @@
 								
 								<td>
 									<?php
-										if (isset($tab->DATANASC))
-										echo renderview($campo_ord,substr($tab->DATANASC,0,10),"datanasc");
+										$dn="";
+										if (isset($tab->DATANASC)) {
+											$dn=substr($tab->DATANASC,0,10);
+											echo renderview($campo_ord,$dn,"datanasc");
+										}	
 									?>
 								</td>
 
@@ -295,10 +301,12 @@
 								</td>
 								<td>
 									<?php 
+										$tel_all="";
 										$telefoni=telefoni($tab);
 										for ($all_t=0;$all_t<=count($telefoni)-1;$all_t++) {
 											if ($all_t>0) echo "<hr>";
 											echo $telefoni[$all_t];
+											$tel_all.=$telefoni[$all_t]." ";
 										}
 										
 									?>
@@ -333,10 +341,17 @@
 									?>
 								
 								</td>
-								<td>Zona</td>
+								<td>Zona
+								
 								<span id='id_ref{{$tab->ID_anagr}}' data-nome='{{ $tab->NOME }}'
-								data-datanasc='{{ $tab->DATANASC }}'
-								data-ente='{{ $tab->ENTE }}'>
+								data-datanasc='{{ $dn }}'
+								data-codfisc='{{ $tab->CODFISC }}'
+								data-sindacato='{{ $tab->SINDACATO }}'
+								data-ente='{{ $tab->ENTE }}'
+								data-telefoni='{{ $tel_all }}'>
+								</span>
+								
+								</td>
 								
 							</tr>
 							@endforeach
@@ -396,6 +411,95 @@
 			  </div>
 			</div>
 		</form>
+		
+		<!--MODAL FRT !-->
+		<form method='post' action="" id='frm_tab2' name='frm_tab2' autocomplete="off"  class="needs-validation" novalidate>
+			<input name="_token" type="hidden" value="{{ csrf_token() }}" id='token_csrf'>
+			<!-- Modal for edit note/contatti -->
+			<div class="modal fade bd-example-modal-lg" id="modal_frt" tabindex="-1" role="dialog" aria-labelledby="info" aria-hidden="true">
+			  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+			  <input type='hidden' name='ref_edit_frt' id='ref_edit_frt'>
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h5 class="modal-title" id="title_modal_frt">Inserisci nominativo in FilleaRealTime</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+				  </div>
+	
+				 <div class="modal-body" id='body_modal_edit_frt'>
+					<div class='row mb-2'>
+						
+						<div class="col-md-8">
+							<div class="form-floating">
+								<input class="form-control" id="nome_frt" name='nome_frt' type="text" placeholder="Nominativo" maxlength=100 required />
+								<label for="nome_frt">Nominativo*</label>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-floating">
+								<input class="form-control" id="natoil_frt" name='natoil_frt' type="date" required />
+								<label for="natoil_frt">Nato il*</label>
+							</div>
+						</div>
+						
+					</div>	
+					
+					<div class='row mb-2'>
+						<div class="col-md-4">
+							<div class="form-floating">
+								<input class="form-control" id="codfisc_frt" name='codfisc_frt' type="text" placeholder="CF" maxlength=16 required />
+								<label for="codfisc_frt">Codice Fiscale*</label>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-floating">
+								<input class="form-control" id="tel_frt" name='tel_frt' type="text" placeholder="Telefono" maxlength=50 required />
+								<label for="tel_frt">Telefono*</label>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+						  <div class="form-floating mb-3 mb-md-0">
+							<select class="form-select" id="sesso_frt" aria-label="Sesso" name='sesso_frt' required>
+								<option value=''>Select...</option>
+								<option value='M'
+								>Maschile</option>
+								<option value='F' 
+								>Femminile</option>
+							</select>
+							<label for="sesso_frt">Sesso*</label>
+							</div>
+						</div>
+						<input type='hidden' name='sind_frt' id='sind_frt'>
+						<input type='hidden' name='ente_frt' id='ente_frt'>
+
+					</div>
+					<div class='row mb-2 ml-3'>
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="confirm_frt" required>
+						  <label class="form-check-label for="confirm_frt">Conferma operazione di iscrizione</label>
+						</div>						
+					</div>
+				
+					
+				  </div>
+				  
+				  <div class="modal-footer">
+					
+					<button type="submit" class="btn btn-primary" id='btn_save_frt'>Inserisci in FRT</button>
+					
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+					
+				  </div>
+				</div>
+			  </div>
+			</div>
+		</form>		
+		
+		
   </div>
   <!-- /.content-wrapper -->
   
@@ -549,7 +653,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.087"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.109"></script>
 
 @endsection
 
