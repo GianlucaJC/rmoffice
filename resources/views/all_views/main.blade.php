@@ -326,7 +326,7 @@
 									?>
 								
 								</td>
-								<td>
+								<td title="{{$tab->C2}}">
 									<?php
 									
 									echo renderview($campo_ord,$tab->DENOM,"denom");

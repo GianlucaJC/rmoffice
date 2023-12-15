@@ -257,13 +257,12 @@ public function __construct()
 
 			
 			//controllo esistenza azienda in archivio aziende (distinte) di FGO
-			/*
+			
 			$count=DB::table('filleago.aziende')
 			->where('p_iva','=',$id_azienda)
 			->orWhere('cod_fisc','=',$id_azienda)
 			->count();
 			if ($count==0) $presenza=0;
-			*/
 
 			if ($presenza!=0) $fgo[$tab->ID_anagr]=$presenza;
 		}	
