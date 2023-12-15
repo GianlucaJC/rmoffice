@@ -17,6 +17,7 @@ private $id_user;
 
 public function __construct()
 	{
+
 		//echo "------------------------------------------------------------->pw: ".bcrypt('120011');
 		
 		$this->middleware('auth')->except(['index']);
@@ -141,10 +142,12 @@ public function __construct()
 		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele]);
 		$frt=$this->frt($tabulato);
 		$note=$this->note($tabulato);
+		$fgo=$this->info_fgo($tabulato);
+		
 		$user_frt=$this->user_frt();
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo'));
 	}
 
 	public function only_contact() {
@@ -223,4 +226,31 @@ public function __construct()
 		}
 		return $frt;
 	}
+	
+	public function info_fgo($tabulato) {
+		$fgo=array();
+		
+		foreach ($tabulato as $tab)	{
+			$sca=0;
+			$id_azienda=$tab->C2;
+				
+			//function ereditata da nuovi assunti
+			if (strlen($id_azienda)==0) continue;
+			$azienda=addslashes($id_azienda);
+			$presenza=DB::statement("SELECT SQL_CALC_FOUND_ROWS S.id FROM `filleago`.`aziende_segnalazioni` A_S
+			INNER JOIN `filleago`.`segnalazioni` S ON A_S.id_segnalazione=S.id
+			WHERE A_S.id_azienda='$id_azienda' and (fine_lavori is null or fine_lavori>=CURDATE()) and A_S.tb_fo is not null  
+			GROUP BY S.id;");
+			
+			//controllo esistenza azienda in archivio aziende (distinte) di FGO
+			$count=DB::table('filleago.aziende')
+			->where('p_iva','=',$id_azienda)
+			->orWhere('cod_fisc','=',$id_azienda)
+			->count();
+			if ($count==0) $presenza=0;
+			if ($presenza!=0) $fgo[$tab->ID_anagr]=$presenza;
+		}	
+		return $fgo;
+		
+	}	
 }

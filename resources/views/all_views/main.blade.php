@@ -327,8 +327,14 @@
 								
 								</td>
 								<td>
-									<?php 
+									<?php
+									
 									echo renderview($campo_ord,$tab->DENOM,"denom");
+
+									if (isset($fgo[$tab->ID_anagr])){
+										$id_fiscale=$tab->C2;
+										echo"<br><u><a href='https://www.filleaoffice.it/filleago/index.php/sito/organizza?cantiere=$id_fiscale&newa=1' target='_blank'><small><font color='green'>EdilConnect</font></small></a></u>";
+																											}	
 									?>
 								
 								</td>
