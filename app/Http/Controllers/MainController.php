@@ -244,8 +244,9 @@ public function __construct()
 			GROUP BY S.id;");
 			*/
 
+			
 			$presenza=DB::table('filleago.aziende_segnalazioni as A_S')
-			->join("filleago.segnalazioni as S","A_S.id","S.id")
+			->join("filleago.segnalazioni as S","A_S.id_segnalazione","S.id")
 			->select("S.id")
 			->where('A_S.id_azienda','=',$id_azienda)
 			->where(function ($count) {
