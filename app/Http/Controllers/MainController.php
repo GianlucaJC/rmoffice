@@ -237,10 +237,25 @@ public function __construct()
 			//function ereditata da nuovi assunti
 			if (strlen($id_azienda)==0) continue;
 			$azienda=addslashes($id_azienda);
-			$presenza=DB::statement("SELECT SQL_CALC_FOUND_ROWS S.id FROM `filleago`.`aziende_segnalazioni` A_S
+			/*
+			$presenza=DB::statement("SELECT count(S.id) q FROM `filleago`.`aziende_segnalazioni` A_S
 			INNER JOIN `filleago`.`segnalazioni` S ON A_S.id_segnalazione=S.id
 			WHERE A_S.id_azienda='$id_azienda' and (fine_lavori is null or fine_lavori>=CURDATE()) and A_S.tb_fo is not null  
 			GROUP BY S.id;");
+			*/
+
+			$presenza=DB::table('filleago.aziende_segnalazioni as A_S')
+			->join("filleago.segnalazioni as S","A_S.id","S.id")
+			->select("S.id")
+			->where('A_S.id_azienda','=',$id_azienda)
+			->where(function ($count) {
+				$count->whereRaw("S.fine_lavori is null")
+				->orWhereRaw("S.fine_lavori>=curdate()");
+			})
+			->groupBy("S.id")
+			->count();
+
+
 			
 			//controllo esistenza azienda in archivio aziende (distinte) di FGO
 			$count=DB::table('filleago.aziende')
@@ -248,7 +263,8 @@ public function __construct()
 			->orWhere('cod_fisc','=',$id_azienda)
 			->count();
 			if ($count==0) $presenza=0;
-			if ($presenza!=0) $fgo[$tab->ID_anagr]=$presenza;
+
+			if (strlen($presenza)!=0 && $presenza!=0) $fgo[$tab->ID_anagr]=$presenza;
 		}	
 		return $fgo;
 		
