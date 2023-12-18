@@ -5,6 +5,11 @@
 @section('extra_style') 
 <!-- x button export -->
 
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{{ URL::asset('/') }}plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="{{ URL::asset('/') }}plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+
 <link href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css" rel="stylesheet">
 <!-- -->
 @endsection
@@ -55,16 +60,35 @@
 			<button onclick="$('.class_view').toggle()" type="button" class="btn btn-outline-primary">Mostra/Nascondi informazioni extra</button>
 			
 			<button onclick="$('#div_speed').toggle(150)" type="button" class="btn btn-outline-primary ml-3">Mostra/Nascondi ricerca rapida</button>
+			
+			<button onclick="location.href='main_view'" type="button" class="btn btn-outline-success ml-3">Azzera filtri</button>
 						
 			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			  </button>
 
+
+
 			  <div class="collapse navbar-collapse" id="navbarText">
 				<ul class="navbar-nav mr-auto">
 				  <li class="nav-item">
-					<a class="nav-link" href="#" onclick="$('#div_filtri').show(150)">Filtri</a>
+					<a class="nav-link" href="#">Filtri periodo</a>
 				  </li>
+					<select class="form-select select2" name='rilasci[]' id='rilasci' data-placeholder="Periodi di rilascio dei tabulati" multiple style='width:400px' onchange="$('#frm_tab').submit()" >
+				
+					<option value=''>Select...</option>
+					<?php
+						for ($sca=0;$sca<=count($passaggi)-1;$sca++) {
+							$id_per=$passaggi[$sca];
+							echo "<option value=$id_per ";
+							if (strlen($rilasci!=0)) {
+								$arr_r=explode(";",$rilasci);
+								if (in_array($id_per,$arr_r)) echo " selected ";
+							}
+							echo ">".substr($id_per,0,7)."</option>";
+						}
+					?>
+					</select>
 
 				</ul>
 				
@@ -646,6 +670,8 @@
 	<!-- AdminLTE App -->
 	<script src="{{ URL::asset('/') }}dist/js/adminlte.min.js"></script>
 
+	<!-- Select2 -->
+	<script src="{{ URL::asset('/') }}plugins/select2/js/select2.full.min.js"></script>
 	<!-- inclusione standard
 		per personalizzare le dipendenze DataTables in funzione delle opzioni da aggiungere: https://datatables.net/download/
 	!-->
@@ -659,7 +685,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.109"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.111"></script>
 
 @endsection
 

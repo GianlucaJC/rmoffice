@@ -13,15 +13,17 @@ class mainController extends Controller
 {
 
 private $id_user;
-
+private $passaggi;
 
 public function __construct()
 	{
-
+		
+		$passaggi=$this->calc_sto_tab();
+		$this->passaggi=$passaggi;
 		//echo "------------------------------------------------------------->pw: ".bcrypt('120011');
 		
 		$this->middleware('auth')->except(['index']);
-
+		
 		$this->middleware(function ($request, $next) {			
 			$id=Auth::user()->id;
 			$user = User::from('users as u')
@@ -47,10 +49,17 @@ public function __construct()
 	}
 	
 	public function main_view(Request $request) {
+		$rilasci="";
+		if (request()->has("rilasci")) {
+			$ril=$request->input('rilasci');
+			if (is_array($ril)) $rilasci=implode(";",$ril);
+			else $rilasci=$ril;
+		}	
+		
 		$nome_speed=$request->input('nome_speed');
 		$elem_sele=$request->input('elem_sele');
 		$per_page=$request->input('per_page');
-		if (strlen($per_page)==0) $per_page=500;
+		if (strlen($per_page)==0) $per_page=50;
 		$ref_ordine=$request->input('ref_ordine');
 
 
@@ -109,9 +118,23 @@ public function __construct()
 			});
 					
 		}
+		
+		$filtro_periodo="";$filtro_p=0;
+		if (strlen($rilasci)!=0) {
+			$arr_r=explode(";",$rilasci);
+			for ($sca=0;$sca<=count($arr_r)-1;$sca++) {
+				$sind_cur=substr($arr_r[$sca],7,1);
+				$periodo_tab=intval(substr($arr_r[$sca],0,2));
+				if (strlen($filtro_periodo)!=0) $filtro_periodo.=" or ";
+				if (strlen($sind_cur)>0) {
+					$filtro_p=1;
+					$filtro_periodo.="(substr(sind_mens$sind_cur,$periodo_tab,1)<>'*' and length(sind_mens$sind_cur)>0) ";
+				}	
+			}
+		}
 
 		$filtro_base=true;
-		if ($solo_contatti==1 || $filtro_sele==1 || $cerca_speed==1) {
+		if ($solo_contatti==1 || $filtro_sele==1 || $cerca_speed==1 || $filtro_p==1) {
 			$filtro_base=false;
 		}
 
@@ -133,21 +156,27 @@ public function __construct()
 		->when($cerca_speed==1, function ($tabulato) use ($cerca_nome) {
 			return $tabulato->where('id_anagr','=',$cerca_nome);
 		})
+		->when($filtro_p==1 && $filtro_sele==0, function ($tabulato) use ($filtro_periodo) {
+			return $tabulato->whereRaw($filtro_periodo);
+		})		
 		->orderBy('c3','asc')
 		->orderBy($campo_ord,$t_ord)
 		->paginate($per_page)
 		->withQueryString();
 
 		//per inviare altri parametri in $_GET oltre la paginazione
-		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele]);
+		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci]);
+		
+		
 		$frt=$this->frt($tabulato);
 		$note=$this->note($tabulato);
 		$fgo=$this->info_fgo($tabulato);
 		
 		$user_frt=$this->user_frt();
+		$passaggi=$this->passaggi;
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo','passaggi','rilasci'));
 	}
 
 	public function only_contact() {
@@ -269,5 +298,39 @@ public function __construct()
 		}	
 		return $fgo;
 		
-	}	
+	}
+	
+	public function calc_sto_tab() {
+		$info=DB::table('report.infotab')
+		->select('storia_tab')
+		->where('tb','=',"t4_lazi_a")
+		->get();
+		if (isset($info)) {
+			$passaggi=$info[0]->storia_tab;
+			$passaggi=str_replace("/","-",$passaggi);
+		} else  return "";
+		
+		$storia_new=array();						
+		if (strlen($passaggi)!=0)  {
+			$fl_entr=1;
+			$storia=explode(";", $passaggi);		
+			for($i = 0; $i < count($storia)-1; $i++){					
+			  $p_sel=$storia[$i];
+			  $trasf=substr($p_sel,3,4).substr($p_sel,0,2);
+			  $storia_new["$trasf"] = "$p_sel";
+			}								
+			krsort($storia_new);
+			
+			$passaggi=""; // ricostruisco la stringa passaggi da array ordinato
+			$sca=0;
+			foreach($storia_new as $tab){
+				if ($sca==1) $passaggi.=";";
+				$passaggi.="$tab";
+				$sca=1;
+			}			
+		}		
+		$arr=explode(";",$passaggi);
+		return $arr;
+	}
+	
 }
