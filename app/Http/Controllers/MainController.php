@@ -152,7 +152,9 @@ public function __construct()
 		$arr_z=explode(";",$zona);
 		
 		$tabulato = DB::table('anagrafe.'.$tb)
-		->orWhereIn('zona',$arr_z)
+		->when(strlen($zona)!=0, function ($tabulato) use($arr_z) {
+			return $tabulato->orWhereIn('zona',$arr_z);
+		})
 		->when($filtro_base==true, function ($tabulato) {
 			return $tabulato->orWhereNotNull('c3');
 		})
