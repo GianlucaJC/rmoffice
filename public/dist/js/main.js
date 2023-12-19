@@ -110,6 +110,9 @@ $(document).ready( function () {
 	sel=$("#rilasci").select2({
 	  tags: true
 	});	
+	sel=$("#zona").select2({
+	  tags: true
+	});	
 		
 } );
 

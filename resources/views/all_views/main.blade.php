@@ -57,11 +57,11 @@
 			<input type='hidden' name='elem_sele' id='elem_sele' value='{{$elem_sele}}'>
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<a class="navbar-brand" href="#">Impostazioni</a>
-			<button onclick="$('.class_view').toggle()" type="button" class="btn btn-outline-primary">Mostra/Nascondi informazioni extra</button>
+			<button onclick="$('.class_view').toggle()" type="button" class="btn btn-outline-primary btn-sm">Mostra/Nascondi extra</button>
 			
-			<button onclick="$('#div_speed').toggle(150)" type="button" class="btn btn-outline-primary ml-3">Mostra/Nascondi ricerca rapida</button>
+			<button onclick="$('#div_speed').toggle(150)" type="button" class="btn btn-outline-primary ml-3 btn-sm">Mostra/Nascondi ricerca rapida</button>
 			
-			<button onclick="location.href='main_view'" type="button" class="btn btn-outline-success ml-3">Azzera filtri</button>
+			<button onclick="location.href='main_view'" type="button" class="btn btn-outline-success btn-sm ml-3">Azzera filtri</button>
 						
 			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -72,11 +72,11 @@
 			  <div class="collapse navbar-collapse" id="navbarText">
 				<ul class="navbar-nav mr-auto">
 				  <li class="nav-item">
-					<a class="nav-link" href="#">Filtri periodo</a>
+					<a class="nav-link" href="#">Tabulati</a>
 				  </li>
 					<select class="form-select select2" name='rilasci[]' id='rilasci' data-placeholder="Periodi di rilascio dei tabulati" multiple style='width:400px' onchange="$('#frm_tab').submit()" >
 				
-					<option value=''>Select...</option>
+					
 					<?php
 						for ($sca=0;$sca<=count($passaggi)-1;$sca++) {
 							$id_per=$passaggi[$sca];
@@ -89,6 +89,26 @@
 						}
 					?>
 					</select>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Zone</a>
+					</li>					
+	
+					<select class="form-select select2" name='zona[]' id='zona' data-placeholder="Filtro zona" multiple style='width:200px' onchange="$('#frm_tab').submit()" >
+				
+					
+					<?php
+						for ($sca=0;$sca<=count($zone)-1;$sca++) {
+							$zx=$zone[$sca];
+							if (strlen($zx)==0) continue;
+							echo "<option value='$zx' ";
+							if (strlen($zona!=0)) {
+								$arr_z=explode(";",$zona);
+								if (in_array($zx,$arr_z)) echo " selected ";
+							}							
+							echo ">$zx</option>";
+						}
+					?>
+					</select>					
 
 				</ul>
 				
@@ -247,9 +267,12 @@
 									<a href="javascript:void(0)" onclick="edit_element({{$tab->ID_anagr}})">
 										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
 									</a>
+									
+									<!--
 									<a href="javascript:void(0)" onclick="edit_element(0)">
 										<i class="fas fa-list-alt fa-lg" style="color:#6385c5;" title="Visualizza note"></i>
 									</a>
+									!-->
 								</td>
 								<td class='class_view'  id='frt_{{$tab->ID_anagr}}'>
 									<a href="javascript:void(0)"  onclick="insert_frt({{$tab->ID_anagr}})">
@@ -271,9 +294,21 @@
 									?>
 								
 								</td>
-								<td>IBAN</td>
-								<td>Giacenza</td>
-								<td>Codice</td>
+								<td>
+									<?php 
+									echo renderview($campo_ord,$tab->iban,"iban");
+									?>
+								</td>
+								<td>
+									<?php 
+									echo renderview($campo_ord,$tab->giacenza,"giacenza");
+									?>								
+								</td>
+								<td>
+									<?php 
+									echo renderview($campo_ord,$tab->codice,"codice");
+									?>								
+								</td>
 
 								<?php 
 									$backg="";
@@ -371,8 +406,10 @@
 									?>
 								
 								</td>
-								<td>Zona
-								
+								<td>
+								<?php 
+								echo renderview($campo_ord,$tab->zona,"zona");
+								?>								
 								<span id='id_ref{{$tab->ID_anagr}}' data-nome='{{ $tab->NOME }}'
 								data-datanasc='{{ $dn }}'
 								data-codfisc='{{ $tab->CODFISC }}'
@@ -685,7 +722,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.111"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.112"></script>
 
 @endsection
 

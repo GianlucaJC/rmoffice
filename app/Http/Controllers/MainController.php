@@ -55,6 +55,13 @@ public function __construct()
 			if (is_array($ril)) $rilasci=implode(";",$ril);
 			else $rilasci=$ril;
 		}	
+		$zona="";
+		if (request()->has("zona")) {
+			$zx=$request->input('zona');
+			if (is_array($zx)) $zona=implode(";",$zx);
+			else $zona=$zx;
+		}	
+
 		
 		$nome_speed=$request->input('nome_speed');
 		$elem_sele=$request->input('elem_sele');
@@ -84,6 +91,9 @@ public function __construct()
 		
 		
 		$campo_ord="nome";
+		if ($ref_ordine==3) $campo_ord="iban";
+		if ($ref_ordine==4) $campo_ord="giacenza";
+		if ($ref_ordine==5) $campo_ord="codice";
 		if ($ref_ordine==6) $campo_ord="nome";
 		if ($ref_ordine==7) $campo_ord="comunenasc";
 		if ($ref_ordine==8) $campo_ord="datanasc";
@@ -94,6 +104,7 @@ public function __construct()
 		if ($ref_ordine==13) $campo_ord="sindacato";
 		if ($ref_ordine==14) $campo_ord="denom";
 		if ($ref_ordine==15) $campo_ord="ente";
+		if ($ref_ordine==16) $campo_ord="zona";
 		
 		
 		$tb="t4_lazi_a";
@@ -138,9 +149,10 @@ public function __construct()
 			$filtro_base=false;
 		}
 
+		$arr_z=explode(";",$zona);
 		
 		$tabulato = DB::table('anagrafe.'.$tb)
-		//->where('attivi','=','S') -->aggiungere condizione semestre
+		->orWhereIn('zona',$arr_z)
 		->when($filtro_base==true, function ($tabulato) {
 			return $tabulato->orWhereNotNull('c3');
 		})
@@ -153,30 +165,31 @@ public function __construct()
 		->when($filtro_sele==1, function ($tabulato) use ($only_select) {
 			return $tabulato->whereIn('id_anagr',$only_select);
 		})
+		->when($filtro_p==1 && $solo_contatti==0 && $filtro_sele==0 && $cerca_speed==0, function ($tabulato) use ($filtro_periodo) {
+			return $tabulato->whereRaw($filtro_periodo);
+		})		
 		->when($cerca_speed==1, function ($tabulato) use ($cerca_nome) {
 			return $tabulato->where('id_anagr','=',$cerca_nome);
 		})
-		->when($filtro_p==1 && $filtro_sele==0, function ($tabulato) use ($filtro_periodo) {
-			return $tabulato->whereRaw($filtro_periodo);
-		})		
 		->orderBy('c3','asc')
 		->orderBy($campo_ord,$t_ord)
 		->paginate($per_page)
 		->withQueryString();
 
 		//per inviare altri parametri in $_GET oltre la paginazione
-		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci]);
+		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona]);
 		
 		
 		$frt=$this->frt($tabulato);
 		$note=$this->note($tabulato);
 		$fgo=$this->info_fgo($tabulato);
+		$zone=$this->zone();
 		
 		$user_frt=$this->user_frt();
 		$passaggi=$this->passaggi;
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo','passaggi','rilasci'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo','passaggi','rilasci','zona','zone'));
 	}
 
 	public function only_contact() {
@@ -254,6 +267,18 @@ public function __construct()
 			
 		}
 		return $frt;
+	}
+	
+	public function zone() {
+		$info = DB::table('anagrafe.t4_lazi_a as t')
+		->select('t.zona')
+		->groupBy('t.zona')
+		->get();
+		$zone=array();
+		foreach($info as $z) {
+			$zone[]=$z->zona;
+		}
+		return $zone;		
 	}
 	
 	public function info_fgo($tabulato) {
