@@ -65,7 +65,8 @@ $(document).ready( function () {
 	$('#tbl_list thead').on('click', 'th', function () {
 	  var index = table.column(this).index();
 	  $("#ref_ordine").val(index)
-	  window.location = "?ref_ordine="+index+"&page=1";
+	  $('#frm_tab').submit()
+	  //window.location = "?ref_ordine="+index+"&page=1";
 	  //$("#frm_tab").submit();
 	});
 	

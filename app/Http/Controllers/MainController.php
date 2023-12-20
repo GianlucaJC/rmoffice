@@ -55,6 +55,8 @@ public function __construct()
 			if (is_array($ril)) $rilasci=implode(";",$ril);
 			else $rilasci=$ril;
 		}	
+		
+		
 		$zona="";
 		if (request()->has("zona")) {
 			$zx=$request->input('zona');
@@ -86,12 +88,10 @@ public function __construct()
 		if (request()->has("view_null")) $view_null=request()->input("view_null");
 		if ($view_null=="on") $view_null=1;		
 		
-		$tipo_ord=0;
-		if (request()->has("tipo_ord")) $tipo_ord=request()->input("tipo_ord");
-		if ($tipo_ord=="on") $tipo_ord=1;				
-		
+		$tipo_ord="";
+		$tipo_ord=request()->input("tipo_ord");
 		$t_ord="ASC";
-		if ($tipo_ord==1) $t_ord="DESC";
+		if ($tipo_ord=="on") $t_ord="DESC";
 		
 		
 		$campo_ord="nome";
@@ -109,8 +109,7 @@ public function __construct()
 		if ($ref_ordine==14) $campo_ord="denom";
 		if ($ref_ordine==15) $campo_ord="ente";
 		if ($ref_ordine==16) $campo_ord="zona";
-		
-		
+
 		$tb="t4_lazi_a";
 		
 		if ($solo_contatti==1)
@@ -141,18 +140,23 @@ public function __construct()
 		
 		if ($solo_contatti==0 && $filtro_sele==0 && $cerca_speed==0) {
 			if (strlen($rilasci)!=0) {
-				$cond.=" and (";
+				$entr=false;
 				$arr_r=explode(";",$rilasci);
 				for ($sca=0;$sca<=count($arr_r)-1;$sca++) {
+					if ($arr_r[$sca]=="all") continue;
+					if ($entr==false) {
+						$cond.=" and (";
+					}	
 					$sind_cur=substr($arr_r[$sca],7,1);
 					$periodo_tab=intval(substr($arr_r[$sca],0,2));
-					if ($sca>0) $cond.=" or ";
+					if ($sca>0 && $entr==true) $cond.=" or ";
 					if (strlen($sind_cur)>0) {
 						$filtro_p=1;
 						$cond.="(substr(sind_mens$sind_cur,$periodo_tab,1)<>'*' and length(sind_mens$sind_cur)>0) ";
 					}	
+					$entr=true;
 				}
-				$cond.=") ";
+				if ($entr==true) $cond.=") ";
 			}
 		}
 
@@ -164,7 +168,9 @@ public function __construct()
 		if ($filtro_base==true) {
 			
 			$arr_z=explode(";",$zona);
-			if (strlen($zona)!=0) $cond.=" and (`zona` in ('".implode(",",$arr_z)."')) ";
+			if (count($arr_z)==1 && $arr_z[0]!="all") {
+				if (strlen($zona)!=0) $cond.=" and (`zona` in ('".implode(",",$arr_z)."')) ";
+			}
 			
 			if (strlen($filtro_sind)!=0 && $filtro_sind!="all") {
 				if ($filtro_sind=="ns") 
@@ -227,7 +233,7 @@ public function __construct()
 		->withQueryString();		
 
 		//per inviare altri parametri in $_GET oltre la paginazione
-		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban]);
+		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti]);
 		
 		
 		$frt=$this->frt($tabulato);
@@ -325,6 +331,7 @@ public function __construct()
 		->groupBy('t.zona')
 		->get();
 		$zone=array();
+		$zone[]="all";
 		foreach($info as $z) {
 			$zone[]=$z->zona;
 		}
@@ -396,12 +403,10 @@ public function __construct()
 			}								
 			krsort($storia_new);
 			
-			$passaggi=""; // ricostruisco la stringa passaggi da array ordinato
-			$sca=0;
+			$passaggi="all"; // ricostruisco la stringa passaggi da array ordinato
 			foreach($storia_new as $tab){
-				if ($sca==1) $passaggi.=";";
+				$passaggi.=";";
 				$passaggi.="$tab";
-				$sca=1;
 			}			
 		}		
 		$arr=explode(";",$passaggi);

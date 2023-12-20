@@ -74,7 +74,7 @@
 				  </li>
 					<select class="form-select select2" name='rilasci[]' id='rilasci' data-placeholder="Periodi di rilascio dei tabulati" multiple style='width:400px' onchange="$('#frm_tab').submit()" >
 				
-					
+
 					<?php
 						for ($sca=0;$sca<=count($passaggi)-1;$sca++) {
 							$id_per=$passaggi[$sca];
@@ -83,7 +83,13 @@
 								$arr_r=explode(";",$rilasci);
 								if (in_array($id_per,$arr_r)) echo " selected ";
 							}
-							echo ">".substr($id_per,0,7)."</option>";
+							
+							if ($id_per=="all") {
+								if (strlen($rilasci)==0) echo " selected ";
+								echo ">Nuovi assunti</option>";
+							}	
+							else 
+								echo ">".substr($id_per,0,7)."</option>";
 						}
 					?>
 					</select>
@@ -102,7 +108,10 @@
 							if (strlen($zona!=0)) {
 								$arr_z=explode(";",$zona);
 								if (in_array($zx,$arr_z)) echo " selected ";
-							}							
+							}		
+							if (strlen($zona)==0 && $zx=="all") echo " selected ";
+
+							if ($zx=="all") $zx="[Tutte]";
 							echo ">$zx</option>";
 						}
 					?>
@@ -148,7 +157,7 @@
 						<select class="form-select" name='filtro_sind' id='filtro_sind' data-placeholder="Filtro sindacato" onchange="$('#frm_tab').submit()" >
 							<option value='all'
 							@if(strlen($filtro_sind)==0 || $filtro_sind=="all") selected @endif
-							>Tutti</option>
+							>[Tutti]</option>
 							<option value='0'
 							@if($filtro_sind=="0") selected @endif
 							>Liberi</option>
@@ -176,7 +185,7 @@
 						<select class="form-select" name='filtro_ente' id='filtro_ente' data-placeholder="Filtro ente" onchange="$('#frm_tab').submit()" >
 							<option value='all'
 							@if(strlen($filtro_ente)==0 || $filtro_ente=="all") selected @endif
-							>Tutti</option>
+							>[Tutti]</option>
 							<option value='C'
 							@if($filtro_ente=="C") selected @endif
 							>CassaEdile</option>
@@ -194,7 +203,7 @@
 						<select class="form-select" name='filtro_tel' id='filtro_tel' data-placeholder="Filtro telefoni" onchange="$('#frm_tab').submit()" >
 							<option value='all'
 							@if(strlen($filtro_tel)==0 || $filtro_tel=="all") selected @endif
-							>Tutti</option>
+							>[Tutti]</option>
 							<option value='0'
 							@if($filtro_tel=="0") selected @endif
 							>Senza telefoni</option>
@@ -212,7 +221,7 @@
 						<select class="form-select" name='filtro_giac' id='filtro_giac' data-placeholder="Filtro giacenza" onchange="$('#frm_tab').submit()" >
 							<option value='all'
 							@if(strlen($filtro_giac)==0 || $filtro_giac=="all") selected @endif
-							>Tutti</option>
+							>[Tutti]</option>
 							<option value='0'
 							@if($filtro_giac=="0") selected @endif
 							>Senza giacenza</option>
@@ -230,7 +239,7 @@
 						<select class="form-select" name='filtro_iban' id='filtro_iban' data-placeholder="Filtro IBAN" onchange="$('#frm_tab').submit()" >
 							<option value='all'
 							@if(strlen($filtro_iban)==0 || $filtro_iban=="all") selected @endif
-							>Tutti</option>
+							>[Tutti]</option>
 							<option value='0'
 							@if($filtro_iban=="0") selected @endif
 							>Senza IBAN</option>
@@ -298,7 +307,7 @@
 					</div>
 					<?php
 						$check="";
-						if ($tipo_ord=="1") $check="checked";
+						if ($tipo_ord=="on") $check="checked";
 					?>					
 					<div class="col-lg-3">
 						<div class="form-check form-switch">
@@ -830,7 +839,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.125"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.126"></script>
 
 @endsection
 
