@@ -430,7 +430,7 @@
 								<?php 
 									$backg="";
 									if ($tab->C3 && $tab->C3=="1") {
-										$backg="background-color:lightgoldenrodyellow";
+										$backg="background-color:gold";
 									}
 									if ($tab->C3 && $tab->C3=="2") {
 										$backg="background-color:lightsalmon";
