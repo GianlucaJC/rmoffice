@@ -62,7 +62,11 @@ public function __construct()
 			else $zona=$zx;
 		}	
 
-		
+		$filtro_sind=$request->input('filtro_sind');
+		$filtro_ente=$request->input('filtro_ente');
+		$filtro_tel=$request->input('filtro_tel');
+		$filtro_giac=$request->input('filtro_giac');
+		$filtro_iban=$request->input('filtro_iban');
 		$nome_speed=$request->input('nome_speed');
 		$elem_sele=$request->input('elem_sele');
 		$per_page=$request->input('per_page');
@@ -113,11 +117,14 @@ public function __construct()
 			$only_contact=$this->only_contact();
 		else
 			$only_contact=array();
-		
 		$only_select=explode(";",$elem_sele);
 		
-
+		$only_contact=array_filter($only_contact);
+		$only_select=array_filter($only_select);
+		if (count($only_contact)==0) $solo_contatti=0;
+		if (count($only_select)==0) $filtro_sele=0;
 		
+
 		$cerca_nome="";$cerca_speed=0;
 		if (request()->has("nome_speed")) {
 			$cerca_speed=1;
@@ -130,56 +137,97 @@ public function __construct()
 					
 		}
 		
-		$filtro_periodo="";$filtro_p=0;
-		if (strlen($rilasci)!=0) {
-			$arr_r=explode(";",$rilasci);
-			for ($sca=0;$sca<=count($arr_r)-1;$sca++) {
-				$sind_cur=substr($arr_r[$sca],7,1);
-				$periodo_tab=intval(substr($arr_r[$sca],0,2));
-				if (strlen($filtro_periodo)!=0) $filtro_periodo.=" or ";
-				if (strlen($sind_cur)>0) {
-					$filtro_p=1;
-					$filtro_periodo.="(substr(sind_mens$sind_cur,$periodo_tab,1)<>'*' and length(sind_mens$sind_cur)>0) ";
-				}	
+		$cond="1";$filtro_p=0;
+		
+		if ($solo_contatti==0 && $filtro_sele==0 && $cerca_speed==0) {
+			if (strlen($rilasci)!=0) {
+				$cond.=" and (";
+				$arr_r=explode(";",$rilasci);
+				for ($sca=0;$sca<=count($arr_r)-1;$sca++) {
+					$sind_cur=substr($arr_r[$sca],7,1);
+					$periodo_tab=intval(substr($arr_r[$sca],0,2));
+					if ($sca>0) $cond.=" or ";
+					if (strlen($sind_cur)>0) {
+						$filtro_p=1;
+						$cond.="(substr(sind_mens$sind_cur,$periodo_tab,1)<>'*' and length(sind_mens$sind_cur)>0) ";
+					}	
+				}
+				$cond.=") ";
 			}
 		}
 
 		$filtro_base=true;
-		if ($solo_contatti==1 || $filtro_sele==1 || $cerca_speed==1 || $filtro_p==1) {
+		if ($solo_contatti==1 || $filtro_sele==1 || $cerca_speed==1) {
 			$filtro_base=false;
 		}
 
-		$arr_z=explode(";",$zona);
+		if ($filtro_base==true) {
+			
+			$arr_z=explode(";",$zona);
+			if (strlen($zona)!=0) $cond.=" and (`zona` in ('".implode(",",$arr_z)."')) ";
+			
+			if (strlen($filtro_sind)!=0 && $filtro_sind!="all") {
+				if ($filtro_sind=="ns") 
+					$cond.=" and (length(sindacato)=0 or sindacato=' ') ";
+				else
+					$cond.=" and (sindacato='$filtro_sind') ";
+			}	
+			if (strlen($filtro_ente)!=0 && $filtro_ente!="all") {
+				$cond.=" and (ente='$filtro_ente') ";
+			}
+			if ($filtro_tel=="1") 
+				$cond.=" and 
+						((c1 is not null and length(c1)<>0) or
+						(tel_ce is not null and length(tel_ce)<>0) or
+						(tel_sin is not null and length(tel_sin)<>0) or
+						(tel_gps is not null and length(tel_gps)<>0) or
+						(tel_altro is not null and length(tel_altro)<>0)
+						)";
+
+			if ($filtro_tel=="0") 
+				$cond.=" and (not
+						((c1 is not null and length(c1)<>0) or
+						(tel_ce is not null and length(tel_ce)<>0) or
+						(tel_sin is not null and length(tel_sin)<>0) or
+						(tel_gps is not null and length(tel_gps)<>0) or
+						(tel_altro is not null and length(tel_altro)<>0)
+						))";
+
+			if ($filtro_giac=="1")
+				$cond.=" and (length(giacenza)>0 and giacenza is not null) ";
+			if ($filtro_giac=="0")
+				$cond.=" and (giacenza is null or length(giacenza)=0) ";
+
+			if ($filtro_iban=="1")
+				$cond.=" and (length(iban)>0 and iban is not null) ";
+			if ($filtro_iban=="0")
+				$cond.=" and (iban is null or length(iban)=0) ";
+				
+				
+		}
 		
+		if ($filtro_base==true && $filtro_p==0) $cond.=" and (c3 is not null) ";
+		
+		if ($solo_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
+			$cond.=" and (`id_anagr` in (".implode(",",$only_contact).")) ";
+		if ($filtro_sele==1 && $cerca_speed==0) 
+			$cond.=" and (`id_anagr` in (".implode(",",$only_select).")) ";
+		
+		if ($cerca_speed==1) $cond.=" and (`id_anagr`=$cerca_nome) ";
+		
+		
+		if ($view_null=="1") $cond.=" and (LENGTH($campo_ord) > 0) ";
+	
+
 		$tabulato = DB::table('anagrafe.'.$tb)
-		->when(strlen($zona)!=0, function ($tabulato) use($arr_z) {
-			return $tabulato->orWhereIn('zona',$arr_z);
-		})
-		->when($filtro_base==true, function ($tabulato) {
-			return $tabulato->orWhereNotNull('c3');
-		})
-		->when($view_null=="1", function ($tabulato) use ($campo_ord) {
-			return $tabulato->whereRaw("LENGTH($campo_ord) > 0");
-		})
-		->when($solo_contatti==1 && $filtro_sele==0, function ($tabulato) use ($only_contact) {
-			return $tabulato->whereIn('id_anagr',$only_contact);
-		})
-		->when($filtro_sele==1, function ($tabulato) use ($only_select) {
-			return $tabulato->whereIn('id_anagr',$only_select);
-		})
-		->when($filtro_p==1 && $solo_contatti==0 && $filtro_sele==0 && $cerca_speed==0, function ($tabulato) use ($filtro_periodo) {
-			return $tabulato->whereRaw($filtro_periodo);
-		})		
-		->when($cerca_speed==1, function ($tabulato) use ($cerca_nome) {
-			return $tabulato->where('id_anagr','=',$cerca_nome);
-		})
+		->whereRaw($cond)
 		->orderBy('c3','asc')
 		->orderBy($campo_ord,$t_ord)
 		->paginate($per_page)
-		->withQueryString();
+		->withQueryString();		
 
 		//per inviare altri parametri in $_GET oltre la paginazione
-		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona]);
+		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban]);
 		
 		
 		$frt=$this->frt($tabulato);
@@ -191,7 +239,7 @@ public function __construct()
 		$passaggi=$this->passaggi;
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo','passaggi','rilasci','zona','zone'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban'));
 	}
 
 	public function only_contact() {

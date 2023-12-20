@@ -20,7 +20,7 @@
 .filtri {
   border: 2px outset blue;
   padding:10px;
-  background-color: lightblue;
+  
  
 }
 </style>
@@ -47,7 +47,6 @@
 
 		<form method='post' action="" id='frm_tab' name='frm_tab' autocomplete="off">
 		<input name="_token" type="hidden" value="{{ csrf_token() }}" id='token_csrf'>	  
-		
 
   
 			<input type='hidden' name='ref_ordine' id='ref_ordine' value='{{$ref_ordine}}'>
@@ -56,10 +55,9 @@
 			
 			<input type='hidden' name='elem_sele' id='elem_sele' value='{{$elem_sele}}'>
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand" href="#">Impostazioni</a>
-			<button onclick="$('.class_view').toggle()" type="button" class="btn btn-outline-primary btn-sm">Mostra/Nascondi extra</button>
 			
-			<button onclick="$('#div_speed').toggle(150)" type="button" class="btn btn-outline-primary ml-3 btn-sm">Mostra/Nascondi ricerca rapida</button>
+			<button onclick="show_extra()" id="btn_extra" type="button" class="btn btn-outline-primary btn-sm">Nascondi extra</button>
+			
 			
 			<button onclick="location.href='main_view'" type="button" class="btn btn-outline-success btn-sm ml-3">Azzera filtri</button>
 						
@@ -140,12 +138,117 @@
 
 				</select>
 			  </div>
+			  
 
 			</nav>
-			
+			<div class='row mb-1 mt-1'>
+				<div class="col-md-3">
+					<div class="form-floating mb-3 mb-md-0">
+						
+						<select class="form-select" name='filtro_sind' id='filtro_sind' data-placeholder="Filtro sindacato" onchange="$('#frm_tab').submit()" >
+							<option value='all'
+							@if(strlen($filtro_sind)==0 || $filtro_sind=="all") selected @endif
+							>Tutti</option>
+							<option value='0'
+							@if($filtro_sind=="0") selected @endif
+							>Liberi</option>
+							<option value='1'
+							@if($filtro_sind=="1") selected @endif
+							>Fillea CGIL</option>
+							<option value='2'
+							@if($filtro_sind=="2") selected @endif
+							>Filca CISL</option>
+							<option value='3'
+							@if($filtro_sind=="3") selected @endif
+							>Feneal UIL</option>
+							<option value='ns'
+							@if($filtro_sind=="ns") selected @endif
+							>Non Specificati</option>							
+							
+						</select>
+						<label for="filtro_sind">Sindacato</label>
+					</div>
+			  </div>
+
+				<div class="col-md-3">
+					<div class="form-floating mb-3 mb-md-0">
+						
+						<select class="form-select" name='filtro_ente' id='filtro_ente' data-placeholder="Filtro ente" onchange="$('#frm_tab').submit()" >
+							<option value='all'
+							@if(strlen($filtro_ente)==0 || $filtro_ente=="all") selected @endif
+							>Tutti</option>
+							<option value='C'
+							@if($filtro_ente=="C") selected @endif
+							>CassaEdile</option>
+							<option value='A'
+							@if($filtro_ente=="A") selected @endif
+							>Edilcassa</option>
+						</select>
+						<label for="filtro_ente">Ente</label>
+					</div>
+			  </div>
+
+				<div class="col-md-2">
+					<div class="form-floating mb-3 mb-md-0">
+						
+						<select class="form-select" name='filtro_tel' id='filtro_tel' data-placeholder="Filtro telefoni" onchange="$('#frm_tab').submit()" >
+							<option value='all'
+							@if(strlen($filtro_tel)==0 || $filtro_tel=="all") selected @endif
+							>Tutti</option>
+							<option value='0'
+							@if($filtro_tel=="0") selected @endif
+							>Senza telefoni</option>
+							<option value='1'
+							@if($filtro_tel=="1") selected @endif
+							>Con telefoni (mostrati solo i validi)</option>
+						</select>
+						<label for="filtro_tel">Telefoni</label>
+					</div>
+			  </div>	
+			  
+				<div class="col-md-2">
+					<div class="form-floating mb-3 mb-md-0">
+						
+						<select class="form-select" name='filtro_giac' id='filtro_giac' data-placeholder="Filtro giacenza" onchange="$('#frm_tab').submit()" >
+							<option value='all'
+							@if(strlen($filtro_giac)==0 || $filtro_giac=="all") selected @endif
+							>Tutti</option>
+							<option value='0'
+							@if($filtro_giac=="0") selected @endif
+							>Senza giacenza</option>
+							<option value='1'
+							@if($filtro_giac=="1") selected @endif
+							>Con giacenza</option>
+						</select>
+						<label for="filtro_giac">Giacenza</label>
+					</div>
+			  </div>	
+
+				<div class="col-md-2">
+					<div class="form-floating mb-3 mb-md-0">
+						
+						<select class="form-select" name='filtro_iban' id='filtro_iban' data-placeholder="Filtro IBAN" onchange="$('#frm_tab').submit()" >
+							<option value='all'
+							@if(strlen($filtro_iban)==0 || $filtro_iban=="all") selected @endif
+							>Tutti</option>
+							<option value='0'
+							@if($filtro_iban=="0") selected @endif
+							>Senza IBAN</option>
+							<option value='1'
+							@if($filtro_iban=="1") selected @endif
+							>Con IBAN</option>
+						</select>
+						<label for="filtro_iban">IBAN</label>
+					</div>
+			  </div>				  
+			  
+			  
+			</div>  
 			
 			<div class='filtri mb-3' id='div_filtri'>
-
+				<div class="alert alert-info p-1" role="alert">
+				  <small>Filtri selettivi (Questi filtri disattivano gli altri filtri impostati)</small>
+				</div>
 				<div class="row">
 					<?php
 						$check="";
@@ -158,6 +261,29 @@
 						  <label class="form-check-label" for="solo_contatti">Solo contattati</label>
 						</div>
 					</div>
+
+					
+					<?php
+						$check="";
+						if ($filtro_sele=="1") $check="checked";
+					?>					
+					<div class="col-lg-3">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="filtro_sele" name="filtro_sele" onchange="$('#elem_sele').val(localStorage.elem_sele);$('#frm_tab').submit()" {{$check}}>
+						  <label class="form-check-label" for="filtro_sele">Filtra selezionati</label>
+							
+							<div id='div_alert_sele' style='display:none'>
+								<span class='ml-3'>
+									<font color='blue'>
+										Selezione attiva
+									</font>
+									<button type="button" class="btn btn-primary ml-3" onclick="dele_sele()">Annulla selezione</button>
+								</span>
+							</div>
+						
+						
+						</div>
+					</div>		
 
 					<?php
 						$check="";
@@ -180,42 +306,24 @@
 						  <label class="form-check-label" for="tipo_ord">Ordinamento decrescente</label>
 						</div>
 					</div>
+			
 					
-					<?php
-						$check="";
-						if ($filtro_sele=="1") $check="checked";
-					?>					
-					<div class="col-lg-3">
-						<div class="form-check form-switch">
-						  <input class="form-check-input" type="checkbox" id="filtro_sele" name="filtro_sele" onchange="$('#elem_sele').val(localStorage.elem_sele);$('#frm_tab').submit()" {{$check}}>
-						  <label class="form-check-label" for="filtro_sele">Filtra selezionati</label>
-							
-							<div id='div_alert_sele' style='display:none'>
-								<span class='ml-3'>
-									<font color='blue'>
-										Selezione attiva
-									</font>
-									<button type="button" class="btn btn-primary ml-3" onclick="dele_sele()">Annulla selezione</button>
-								</span>
-							</div>
-						
-						
+				</div>	
+				<div class='row'>
+					<div class='row mt-2' id='div_speed'>
+						<div class="input-group mb-3">
+						  <span class="input-group-text" id="basic-addon1">Ricerca rapida</span>
+						  <input type="text" name='c_all' id='c_all' class="form-control" placeholder="Cerca Nominativo globalmente">
 						</div>
-					</div>					
-					
-				</div>			
-			
-			</div>
-			
-				
-			<div class='row mt-2' id='div_speed' style='display:none'>
-				<div class="input-group mb-3">
-				  <span class="input-group-text" id="basic-addon1">Ricerca rapida</span>
-				  <input type="text" name='c_all' id='c_all' class="form-control" placeholder="Cerca Nominativo globalmente">
+						
+						<div id='resp_cerca_o'></div>			
+					</div>				
 				</div>
 				
-				<div id='resp_cerca_o'></div>			
+			
 			</div>
+			
+
 			
 			<div id='div_main'>
 				<?php
@@ -722,7 +830,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.112"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.125"></script>
 
 @endsection
 

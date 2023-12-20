@@ -1,3 +1,4 @@
+
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function () {
   'use strict'
@@ -103,6 +104,19 @@ $(document).ready( function () {
 		
 	}
 	
+	if( typeof localStorage.extra != 'undefined' )  {
+		console.log("status extra: ",localStorage.extra)
+		if (localStorage.extra==1) {
+			$("#btn_extra").text("Nascondi extra")
+			$('.class_view').show()
+		}
+		if (localStorage.extra==0) {
+			$("#btn_extra").text("Mostra extra")
+			$('.class_view').hide()
+		}
+
+	}
+		
 	//Initialize Select2 Elements
 	$('.select2bs4').select2({
 	  theme: 'bootstrap4'
@@ -124,6 +138,23 @@ function dele_sele() {
 	});	
 	localStorage.elem_sele=""
 	$("#div_alert_sele").hide(150)
+	
+}
+
+function show_extra() {
+	
+	if ($("#btn_extra").text()=="Nascondi extra") {
+		$("#btn_extra").text("Mostra extra")
+		localStorage.extra=0
+		$('.class_view').hide()
+	}	
+	else {
+		$("#btn_extra").text("Nascondi extra")
+		localStorage.extra=1
+		$('.class_view').show()
+	}
+	
+	console.log("set extra: ",localStorage.extra)
 	
 }
 
