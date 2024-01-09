@@ -362,7 +362,7 @@
 						<thead>
 							<tr>
 								<th style='min-width:80px'>Operazioni</th>
-								<th class='class_view'>FRT</th>
+								<th class=''>FRT</th>
 								<th class='class_view'>Contatto</th>
 								<th>IBAN</th>
 								<th>Giacenza</th>
@@ -398,18 +398,27 @@
 									</a>
 									!-->
 								</td>
-								<td class='class_view'  id='frt_{{$tab->ID_anagr}}'>
+								<td id='frt_{{$tab->ID_anagr}}'>
+									<?php 
+									$altrove=$frt['altrove'];
+									if ($altrove[$tab->ID_anagr]=="1")
+										echo " <i class='fas fa-square fa-sm mb-2' style='color: #ff0000;'></i>";
+									
+									if (!isset($frt_info[$tab->ID_anagr]))
+										echo " <i class='fas fa-square fa-sm mb-2' style='color: green'></i>";
+									?>
+								
+									<div class='class_view'>
 									<a href="javascript:void(0)"  onclick="insert_frt({{$tab->ID_anagr}})">
 										<button type="button" class="btn btn-success btn-sm mb-2">Iscrivi FRT</button>
 									</a>
-									<div id='div_anagr{{$tab->ID_anagr}}' class='div_frt'>
-									<div>
+									
+									
 									<?php
 										if (isset($frt_info[$tab->ID_anagr]))
 											echo render_frt($frt,$tab,$user_frt);
-										else 
-											echo " <i class='fas fa-square fa-sm' style='color: green'></i>";
 									?>
+									
 									
 								</td>
 								<td  class='class_view' id='contact{{$tab->ID_anagr}}'>
@@ -753,7 +762,7 @@
 				$view.="</tr>";
 			$view.="</thead>";
 			$frt=$frt_info['dati'];
-			$altrove=$frt_info['altrove'];
+
 
 			foreach($frt[$tab->ID_anagr] as $frt_dati) {
 				$view.="<tr>";
@@ -769,8 +778,7 @@
 				$view.="</tr>";
 			}
 		$view.="</table>";
-		if ($altrove[$tab->ID_anagr]=="1")
-			$view.=" <i class='fas fa-square fa-sm' style='color: #ff0000;'></i>";
+
 		
 		return $view;
 	}
