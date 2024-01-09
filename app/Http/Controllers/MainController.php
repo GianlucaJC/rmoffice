@@ -343,13 +343,16 @@ public function __construct()
 			->where('natoil','=',$datanasc)
 			->orderBy("data_update","desc")
 			->get();
-			$al=0;
+			$rm=0;$entr=0;
 			foreach ($info as $extra)	{				
-				if (strtolower($extra->tb_user)!="t4_lazi_a") $al=1;
+				$entr=1;
+				if (strtolower($extra->tb_user)=="t4_lazi_a") $rm=1;
 				$frt[$tab->ID_anagr][$sca]['utente']=strtoupper($extra->utente);
 				$frt[$tab->ID_anagr][$sca]['data_update']=$extra->data_update_it;
 				$sca++;
 			}
+			$al=0;
+			if ($rm==0 && $entr==1) $al=1;
 			$altrove[$tab->ID_anagr]=$al;
 
 		}
