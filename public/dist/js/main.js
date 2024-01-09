@@ -125,6 +125,9 @@ $(document).ready( function () {
 	sel=$("#rilasci").select2({
 	  tags: true
 	});	
+	sel=$("#filtro_sind").select2({
+	  tags: true
+	});
 	sel=$("#zona").select2({
 	  tags: true
 	});	

@@ -63,8 +63,13 @@ public function __construct()
 			if (is_array($zx)) $zona=implode(";",$zx);
 			else $zona=$zx;
 		}	
+		$filtro_sind="";
+		if (request()->has("filtro_sind")) {
+			$zx=$request->input('filtro_sind');
+			if (is_array($zx)) $filtro_sind=implode(";",$zx);
+			else $filtro_sind=$zx;
+		}
 
-		$filtro_sind=$request->input('filtro_sind');
 		$filtro_ente=$request->input('filtro_ente');
 		$filtro_tel=$request->input('filtro_tel');
 		$filtro_giac=$request->input('filtro_giac');
@@ -172,12 +177,35 @@ public function __construct()
 				if (strlen($zona)!=0) $cond.=" and (`zona` in ('".implode(",",$arr_z)."')) ";
 			}
 			
+
+			$arr_s=explode(";",$filtro_sind);
+			if (strlen($filtro_sind)!=0) {
+				if (count($arr_s)>0 && $arr_s[0]!="all") {
+					$cond.=" and (";
+					for ($sca=0;$sca<=count($arr_s)-1;$sca++) {
+						$sin=$arr_s[$sca];
+						if ($sca>0) $cond.=" or ";
+						if ($sin=="ns")
+							$cond.=" sindacato=' ' or sindacato='' ";
+						else	
+							$cond.=" sindacato='$sin' ";
+					}
+					$cond.=") ";
+				}
+			}
+			
+			
+			
+			/*
 			if (strlen($filtro_sind)!=0 && $filtro_sind!="all") {
 				if ($filtro_sind=="ns") 
 					$cond.=" and (length(sindacato)=0 or sindacato=' ') ";
 				else
 					$cond.=" and (sindacato='$filtro_sind') ";
-			}	
+			}
+			*/			
+
+
 			if (strlen($filtro_ente)!=0 && $filtro_ente!="all") {
 				$cond.=" and (ente='$filtro_ente') ";
 			}
@@ -303,26 +331,34 @@ public function __construct()
 	}	
 	
 	public function frt($tabulato) {
-		$frt=array();
+		$frt=array();$altrove=array();
+		
 		foreach ($tabulato as $tab)	{
 			$sca=0;
 			$nome=$tab->NOME;
 			$datanasc=substr($tab->DATANASC,0,10);
 			$info = DB::table('frt.generale')
-			->select('utente','data_update',DB::raw("DATE_FORMAT(data_update,'%d-%m-%Y') as data_update_it"))
+			->select('utente','tb_user','data_update',DB::raw("DATE_FORMAT(data_update,'%d-%m-%Y') as data_update_it"))
 			->where('nome','=',$nome)
 			->where('natoil','=',$datanasc)
 			->orderBy("data_update","desc")
 			->get();
-			foreach ($info as $extra)	{
+			$al=0;
+			foreach ($info as $extra)	{				
+				if (strtolower($extra->tb_user)!="t4_lazi_a") $al=1;
 				$frt[$tab->ID_anagr][$sca]['utente']=strtoupper($extra->utente);
 				$frt[$tab->ID_anagr][$sca]['data_update']=$extra->data_update_it;
 				$sca++;
 			}
-			
-			
+			$altrove[$tab->ID_anagr]=$al;
+
 		}
-		return $frt;
+		$resp=array();
+		$resp['dati']=$frt;
+		$resp['altrove']=$altrove;
+
+		
+		return $resp;
 	}
 	
 	public function zone() {

@@ -115,7 +115,37 @@
 							echo ">$zx</option>";
 						}
 					?>
-					</select>					
+					</select>
+					
+					<?php
+						$sindacati=explode(";",$filtro_sind);
+					?>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Sindacato</a>
+					</li>						
+					<select class="form-select select2" name='filtro_sind[]' id='filtro_sind' data-placeholder="Filtro sindacato" onchange="$('#frm_tab').submit()" style='width:200px' multiple>
+						<option value='all'
+						@if(in_array("all",$sindacati) || strlen($filtro_sind)==0) selected @endif
+						>[Tutti]</option>
+						<option value='0'
+						@if(in_array("0",$sindacati)) selected @endif
+						>Liberi</option>
+						<option value='1'
+						@if(in_array("1",$sindacati)) selected @endif
+						>Fillea CGIL</option>
+						<option value='2'
+						@if(in_array("2",$sindacati)) selected @endif
+						>Filca CISL</option>
+						<option value='3'
+						@if(in_array("3",$sindacati)) selected @endif
+						>Feneal UIL</option>
+						<option value='ns'
+						@if(in_array("ns",$sindacati)) selected @endif
+						>Non Specificati</option>							
+						
+					</select>
+					
+					
 
 				</ul>
 				
@@ -151,33 +181,7 @@
 
 			</nav>
 			<div class='row mb-1 mt-1'>
-				<div class="col-md-3">
-					<div class="form-floating mb-3 mb-md-0">
-						
-						<select class="form-select" name='filtro_sind' id='filtro_sind' data-placeholder="Filtro sindacato" onchange="$('#frm_tab').submit()" >
-							<option value='all'
-							@if(strlen($filtro_sind)==0 || $filtro_sind=="all") selected @endif
-							>[Tutti]</option>
-							<option value='0'
-							@if($filtro_sind=="0") selected @endif
-							>Liberi</option>
-							<option value='1'
-							@if($filtro_sind=="1") selected @endif
-							>Fillea CGIL</option>
-							<option value='2'
-							@if($filtro_sind=="2") selected @endif
-							>Filca CISL</option>
-							<option value='3'
-							@if($filtro_sind=="3") selected @endif
-							>Feneal UIL</option>
-							<option value='ns'
-							@if($filtro_sind=="ns") selected @endif
-							>Non Specificati</option>							
-							
-						</select>
-						<label for="filtro_sind">Sindacato</label>
-					</div>
-			  </div>
+
 
 				<div class="col-md-3">
 					<div class="form-floating mb-3 mb-md-0">
@@ -336,6 +340,9 @@
 			
 			<div id='div_main'>
 				<?php
+				
+					$frt_info=$frt['dati'];
+					
 					if (strlen($cerca_nome)!=0) {
 						$referer = $_SERVER['HTTP_REFERER'] ?? null;
 						$uri_complete = request()->path();
@@ -398,8 +405,10 @@
 									<div id='div_anagr{{$tab->ID_anagr}}' class='div_frt'>
 									<div>
 									<?php
-										if (isset($frt[$tab->ID_anagr]))
+										if (isset($frt_info[$tab->ID_anagr]))
 											echo render_frt($frt,$tab,$user_frt);
+										else 
+											echo " <i class='fas fa-square fa-sm' style='color: green'></i>";
 									?>
 									
 								</td>
@@ -733,7 +742,7 @@
 		
 		return $view;
 	}
-	function render_frt($frt,$tab,$user_frt) {
+	function render_frt($frt_info,$tab,$user_frt) {
 		$view=null;
 		
 		$view.="<table class='table table-bordered'>";
@@ -743,6 +752,9 @@
 					$view.="<th>Data</th>";
 				$view.="</tr>";
 			$view.="</thead>";
+			$frt=$frt_info['dati'];
+			$altrove=$frt_info['altrove'];
+
 			foreach($frt[$tab->ID_anagr] as $frt_dati) {
 				$view.="<tr>";
 					$view.="<td>";
@@ -757,6 +769,8 @@
 				$view.="</tr>";
 			}
 		$view.="</table>";
+		if ($altrove[$tab->ID_anagr]=="1")
+			$view.=" <i class='fas fa-square fa-sm' style='color: #ff0000;'></i>";
 		
 		return $view;
 	}
@@ -839,7 +853,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.126"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.127"></script>
 
 @endsection
 
