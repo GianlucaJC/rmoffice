@@ -268,14 +268,39 @@ public function __construct()
 		$note=$this->note($tabulato);
 		$fgo=$this->info_fgo($tabulato);
 		$zone=$this->zone();
-		
+		$iscr_altrove=$this->iscr_altrove($tabulato);
 		$user_frt=$this->user_frt();
 		$passaggi=$this->passaggi;
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove'));
 	}
 
+	public function iscr_altrove($tabulato) {
+		$resp=array();
+		foreach ($tabulato as $tab)	{
+			$id_ref=$tab->ID_anagr;
+			$nome=$tab->NOME;
+			$datanasc=$tab->DATANASC;
+			$info = DB::table('anagrafe_regioni.globale')->select('sindacato','provincia','attivi')
+			->where('nome','=',$nome)
+			->where('datanasc','=',$datanasc)
+			->where('IDARC','<>','t4_lazi_a')
+			->get();
+			
+			$sind="";$sca=0;
+			foreach($info as $lav) {
+				if ($sca==1) $sind.=";";
+				$sca=1;
+				$sind.=$lav->sindacato."|";
+				$sind.=$lav->provincia."|";
+				$sind.=$lav->attivi."|";
+			}		
+			if (strlen($sind)>0) $resp[$id_ref]=$sind;
+		}
+		return $resp;
+	}
+	
 	public function only_contact() {
 		$info = DB::table('rm_office.note as n')
         ->join("anagrafe.t4_lazi_a as t",function($join){

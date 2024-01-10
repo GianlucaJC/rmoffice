@@ -363,7 +363,7 @@
 							<tr>
 								<th style='min-width:80px'>Operazioni</th>
 								<th class=''>FRT</th>
-								<th class='class_view'>Contatto</th>
+								<th class=''>Contatto</th>
 								<th>IBAN</th>
 								<th>Giacenza</th>
 								<th>Codice</th>
@@ -402,10 +402,10 @@
 									<?php 
 									$altrove=$frt['altrove'];
 									if ($altrove[$tab->ID_anagr]=="1")
-										echo " <i class='fas fa-square fa-sm mb-2' style='color: #ff0000;'></i>";
+										echo " <i class='fas fa-square fa-sm mb-2' style='color: #ff0000;' title='FRT altrove'></i>";
 									
 									if (!isset($frt_info[$tab->ID_anagr]))
-										echo " <i class='fas fa-square fa-sm mb-2' style='color: green'></i>";
+										echo " <i class='fas fa-square fa-sm mb-2' style='color: green' title='Nessuna sottoscrizione FRT'></i>";
 									?>
 								
 									<div class='class_view'>
@@ -421,12 +421,18 @@
 									
 									
 								</td>
-								<td  class='class_view' id='contact{{$tab->ID_anagr}}'>
+								<td id='contact{{$tab->ID_anagr}}'>
+									<?php
+									if (isset($note[$tab->ID_anagr]))
+										echo " <i class='fas fa-square fa-sm mb-2' style='color: green'></i>";
 									
+									?>
+									<div class='class_view'>
 									<?php
 										if (isset($note[$tab->ID_anagr]))
 											echo render_note($note,$tab,$utenti);
 									?>
+									</div>
 								
 								</td>
 								<td>
@@ -481,7 +487,15 @@
 								<td>
 									<?php 
 									echo renderview($campo_ord,$tab->CODFISC,"codfisc");
+									echo "<br>";
+									if ($tab->inca=="1" || $tab->fisco=="1") {
+										echo " <i class='fas fa-square fa-sm mb-2' style='color: #ff0000;' title='presenza servizi CGIL'></i>";
+									}
+									if (isset($iscr_altrove[$tab->ID_anagr])) {
+										echo lav_altrove($iscr_altrove,$tab->ID_anagr);
+									}
 									?>
+									
 								</td>	
 								<td>
 									<?php 
@@ -708,6 +722,36 @@
  @endsection
  
  <?php
+	function lav_altrove($iscr_altrove,$id_anagr) {
+		
+		$view="";
+		$lav=$iscr_altrove[$id_anagr];
+		
+		$info=explode(";",$lav);
+		for ($sc=0;$sc<=count($info)-1;$sc++) {
+			$altrove=$info[$sc];
+			$info_a=explode("|",$altrove);
+			$circle="far";
+			if (count($info_a)>1) {
+				$sind=$info_a[0];
+				$pro=$info_a[1];
+				$att=$info_a[2];
+				$d_sind="";$colo="";
+				if ($sind!="1" && $sind!="2" && $sind!="3") continue;
+
+				if ($sind=="1") {$colo="#ff0000";$d_sind="Fillea";}
+				if ($sind=="2") {$colo="green";$d_sind="Filca";}
+				if ($sind=="3") {$colo="blue";$d_sind="Feneal";}
+				
+				if ($att=="S") $circle="fas";
+				
+				$view.=" <i class='$circle fa-circle fa-sm mb-2' style='color: $colo;' title='Iscrizione altrove $pro - $d_sind'></i>";
+			}
+		}
+		
+		return $view;
+	}
+ 
 	function render_note($note,$tab,$utenti) {
 		$view=null;
 		
