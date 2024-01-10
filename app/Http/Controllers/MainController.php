@@ -20,19 +20,50 @@ public function __construct()
 		
 		$passaggi=$this->calc_sto_tab();
 		$this->passaggi=$passaggi;
-		//echo "------------------------------------------------------------->pw: ".bcrypt('120011');
+		
+		/*
+		echo "F0030:".bcrypt('202310SC')."<hr>";
+		echo "F0418:".bcrypt('456890XX')."<hr>";
+		echo "F0573:".bcrypt('160369DA')."<hr>";
+		echo "F0579".bcrypt('30387')."<hr>";
+		echo "F0830".bcrypt('53315')."<hr>";
+		echo "F0838".bcrypt('44720')."<hr>";
+		echo "F0910".bcrypt('77653')."<hr>";
+		echo "F3114".bcrypt('567890LA')."<hr>";
+		echo "F3398".bcrypt('RM987654')."<hr>";
+		*/
 		
 		$this->middleware('auth')->except(['index']);
 		
 		$this->middleware(function ($request, $next) {			
 			$id=Auth::user()->id;
 			$user = User::from('users as u')
+			->select("id","email")
 			->where('u.id','=',$id)
 			->get();
+			$userid="?";
 			
 			if (isset($user[0])) {
 				$this->id_user=$id;
+				$userid=$user[0]->email;
 			}
+			
+			
+			$t_att=DB::table('online.db')
+			->select("id")
+			->where('N_TESSERA','=',$userid)
+			->where('attiva','=',1)
+			->count();
+		
+		if ($t_att==0) {
+	
+				echo "<br>";
+				echo "<center>";
+				echo "<h2>Utente non autorizzato!</h2>";
+				echo "</center>";
+				exit;
+			}	
+			
 			return $next($request);
 		});		
 		

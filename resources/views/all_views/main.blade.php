@@ -20,8 +20,9 @@
 .filtri {
   border: 2px outset blue;
   padding:10px;
-  
- 
+}
+.active_th {
+	border: 1px outset blue;
 }
 </style>
 
@@ -352,7 +353,12 @@
 						echo "</a>";
 					}
 
-					
+				?>
+				
+				<?php
+				$ord_col=array();
+				for ($aa=0;$aa<=16;$aa++) {$ord_col[$aa]="";}
+				if (isset($ref_ordine)) $ord_col[$ref_ordine]="active_th";
 				?>
 				<div class="row mt-2">
 				  <div class="col-lg-12">
@@ -364,20 +370,20 @@
 								<th style='min-width:80px'>Operazioni</th>
 								<th class=''>FRT</th>
 								<th class=''>Contatto</th>
-								<th>IBAN</th>
-								<th>Giacenza</th>
-								<th>Codice</th>
-								<th>Nominativo</th>
-								<th>Luogo nascita</th>
-								<th>Data nascita</th>
-								<th>CF</th>
-								<th>Località</th>
-								<th>Provincia</th>
-								<th>Telefoni</th>
-								<th>Sindacato</th>
-								<th>Azienda</th>
-								<th>Ente</th>
-								<th>Zona</th>
+								<th class='{{$ord_col[3]}}'>IBAN</th>
+								<th class='{{$ord_col[4]}}'>Giacenza</th>
+								<th class='{{$ord_col[5]}}'>Codice</th>
+								<th class='{{$ord_col[6]}}'>Nominativo</th>
+								<th class='{{$ord_col[7]}}'>Luogo nascita</th>
+								<th class='{{$ord_col[8]}}'>Data nascita</th>
+								<th class='{{$ord_col[9]}}'>CF</th>
+								<th class='{{$ord_col[10]}}'>Località</th>
+								<th class='{{$ord_col[11]}}'>Provincia</th>
+								<th class=''>Telefoni</th>
+								<th class='{{$ord_col[13]}}'>Sindacato</th>
+								<th class='{{$ord_col[14]}}'>Azienda</th>
+								<th class='{{$ord_col[15]}}'>Ente</th>
+								<th class='{{$ord_col[16]}}'>Zona</th>
 							</tr>
 						</thead>
 						<tbody>
