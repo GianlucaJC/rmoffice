@@ -201,7 +201,7 @@
 					</div>
 			  </div>
 
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<div class="form-floating mb-3 mb-md-0">
 						
 						<select class="form-select" name='filtro_tel' id='filtro_tel' data-placeholder="Filtro telefoni" onchange="$('#frm_tab').submit()" >
@@ -219,7 +219,7 @@
 					</div>
 			  </div>	
 			  
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<div class="form-floating mb-3 mb-md-0">
 						
 						<select class="form-select" name='filtro_giac' id='filtro_giac' data-placeholder="Filtro giacenza" onchange="$('#frm_tab').submit()" >
@@ -237,7 +237,7 @@
 					</div>
 			  </div>	
 
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<div class="form-floating mb-3 mb-md-0">
 						
 						<select class="form-select" name='filtro_iban' id='filtro_iban' data-placeholder="Filtro IBAN" onchange="$('#frm_tab').submit()" >

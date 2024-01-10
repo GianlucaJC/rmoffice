@@ -228,7 +228,7 @@ public function __construct()
 						))";
 
 			if ($filtro_giac=="1")
-				$cond.=" and (length(giacenza)>0 and giacenza is not null) ";
+				$cond.=" and (length(giacenza)>0 and giacenza is not null and giacenza<>'0') ";
 			if ($filtro_giac=="0")
 				$cond.=" and (giacenza is null or length(giacenza)=0) ";
 
