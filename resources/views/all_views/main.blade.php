@@ -275,13 +275,24 @@
 						  <label class="form-check-label" for="solo_contatti">Solo contattati</label>
 						</div>
 					</div>
+					<?php
+						$check="";
+						if ($solo_non_contatti=="1") $check="checked";
+						
+					?>						
+					<div class="col-lg-2 ml-2">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="solo_non_contatti" name="solo_non_contatti" onchange="$('#frm_tab').submit()" {{$check}}>
+						  <label class="form-check-label" for="solo_non_contatti">Solo non contattati</label>
+						</div>
+					</div>					
 
 					
 					<?php
 						$check="";
 						if ($filtro_sele=="1") $check="checked";
 					?>					
-					<div class="col-lg-3">
+					<div class="col-lg-2">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="filtro_sele" name="filtro_sele" onchange="$('#elem_sele').val(localStorage.elem_sele);$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="filtro_sele">Filtra selezionati</label>
@@ -314,7 +325,7 @@
 						$check="";
 						if ($tipo_ord=="on") $check="checked";
 					?>					
-					<div class="col-lg-3">
+					<div class="col-lg-2">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="tipo_ord" name="tipo_ord" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="tipo_ord">Ordinamento decrescente</label>
@@ -543,7 +554,11 @@
 								<td title="{{$tab->C2}}">
 									<?php
 									
-									echo renderview($campo_ord,$tab->DENOM,"denom");
+									if (strlen($tab->C2)>0) 
+									echo "<a href='https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&p_iva=".$tab->C2."' target='_blank'>";
+										echo renderview($campo_ord,$tab->DENOM,"denom");
+									if (strlen($tab->C2)>0) 
+									echo "</a>";	
 
 									if (isset($fgo[$tab->ID_anagr])){
 										$id_fiscale=$tab->C2;

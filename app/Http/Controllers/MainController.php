@@ -120,6 +120,11 @@ public function __construct()
 		if (request()->has("solo_contatti")) $solo_contatti=request()->input("solo_contatti");
 		if ($solo_contatti=="on") $solo_contatti=1;		
 
+		$solo_non_contatti=0;
+		if (request()->has("solo_non_contatti")) $solo_non_contatti=request()->input("solo_non_contatti");
+		if ($solo_non_contatti=="on") $solo_non_contatti=1;		
+
+
 		$view_null=0;
 		if (request()->has("view_null")) $view_null=request()->input("view_null");
 		if ($view_null=="on") $view_null=1;		
@@ -152,11 +157,19 @@ public function __construct()
 			$only_contact=$this->only_contact();
 		else
 			$only_contact=array();
+		
+		if ($solo_non_contatti==1)
+			$only_no_contact=$this->only_contact();
+		else
+			$only_no_contact=array();
+
 		$only_select=explode(";",$elem_sele);
 		
 		$only_contact=array_filter($only_contact);
+		$only_no_contact=array_filter($only_no_contact);
 		$only_select=array_filter($only_select);
 		if (count($only_contact)==0) $solo_contatti=0;
+		if (count($only_no_contact)==0) $solo_non_contatti=0;
 		if (count($only_select)==0) $filtro_sele=0;
 		
 
@@ -174,7 +187,7 @@ public function __construct()
 		
 		$cond="1";$filtro_p=0;
 		
-		if ($solo_contatti==0 && $filtro_sele==0 && $cerca_speed==0) {
+		if ($solo_contatti==0 && $solo_non_contatti==0 && $filtro_sele==0 && $cerca_speed==0) {
 			if (strlen($rilasci)!=0) {
 				$entr=false;
 				$arr_r=explode(";",$rilasci);
@@ -197,7 +210,7 @@ public function __construct()
 		}
 
 		$filtro_base=true;
-		if ($solo_contatti==1 || $filtro_sele==1 || $cerca_speed==1) {
+		if ($solo_contatti==1 ||  $filtro_sele==1 || $cerca_speed==1) {
 			$filtro_base=false;
 		}
 
@@ -275,6 +288,8 @@ public function __construct()
 		
 		if ($solo_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
 			$cond.=" and (`id_anagr` in (".implode(",",$only_contact).")) ";
+		if ($solo_non_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
+			$cond.=" and (`id_anagr` not in (".implode(",",$only_no_contact).")) ";
 		if ($filtro_sele==1 && $cerca_speed==0) 
 			$cond.=" and (`id_anagr` in (".implode(",",$only_select).")) ";
 		
@@ -286,13 +301,15 @@ public function __construct()
 
 		$tabulato = DB::table('anagrafe.'.$tb)
 		->whereRaw($cond)
-		->orderBy('c3','asc')
+		->when($filtro_p=="0", function ($tabulato) {			
+			return $tabulato->orderBy('c3','asc');
+		})
 		->orderBy($campo_ord,$t_ord)
 		->paginate($per_page)
 		->withQueryString();		
 
 		//per inviare altri parametri in $_GET oltre la paginazione
-		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti]);
+		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti,'solo_non_contatti'=>$solo_non_contatti]);
 		
 		
 		$frt=$this->frt($tabulato);
@@ -304,7 +321,7 @@ public function __construct()
 		$passaggi=$this->passaggi;
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_non_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove'));
 	}
 
 	public function iscr_altrove($tabulato) {
@@ -347,6 +364,7 @@ public function __construct()
 		}
 		return $arr;
 	}
+	
 
 	public function user_frt() {
 		$info = DB::table('online.db')->select('n_tessera','utentefillea')->get();
