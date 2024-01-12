@@ -174,7 +174,12 @@
 					<option value='1000'
 					@if ($per_page=='1000') selected @endif
 					>1000</option>
-
+					<option value='2000'
+					@if ($per_page=='2000') selected @endif
+					>2000</option>
+					<option value='3000'
+					@if ($per_page=='3000') selected @endif
+					>3000</option>					
 
 				</select>
 			  </div>
