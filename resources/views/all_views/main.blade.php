@@ -572,6 +572,9 @@
 									echo "<a href='https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&p_iva=".$tab->C2."' target='_blank'>";
 										echo renderview($campo_ord,$tab->DENOM,"denom");
 									if (strlen($tab->C2)>0) 
+									echo "</a>";
+									echo "<a href='javascript:void(0)' onclick=\"$('#a_all').val('".$tab->DENOM."');$( '#a_all' ).trigger( 'paste' );\">";
+										echo "<i class='fas fa-sign-in-alt fa-xs ml-2'></i>";
 									echo "</a>";	
 
 									if (isset($fgo[$tab->ID_anagr])){
