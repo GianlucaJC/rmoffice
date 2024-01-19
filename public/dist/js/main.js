@@ -84,7 +84,22 @@ $(document).ready( function () {
 			$("#resp_cerca_o").show(400);
 			cerca_fo(value);
 		}, delay );	
-	} );		
+	} );
+
+	$( "#a_all" ).on( "keydown keyup  paste", function(event) {
+		value=this.value
+		clearTimeout(timer);
+		timer = setTimeout(function() {
+			html=""
+			html+="<div class='spinner-grow' role='status'>";
+				html+="<fspan class='sr-only'>Loading...</span>";
+			html+="</div>";
+			
+			$("#resp_cerca_a").html(html)
+			$("#resp_cerca_a").show(400);
+			cerca_azi(value);
+		}, delay );	
+	} );	
 		
 	
 	if( typeof localStorage.elem_sele != 'undefined' )  {
@@ -337,6 +352,29 @@ function push_appalti(value) {
 		$('#push_appalti').val(value)	
 }
 
+function cerca_azi(value) {
+	//$('#resp_cerca_o').empty()
+	$('#resp_cerca_a').show()
+	$("#div_main").hide();
+	base_path = $("#url").val();
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
+	let CSRF_TOKEN = $("#token_csrf").val();
+	$.ajax({
+		type: 'POST',
+		url: base_path+"/cerca_azi",
+		data: {_token: CSRF_TOKEN,value:value},
+		success: function (data) {
+			render_all_a(data)
+		}
+	})	
+		
+}
+
+
 function cerca_fo(value) {
 	//$('#resp_cerca_o').empty()
 	$('#resp_cerca_o').show()
@@ -358,6 +396,81 @@ function cerca_fo(value) {
 	})	
 		
 }
+
+function render_all_a(data) {
+	obj=JSON.parse(data)
+	console.log(obj)
+	html="";
+	html+=`<button type='button' class='btn btn-primary' onclick=\"$('#c_all').val('');$('#resp_cerca_a').hide(300);$('#div_main').show();\">Chiudi Elenco</button>
+		<table id='tb_resp_a' class='table table-bordered table-striped'>
+		<thead>
+			<tr>
+				<th>Azienda</th>
+			</tr>
+		</thead>
+		<tbody>`
+			for (sca=0;sca<=obj.length-1;sca++) {
+				denom=obj[sca].denom
+
+				html+=`<tr>
+					<td>
+						<button type="submit" name='denom_speed' class="btn  btn-primary btn-sm btn-block" onclick="$('#cerca_denom').val('`+denom+`')">`+denom+`</button>
+					</td>
+				</tr>`
+
+			}
+		html+="</tbody>";	
+	html+="</table><hr>";  
+	
+	
+	$("#resp_cerca_a").html(html);
+	
+	
+
+	
+
+	$("#tb_resp_a").DataTable({
+		//"responsive": true, 
+		"lengthChange": false, "autoWidth": false,
+		"pageLength": 15,
+		//, "colvis"
+		"buttons": ["copy", "excel", "pdf"],
+		"language": {
+			"zeroRecords": "Non ci sono Aziende",
+			"info": "Pagina mostrata _PAGE_ di _PAGES_ di _TOTAL_ Aziende",
+			"infoEmpty": "Non risultano Aziende con questo criterio",
+			"infoFiltered": "(filtrati da _MAX_ record totali)",
+			"search":         "Cerca:",
+			"paginate": {
+				"first":      "Prima",
+				"last":       "Ultima",
+				"next":       "Successiva",
+				"previous":   "Precedente"
+			}
+		
+		}	  
+	}).buttons().container().appendTo('#tb_resp_wrapper .col-md-6:eq(0)');		
+	
+	table=$("#tb_resp_a").DataTable();
+	
+	//datatable on change event jquery 
+	
+	$('#tb_resp_a tbody').on('mouseover', 'td', function () {
+		
+		if ($(this).parents('tr').hasClass('corrente')) {
+			$(this).parents('tr').removeClass('corrente');
+		} else {
+			table.$('tr.corrente').removeClass('corrente');                   
+			$(this).parents('tr').addClass('corrente');                    
+		}
+	});		
+	
+	/*
+	$('#tb_resp').on('click' ,'tr', function() {
+		info_atleta(this)
+	})
+*/		
+}	
 
 function render_all(data) {
 	obj=JSON.parse(data)

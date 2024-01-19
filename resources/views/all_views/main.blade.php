@@ -53,6 +53,7 @@
 			<input type='hidden' name='ref_ordine' id='ref_ordine' value='{{$ref_ordine}}'>
 			<input type="hidden" value="{{url('/')}}" id="url" name="url">
 			<input type='hidden' name='cerca_nome' id='cerca_nome'>
+			<input type='hidden' name='cerca_denom' id='cerca_denom'>
 			
 			<input type='hidden' name='elem_sele' id='elem_sele' value='{{$elem_sele}}'>
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -340,14 +341,22 @@
 					
 				</div>	
 				<div class='row'>
-					<div class='row mt-2' id='div_speed'>
+					<div class='col-lg-6' >
 						<div class="input-group mb-3">
-						  <span class="input-group-text" id="basic-addon1">Ricerca rapida</span>
+						  <span class="input-group-text" id="basic-addon1">Ricerca rapida Nominativo</span>
 						  <input type="text" name='c_all' id='c_all' class="form-control" placeholder="Cerca Nominativo globalmente">
 						</div>
 						
 						<div id='resp_cerca_o'></div>			
-					</div>				
+					</div>
+					<div class='col-lg-6' >
+						<div class="input-group mb-3">
+						  <span class="input-group-text" id="basic-addon1">Ricerca rapida Azienda</span>
+						  <input type="text" name='a_all' id='a_all' class="form-control" placeholder="Cerca Azienda globalmente">
+						</div>
+						
+						<div id='resp_cerca_a'></div>			
+					</div>					
 				</div>
 				
 			
@@ -931,7 +940,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.127"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.133"></script>
 
 @endsection
 

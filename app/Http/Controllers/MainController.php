@@ -31,8 +31,23 @@ public function __construct()
 		echo "F0910".bcrypt('77653')."<hr>";
 		echo "F3114".bcrypt('567890LA')."<hr>";
 		echo "F3398".bcrypt('RM987654')."<hr>";
+		echo "F0147 	Bagalà Genni".bcrypt('BA970484')."<hr>";
+		echo "F0336 	Liotino Marco".bcrypt('LI192021')."<hr>";
+		echo "F0482 	BURATTI ANDREA".bcrypt('BA135792')."<hr>";
+		echo "F0829 	Proietti Bruno".bcrypt('140623')."<hr>";
+		echo "F0830 	De Vecchis Alioscia".bcrypt('53315')."<hr>";
+		echo "F0831 	TESTI GIULIO".bcrypt('87602')."<hr>";
+		echo "F0832 	Nicoletti Antonio".bcrypt('47564')."<hr>";
+		echo "F0834 	Orfiz Luis Manuel".bcrypt('46245')."<hr>";
+		echo "F0840 	Nika Agim".bcrypt('03701')."<hr>";
+		echo "F0841 	Ferrari fabio".bcrypt('AB123456')."<hr>";
+		echo "F0908 	Wibabara Eric".bcrypt('64702')."<hr>";
+		echo "F0909 	Broccatelli Claudio".bcrypt('47087')."<hr>";
+		echo "F0911 	Enache Maricel".bcrypt('48407')."<hr>";
+		echo "F0919 	Paudice Mauro".bcrypt('51273')."<hr>";
+		echo "F3388 	ANDREONI MARCO".bcrypt('AM130477')."<hr>";
+		echo "F3485 	SERJANAJ XHESILDO".bcrypt('JJ121996')."<hr>";
 		*/
-		
 		$this->middleware('auth')->except(['index']);
 		
 		$this->middleware(function ($request, $next) {			
@@ -106,6 +121,7 @@ public function __construct()
 		$filtro_giac=$request->input('filtro_giac');
 		$filtro_iban=$request->input('filtro_iban');
 		$nome_speed=$request->input('nome_speed');
+		$denom_speed=$request->input('denom_speed');
 		$elem_sele=$request->input('elem_sele');
 		$per_page=$request->input('per_page');
 		if (strlen($per_page)==0) $per_page=50;
@@ -173,10 +189,13 @@ public function __construct()
 		if (count($only_select)==0) $filtro_sele=0;
 		
 
-		$cerca_nome="";$cerca_speed=0;
-		if (request()->has("nome_speed")) {
+		$cerca_nome="";$cerca_speed=0;$cerca_denom="";
+		if (request()->has("nome_speed") || request()->has("denom_speed")) {
 			$cerca_speed=1;
-			$cerca_nome=request()->input("cerca_nome");
+			if (request()->has("cerca_nome")) 
+				$cerca_nome=request()->input("cerca_nome");
+			if (request()->has("denom_speed")) 
+				 $cerca_denom=request()->input("cerca_denom");
 		
 			$cPage=1;
 			Paginator::currentPageResolver(function () use ($cPage) {
@@ -293,7 +312,8 @@ public function __construct()
 		if ($filtro_sele==1 && $cerca_speed==0) 
 			$cond.=" and (`id_anagr` in (".implode(",",$only_select).")) ";
 		
-		if ($cerca_speed==1) $cond.=" and (`id_anagr`=$cerca_nome) ";
+		if ($cerca_speed==1 && strlen($cerca_nome)!=0) $cond.=" and (`id_anagr`=$cerca_nome) ";
+		if ($cerca_speed==1 && strlen($cerca_denom)!=0) $cond.=" and (`denom`='$cerca_denom') ";
 		
 		
 		if ($view_null=="1") $cond.=" and (LENGTH($campo_ord) > 0) ";

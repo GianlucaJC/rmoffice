@@ -93,4 +93,16 @@ class AjaxController extends Controller
 		->get();		
 		return json_encode($risp);		
 	}		
+	
+	public function cerca_azi(Request $request) {
+		$value=$request->input('value');
+		$risp = DB::table('anagrafe.t4_lazi_a')
+		->select('denom')
+		->where('denom',"like","%$value%")
+		->offset(0)->limit(30)
+		->groupBy('denom')
+		->get();		
+		return json_encode($risp);		
+	}
+
 }
