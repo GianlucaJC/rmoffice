@@ -74,6 +74,7 @@
 				  <li class="nav-item">
 					<a class="nav-link" href="#">Tabulati</a>
 				  </li>
+
 					<select class="form-select select2" name='rilasci[]' id='rilasci' data-placeholder="Periodi di rilascio dei tabulati" multiple style='width:400px' onchange="$('#frm_tab').submit()" >
 				
 
@@ -90,8 +91,13 @@
 								if (strlen($rilasci)==0) echo " selected ";
 								echo ">Nuovi assunti</option>";
 							}	
-							else 
-								echo ">".substr($id_per,0,7)."</option>";
+							else {
+								$vx=substr($id_per,0,7);
+								$view_per=$vx;
+								if (in_array($vx,$ril_ce)) $view_per.=" (CE)";
+								if (in_array($vx,$ril_ec)) $view_per.=" (EC)";
+								echo ">".$view_per."</option>";
+							}
 						}
 					?>
 					</select>

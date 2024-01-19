@@ -101,7 +101,8 @@ public function __construct()
 			if (is_array($ril)) $rilasci=implode(";",$ril);
 			else $rilasci=$ril;
 		}	
-		
+		$ril_ce=$this->rilasci_ente('C');
+		$ril_ec=$this->rilasci_ente('A');
 		
 		$zona="";
 		if (request()->has("zona")) {
@@ -341,7 +342,7 @@ public function __construct()
 		$passaggi=$this->passaggi;
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_non_contatti','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_non_contatti','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec'));
 	}
 
 	public function iscr_altrove($tabulato) {
@@ -544,6 +545,26 @@ public function __construct()
 		}		
 		$arr=explode(";",$passaggi);
 		return $arr;
+	}
+	
+	public function rilasci_ente($id_ente) {
+		$arr_per=array();
+		$periodi=DB::table('online.fo_argo')
+		->select('rilasci_tabulato')
+		->where('id_arch','=',"t4_lazi_a")
+		->where('code_CE','=',$id_ente)
+		->get();
+		foreach($periodi as $periodo) {
+			$per=$periodo->rilasci_tabulato;
+			$arr=explode(";",$per);
+			for ($sca=0;$sca<=count($arr)-1;$sca++) {
+				$per=$arr[$sca];
+				$per=str_replace("/","-",$per);
+				$per=substr($per,0,7);
+				$arr_per[]=$per;
+			}
+		}
+		return $arr_per;
 	}
 	
 }
