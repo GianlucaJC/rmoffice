@@ -369,7 +369,7 @@
 				
 					$frt_info=$frt['dati'];
 					
-					if (strlen($cerca_nome)!=0) {
+					if (strlen($cerca_nome)!=0 || strlen($cerca_denom)!=0) {
 						$referer = $_SERVER['HTTP_REFERER'] ?? null;
 						$uri_complete = request()->path();
 						$referer="#";

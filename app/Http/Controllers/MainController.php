@@ -341,7 +341,7 @@ public function __construct()
 		$passaggi=$this->passaggi;
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_non_contatti','elem_sele','filtro_sele','cerca_nome','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_non_contatti','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove'));
 	}
 
 	public function iscr_altrove($tabulato) {
