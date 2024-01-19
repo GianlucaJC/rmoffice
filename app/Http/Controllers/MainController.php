@@ -388,10 +388,16 @@ public function __construct()
 	
 
 	public function user_frt() {
-		$info = DB::table('online.db')->select('n_tessera','utentefillea')->get();
+		$info = DB::table('online.db')
+			->select('db.n_tessera','db.id_prov_associate','db.utentefillea','p.provincia','p.sigla_pr')
+			->join('bdf.province as p','db.id_prov_associate','p.id')
+			->get();
 		$user=array();
 		foreach($info as $utente) {
-			$user[$utente->n_tessera]=$utente->utentefillea;
+			$user[$utente->n_tessera]['utentefillea']=$utente->utentefillea;
+			$user[$utente->n_tessera]['id_prov_associate']=$utente->id_prov_associate;
+			$user[$utente->n_tessera]['provincia']=$utente->provincia;
+			$user[$utente->n_tessera]['sigla_pr']=$utente->sigla_pr;
 		}
 		return $user;
 	}

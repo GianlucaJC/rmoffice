@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('cerca_fo', 'App\Http\Controllers\AjaxController@cerca_fo');
 	Route::post('cerca_azi', 'App\Http\Controllers\AjaxController@cerca_azi');
 	Route::post('save_note', 'App\Http\Controllers\AjaxController@save_note');
-	
+	Route::post('info_stru', 'App\Http\Controllers\AjaxController@info_stru');
 	Route::post('ins_frt', 'App\Http\Controllers\AjaxController@ins_frt');
 	
 	//

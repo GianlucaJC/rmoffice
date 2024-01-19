@@ -18,6 +18,15 @@ class AjaxController extends Controller
 	public function __construct(){
 	}
 
+	public function info_stru(Request $request) {
+		$id_struttura=$request->input('id_struttura');
+		$risp = DB::table('bdf.dirigenti')
+		->select('nominativo','incarico','telefono')
+		->where('id_prov',"=",$id_struttura)
+		->get();		
+		return json_encode($risp);		
+	}	
+
 	public function ins_frt(Request $request) {
 		
 		$nome_frt=$request->input('nome_frt');

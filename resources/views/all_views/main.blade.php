@@ -759,6 +759,28 @@
 			</div>
 		</form>		
 		
+
+			<!-- Modal for info strutture -->
+			<div class="modal fade bd-example-modal-lg" id="modal_strutture" tabindex="-1" role="dialog" aria-labelledby="info" aria-hidden="true">
+			  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+				<div class="modal-content">
+				
+				  <div class="modal-header">
+					<h5 class="modal-title" id="title_modal_stru">Contatti della struttura</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+				  </div>
+				  <div class="modal-body" id='body_strutture'>
+					
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+				  </div>
+				</div>
+			  </div>
+			</div>		
+		
 		
   </div>
   <!-- /.content-wrapper -->
@@ -856,9 +878,20 @@
 				$view.="<tr>";
 					$view.="<td>";
 						$view.=$frt_dati['utente'];
-						if (isset($user_frt[$frt_dati['utente']]))
-							$view.="<br><small><i>".$user_frt[$frt_dati['utente']]."</i></small>";
-					$view.="</td>";	
+						if (isset($user_frt[$frt_dati['utente']])) {
+							$view.="<br><small><i>".$user_frt[$frt_dati['utente']]['utentefillea']."</i></small>";
+							
+							$view.="(".$user_frt[$frt_dati['utente']]['sigla_pr'];
+							$view.="<a href='javascript:void(0)' onclick=\"info_stru(".$user_frt[$frt_dati['utente']]['id_prov_associate'].")\">";
+								$view.= "<i class='fas fa-sign-in-alt fa-xs ml-2'></i>";
+							$view.= "</a>";	
+							$view.=")";							
+							
+			
+						}
+					$view.="</td>";
+					
+					
 					$view.="<td>";
 						$view.=$frt_dati['data_update'];
 					$view.="</td>";	
@@ -949,7 +982,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.133"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.138"></script>
 
 @endsection
 

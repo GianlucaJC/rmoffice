@@ -270,6 +270,87 @@ function save_frt() {
 	}, delay)	
 }	
 	
+function info_stru(id_struttura) {
+	var timer,delay = 800;	
+	$('#modal_strutture').modal('toggle')
+	html=""
+	html+="<div class='spinner-grow' role='status'>";
+		html+="<fspan class='sr-only'>Loading...</span>";
+	html+="</div>";
+	$("#body_strutture").html(html)
+	
+	clearTimeout(timer);
+	timer = setTimeout(function() {	
+		base_path = $("#url").val();
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		let CSRF_TOKEN = $("#token_csrf").val();
+		$.ajax({
+			type: 'POST',
+			url: base_path+"/info_stru",
+			data: {_token: CSRF_TOKEN,id_struttura:id_struttura},
+			success: function (data) {
+				obj=JSON.parse(data)
+				console.log(obj)
+				html="";
+				html+=`
+					<table id='tb_resp_stru' class='table table-bordered table-striped'>
+					<thead>
+						<tr>
+							<th>Nominativo</th>
+							<th>Incarico</th>
+							<th>Telefono</th>
+						</tr>
+					</thead>
+					
+					<tbody>`
+				for (sca=0;sca<=obj.length-1;sca++) {
+					html+="<tr>";
+						html+="<td>";
+							html+=obj[sca].nominativo
+						html+="</td>";
+						html+="<td>";
+							html+=obj[sca].incarico
+						html+="</td>";
+						html+="<td>";
+							html+=obj[sca].telefono
+						html+="</td>";
+					html+="</tr>";
+				}
+				html+="</table>";
+				$("#body_strutture").html(html)
+				
+				$("#tb_resp_stru").DataTable({
+					//"responsive": true, 
+					"lengthChange": false, "autoWidth": false,
+					"pageLength": 15,
+					//, "colvis"
+					"buttons": ["copy", "excel", "pdf"],
+					"language": {
+						"zeroRecords": "Non ci sono Contatti",
+						"info": "Pagina mostrata _PAGE_ di _PAGES_ di _TOTAL_ contatti",
+						"infoEmpty": "Non risultano Contatti con questo criterio",
+						"infoFiltered": "(filtrati da _MAX_ record totali)",
+						"search":         "Cerca:",
+						"paginate": {
+							"first":      "Prima",
+							"last":       "Ultima",
+							"next":       "Successiva",
+							"previous":   "Precedente"
+						}
+					
+					}	  
+				}).buttons().container().appendTo('#tb_resp_wrapper .col-md-6:eq(0)');		
+				
+				table=$("#tb_resp_stru").DataTable();
+			
+			}
+		})	
+	}, delay)	
+}	
 	
 function edit_element(id_anagr) {
 	$("#btn_save").html('Salva'); 
