@@ -173,7 +173,7 @@ public function __construct()
 		if ($ref_ordine==15) $campo_ord="ente";
 		if ($ref_ordine==16) $campo_ord="zona";
 		
-		$campo_ord="rm.$campo_ord";
+		$campo_ord="`rm`.$campo_ord";
 
 		$tb="t4_lazi_a";
 		
@@ -228,7 +228,7 @@ public function __construct()
 					if ($sca>0 && $entr==true) $cond.=" or ";
 					if (strlen($sind_cur)>0) {
 						$filtro_p=1;
-						$cond.="(substr(rm.sind_mens$sind_cur,$periodo_tab,1)<>'*' and length(rm.sind_mens$sind_cur)>0) ";
+						$cond.="(substr(`rm`.sind_mens$sind_cur,$periodo_tab,1)<>'*' and length(`rm`.sind_mens$sind_cur)>0) ";
 					}	
 					$entr=true;
 				}
@@ -245,7 +245,7 @@ public function __construct()
 			
 			$arr_z=explode(";",$zona);
 			if (count($arr_z)==1 && $arr_z[0]!="all") {
-				if (strlen($zona)!=0) $cond.=" and (`rm.zona` in ('".implode(",",$arr_z)."')) ";
+				if (strlen($zona)!=0) $cond.=" and (`rm`.`zona` in ('".implode(",",$arr_z)."')) ";
 			}
 			
 
@@ -257,9 +257,9 @@ public function __construct()
 						$sin=$arr_s[$sca];
 						if ($sca>0) $cond.=" or ";
 						if ($sin=="ns")
-							$cond.=" rm.sindacato=' ' or rm.sindacato='' ";
+							$cond.=" `rm`.sindacato=' ' or `rm`.sindacato='' ";
 						else	
-							$cond.=" rm.sindacato='$sin' ";
+							$cond.=" `rm`.sindacato='$sin' ";
 					}
 					$cond.=") ";
 				}
@@ -282,36 +282,36 @@ public function __construct()
 			}
 			if ($filtro_tel=="1") 
 				$cond.=" and 
-						((rm.c1 is not null and length(rm.c1)<>0) or
-						(rm.tel_ce is not null and length(rm.tel_ce)<>0) or
-						(rm.tel_sin is not null and length(rm.tel_sin)<>0) or
-						(rm.tel_gps is not null and length(rm.tel_gps)<>0) or
-						(rm.tel_altro is not null and length(rm.tel_altro)<>0)
+						((`rm`.c1 is not null and length(`rm`.c1)<>0) or
+						(`rm`.tel_ce is not null and length(`rm`.tel_ce)<>0) or
+						(`rm`.tel_sin is not null and length(`rm`.tel_sin)<>0) or
+						(`rm`.tel_gps is not null and length(`rm`.tel_gps)<>0) or
+						(`rm`.tel_altro is not null and length(`rm`.tel_altro)<>0)
 						)";
 
 			if ($filtro_tel=="0") 
 				$cond.=" and (not
-						((rm.c1 is not null and length(rm.c1)<>0) or
-						(rm.tel_ce is not null and length(rm.tel_ce)<>0) or
-						(rm.tel_sin is not null and length(rm.tel_sin)<>0) or
-						(rm.tel_gps is not null and length(rm.tel_gps)<>0) or
-						(rm.tel_altro is not null and length(rm.tel_altro)<>0)
+						((`rm`.c1 is not null and length(`rm`.c1)<>0) or
+						(`rm`.tel_ce is not null and length(`rm`.tel_ce)<>0) or
+						(`rm`.tel_sin is not null and length(`rm`.tel_sin)<>0) or
+						(`rm`.tel_gps is not null and length(`rm`.tel_gps)<>0) or
+						(`rm`.tel_altro is not null and length(`rm`.tel_altro)<>0)
 						))";
 
 			if ($filtro_giac=="1")
-				$cond.=" and (length(rm.giacenza)>0 and rm.giacenza is not null and rm.giacenza<>'0') ";
+				$cond.=" and (length(`rm`.giacenza)>0 and `rm`.giacenza is not null and `rm`.giacenza<>'0') ";
 			if ($filtro_giac=="0")
-				$cond.=" and (rm.giacenza is null or length(rm.giacenza)=0 or rm.giacenza='0') ";
+				$cond.=" and (`rm`.giacenza is null or length(`rm`.giacenza)=0 or `rm`.giacenza='0') ";
 
 			if ($filtro_iban=="1")
-				$cond.=" and (length(rm.iban)>0 and rm.iban is not null) ";
+				$cond.=" and (length(`rm`.iban)>0 and `rm`.iban is not null) ";
 			if ($filtro_iban=="0")
-				$cond.=" and (rm.iban is null or length(rm.iban)=0) ";
+				$cond.=" and (`rm`.iban is null or length(`rm`.iban)=0) ";
 				
 				
 		}
 		
-		if ($filtro_base==true && $filtro_p==0) $cond.=" and (rm.c3 is not null) ";
+		if ($filtro_base==true && $filtro_p==0) $cond.=" and (`rm`.c3 is not null) ";
 		
 		if ($solo_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
 			$cond.=" and (`id_anagr` in (".implode(",",$only_contact).")) ";
@@ -321,21 +321,22 @@ public function __construct()
 			$cond.=" and (`id_anagr` in (".implode(",",$only_select).")) ";
 		
 		if ($cerca_speed==1 && strlen($cerca_nome)!=0) $cond.=" and (`id_anagr`=$cerca_nome) ";
-		if ($cerca_speed==1 && strlen($cerca_denom)!=0) $cond.=" and (`rm.denom`='$cerca_denom') ";
+		if ($cerca_speed==1 && strlen($cerca_denom)!=0) $cond.=" and (`rm`.`denom`='$cerca_denom') ";
 		
 		
 		if ($view_null=="1") $cond.=" and (LENGTH($campo_ord) > 0) ";
 	
-		
+
 		$tabulato = DB::table('anagrafe.'.$tb.' as rm')
 		->when($solo_frt=="1", function($tabulato){
 			return $tabulato->join('frt.generale as frt','frt.codfisc','rm.codfisc');
 		})
 		->whereRaw($cond)
 		->when($filtro_p=="0", function ($tabulato) {			
-			return $tabulato->orderBy('c3','asc');
+			return $tabulato->orderBy("rm.c3",'asc');
 		})
-		->orderBy($campo_ord,$t_ord)
+		
+		//->orderBy($campo_ord,$t_ord)
 		->paginate($per_page)
 		->withQueryString();
 
