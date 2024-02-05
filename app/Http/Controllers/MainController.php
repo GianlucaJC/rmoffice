@@ -137,6 +137,11 @@ public function __construct()
 		if (request()->has("solo_contatti")) $solo_contatti=request()->input("solo_contatti");
 		if ($solo_contatti=="on") $solo_contatti=1;		
 
+		$solo_frt=0;
+		if (request()->has("solo_frt")) $solo_frt=request()->input("solo_frt");
+		if ($solo_frt=="on") $solo_frt=1;		
+
+
 		$solo_non_contatti=0;
 		if (request()->has("solo_non_contatti")) $solo_non_contatti=request()->input("solo_non_contatti");
 		if ($solo_non_contatti=="on") $solo_non_contatti=1;		
@@ -167,6 +172,8 @@ public function __construct()
 		if ($ref_ordine==14) $campo_ord="denom";
 		if ($ref_ordine==15) $campo_ord="ente";
 		if ($ref_ordine==16) $campo_ord="zona";
+		
+		$campo_ord="rm.$campo_ord";
 
 		$tb="t4_lazi_a";
 		
@@ -207,7 +214,7 @@ public function __construct()
 		
 		$cond="1";$filtro_p=0;
 		
-		if ($solo_contatti==0 && $solo_non_contatti==0 && $filtro_sele==0 && $cerca_speed==0) {
+		if ($solo_contatti==0 && $solo_non_contatti==0 && $filtro_sele==0 && $cerca_speed==0 && $solo_frt==0) {
 			if (strlen($rilasci)!=0) {
 				$entr=false;
 				$arr_r=explode(";",$rilasci);
@@ -221,7 +228,7 @@ public function __construct()
 					if ($sca>0 && $entr==true) $cond.=" or ";
 					if (strlen($sind_cur)>0) {
 						$filtro_p=1;
-						$cond.="(substr(sind_mens$sind_cur,$periodo_tab,1)<>'*' and length(sind_mens$sind_cur)>0) ";
+						$cond.="(substr(rm.sind_mens$sind_cur,$periodo_tab,1)<>'*' and length(rm.sind_mens$sind_cur)>0) ";
 					}	
 					$entr=true;
 				}
@@ -238,7 +245,7 @@ public function __construct()
 			
 			$arr_z=explode(";",$zona);
 			if (count($arr_z)==1 && $arr_z[0]!="all") {
-				if (strlen($zona)!=0) $cond.=" and (`zona` in ('".implode(",",$arr_z)."')) ";
+				if (strlen($zona)!=0) $cond.=" and (`rm.zona` in ('".implode(",",$arr_z)."')) ";
 			}
 			
 
@@ -250,9 +257,9 @@ public function __construct()
 						$sin=$arr_s[$sca];
 						if ($sca>0) $cond.=" or ";
 						if ($sin=="ns")
-							$cond.=" sindacato=' ' or sindacato='' ";
+							$cond.=" rm.sindacato=' ' or rm.sindacato='' ";
 						else	
-							$cond.=" sindacato='$sin' ";
+							$cond.=" rm.sindacato='$sin' ";
 					}
 					$cond.=") ";
 				}
@@ -275,36 +282,36 @@ public function __construct()
 			}
 			if ($filtro_tel=="1") 
 				$cond.=" and 
-						((c1 is not null and length(c1)<>0) or
-						(tel_ce is not null and length(tel_ce)<>0) or
-						(tel_sin is not null and length(tel_sin)<>0) or
-						(tel_gps is not null and length(tel_gps)<>0) or
-						(tel_altro is not null and length(tel_altro)<>0)
+						((rm.c1 is not null and length(rm.c1)<>0) or
+						(rm.tel_ce is not null and length(rm.tel_ce)<>0) or
+						(rm.tel_sin is not null and length(rm.tel_sin)<>0) or
+						(rm.tel_gps is not null and length(rm.tel_gps)<>0) or
+						(rm.tel_altro is not null and length(rm.tel_altro)<>0)
 						)";
 
 			if ($filtro_tel=="0") 
 				$cond.=" and (not
-						((c1 is not null and length(c1)<>0) or
-						(tel_ce is not null and length(tel_ce)<>0) or
-						(tel_sin is not null and length(tel_sin)<>0) or
-						(tel_gps is not null and length(tel_gps)<>0) or
-						(tel_altro is not null and length(tel_altro)<>0)
+						((rm.c1 is not null and length(rm.c1)<>0) or
+						(rm.tel_ce is not null and length(rm.tel_ce)<>0) or
+						(rm.tel_sin is not null and length(rm.tel_sin)<>0) or
+						(rm.tel_gps is not null and length(rm.tel_gps)<>0) or
+						(rm.tel_altro is not null and length(rm.tel_altro)<>0)
 						))";
 
 			if ($filtro_giac=="1")
-				$cond.=" and (length(giacenza)>0 and giacenza is not null and giacenza<>'0') ";
+				$cond.=" and (length(rm.giacenza)>0 and rm.giacenza is not null and rm.giacenza<>'0') ";
 			if ($filtro_giac=="0")
-				$cond.=" and (giacenza is null or length(giacenza)=0 or giacenza='0') ";
+				$cond.=" and (rm.giacenza is null or length(rm.giacenza)=0 or rm.giacenza='0') ";
 
 			if ($filtro_iban=="1")
-				$cond.=" and (length(iban)>0 and iban is not null) ";
+				$cond.=" and (length(rm.iban)>0 and rm.iban is not null) ";
 			if ($filtro_iban=="0")
-				$cond.=" and (iban is null or length(iban)=0) ";
+				$cond.=" and (rm.iban is null or length(rm.iban)=0) ";
 				
 				
 		}
 		
-		if ($filtro_base==true && $filtro_p==0) $cond.=" and (c3 is not null) ";
+		if ($filtro_base==true && $filtro_p==0) $cond.=" and (rm.c3 is not null) ";
 		
 		if ($solo_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
 			$cond.=" and (`id_anagr` in (".implode(",",$only_contact).")) ";
@@ -314,23 +321,27 @@ public function __construct()
 			$cond.=" and (`id_anagr` in (".implode(",",$only_select).")) ";
 		
 		if ($cerca_speed==1 && strlen($cerca_nome)!=0) $cond.=" and (`id_anagr`=$cerca_nome) ";
-		if ($cerca_speed==1 && strlen($cerca_denom)!=0) $cond.=" and (`denom`='$cerca_denom') ";
+		if ($cerca_speed==1 && strlen($cerca_denom)!=0) $cond.=" and (`rm.denom`='$cerca_denom') ";
 		
 		
 		if ($view_null=="1") $cond.=" and (LENGTH($campo_ord) > 0) ";
 	
-
-		$tabulato = DB::table('anagrafe.'.$tb)
+		
+		$tabulato = DB::table('anagrafe.'.$tb.' as rm')
+		->when($solo_frt=="1", function($tabulato){
+			return $tabulato->join('frt.generale as frt','frt.codfisc','rm.codfisc');
+		})
 		->whereRaw($cond)
 		->when($filtro_p=="0", function ($tabulato) {			
 			return $tabulato->orderBy('c3','asc');
 		})
 		->orderBy($campo_ord,$t_ord)
 		->paginate($per_page)
-		->withQueryString();		
+		->withQueryString();
+
 
 		//per inviare altri parametri in $_GET oltre la paginazione
-		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti,'solo_non_contatti'=>$solo_non_contatti]);
+		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti,'solo_frt'=>$solo_frt,'solo_non_contatti'=>$solo_non_contatti]);
 		
 		
 		$frt=$this->frt($tabulato);
@@ -342,7 +353,7 @@ public function __construct()
 		$passaggi=$this->passaggi;
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_non_contatti','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_frt','solo_non_contatti','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec'));
 	}
 
 	public function iscr_altrove($tabulato) {

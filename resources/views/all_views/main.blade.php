@@ -287,6 +287,18 @@
 						  <label class="form-check-label" for="solo_contatti">Solo contattati</label>
 						</div>
 					</div>
+
+					<?php
+						$check="";
+						if ($solo_frt=="1") $check="checked";
+						
+					?>	
+					<div class="col-lg-2 ml-4">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="solo_frt" name="solo_frt" onchange="$('#frm_tab').submit()" {{$check}}>
+						  <label class="form-check-label" for="solo_frt">Solo FRT</label>
+						</div>
+					</div>					
 					<?php
 						$check="";
 						if ($solo_non_contatti=="1") $check="checked";
@@ -327,10 +339,10 @@
 						if ($view_null=="1") $check="checked";
 						
 					?>	
-					<div class="col-lg-3">
+					<div class="col-lg-1">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="view_null" name="view_null" onchange="$('#frm_tab').submit()" {{$check}}>
-						  <label class="form-check-label" for="view_null">Non mostrare righe con campo di ricerca nullo</label>
+						  <label class="form-check-label" for="view_null">No righe nulle</label>
 						</div>
 					</div>
 					<?php
