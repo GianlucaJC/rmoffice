@@ -288,29 +288,43 @@
 						</div>
 					</div>
 
-					<?php
-						$check="";
-						if ($solo_frt=="1") $check="checked";
-						
-					?>	
-					<div class="col-lg-2 ml-4">
-						<div class="form-check form-switch">
-						  <input class="form-check-input" type="checkbox" id="solo_frt" name="solo_frt" onchange="$('#frm_tab').submit()" {{$check}}>
-						  <label class="form-check-label" for="solo_frt">Solo FRT</label>
-						</div>
-					</div>					
+				
 					<?php
 						$check="";
 						if ($solo_non_contatti=="1") $check="checked";
 						
 					?>						
-					<div class="col-lg-2 ml-2">
+					<div class="col-lg-2">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="solo_non_contatti" name="solo_non_contatti" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="solo_non_contatti">Solo non contattati</label>
 						</div>
 					</div>					
 
+					<?php
+						$check="";
+						if ($solo_fillea=="1") $check="checked";
+						
+					?>						
+					<div class="col-lg-2">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="solo_fillea" name="solo_fillea" onchange="$('#frm_tab').submit()" {{$check}}>
+						  <label class="form-check-label" for="solo_fillea">Fillea altrove</label>
+						</div>
+					</div>
+
+					
+					<?php
+						$check="";
+						if ($solo_frt=="1") $check="checked";
+						
+					?>	
+					<div class="col-lg-2">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="solo_frt" name="solo_frt" onchange="$('#frm_tab').submit()" {{$check}}>
+						  <label class="form-check-label" for="solo_frt">Solo FRT</label>
+						</div>
+					</div>	
 					
 					<?php
 						$check="";
@@ -333,13 +347,17 @@
 						
 						</div>
 					</div>		
+				</div>
+
+				
+				<div class="row">
 
 					<?php
 						$check="";
 						if ($view_null=="1") $check="checked";
 						
 					?>	
-					<div class="col-lg-1">
+					<div class="col-lg-2 ml-4">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="view_null" name="view_null" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="view_null">No righe nulle</label>
@@ -348,16 +366,15 @@
 					<?php
 						$check="";
 						if ($tipo_ord=="on") $check="checked";
-					?>					
+					?>	
 					<div class="col-lg-2">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="tipo_ord" name="tipo_ord" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="tipo_ord">Ordinamento decrescente</label>
 						</div>
 					</div>
-			
-					
 				</div>	
+				
 				<div class='row'>
 					<div class='col-lg-6' >
 						<div class="input-group mb-3">
@@ -432,6 +449,11 @@
 						<tbody>
 
 							@foreach ($tabulato as $tab)
+							<?php
+								if ($solo_fillea=="1") {
+									if (!array_key_exists($tab->ID_anagr,$iscr_altrove)) continue;
+								}
+							?>
 							<tr>
 
 								<td style='min-width:80px;text-align:center'>
@@ -440,12 +462,16 @@
 									<a href="javascript:void(0)" onclick="edit_element({{$tab->ID_anagr}})">
 										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
 									</a>
+									{{$tab->ID_anagr}}
 									
 									<!--
 									<a href="javascript:void(0)" onclick="edit_element(0)">
 										<i class="fas fa-list-alt fa-lg" style="color:#6385c5;" title="Visualizza note"></i>
 									</a>
 									!-->
+									
+
+									
 								</td>
 								<td id='frt_{{$tab->ID_anagr}}'>
 									<?php 
