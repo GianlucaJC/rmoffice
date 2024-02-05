@@ -512,7 +512,15 @@
 
 								<td style='{{$backg}}'>
 									<?php 
-									echo renderview($campo_ord,$tab->NOME,"nome");
+									$dn="";
+									if (isset($tab->DATANASC)) {
+										$dn=substr($tab->DATANASC,0,10);
+									
+									$params="nome=".$tab->NOME."&comunenasc=".$tab->COMUNENASC."&pro=".$tab->PRO."&da_na=".$dn."&loc=".$tab->LOC."&via=".$tab->VIA."&denom=".$tab->DENOM."&codfisc=".$tab->CODFISC;
+									
+									echo "<a href='http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?$params' target='_blank'>";
+										echo renderview($campo_ord,$tab->NOME,"nome");
+									echo "</a>";
 									?>
 								</td>	
 
@@ -525,9 +533,6 @@
 								
 								<td>
 									<?php
-										$dn="";
-										if (isset($tab->DATANASC)) {
-											$dn=substr($tab->DATANASC,0,10);
 											echo renderview($campo_ord,$dn,"datanasc");
 										}	
 									?>
