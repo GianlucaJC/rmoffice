@@ -173,7 +173,7 @@ public function __construct()
 		if ($ref_ordine==15) $campo_ord="ente";
 		if ($ref_ordine==16) $campo_ord="zona";
 		
-		$campo_ord="`rm`.$campo_ord";
+		$campo_ord="rm.$campo_ord";
 
 		$tb="t4_lazi_a";
 		
@@ -336,7 +336,7 @@ public function __construct()
 			return $tabulato->orderBy("rm.c3",'asc');
 		})
 		
-		//->orderBy($campo_ord,$t_ord)
+		->orderBy($campo_ord,$t_ord)
 		->paginate($per_page)
 		->withQueryString();
 
