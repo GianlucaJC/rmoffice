@@ -462,7 +462,6 @@
 									<a href="javascript:void(0)" onclick="edit_element({{$tab->ID_anagr}})">
 										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
 									</a>
-									{{$tab->ID_anagr}}
 									
 									<!--
 									<a href="javascript:void(0)" onclick="edit_element(0)">
