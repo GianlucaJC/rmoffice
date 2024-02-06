@@ -287,6 +287,19 @@
 						  <label class="form-check-label" for="solo_contatti">Solo contattati</label>
 						</div>
 					</div>
+					
+					<?php
+						$check="";
+						if ($solo_miei_contatti=="1") $check="checked";
+						
+					?>	
+					<div class="col-lg-2">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="solo_miei_contatti" name="solo_miei_contatti" onchange="$('#frm_tab').submit()" {{$check}}>
+						  <label class="form-check-label" for="solo_miei_contatti">Solo miei contattati</label>
+						</div>
+					</div>
+					
 
 				
 					<?php
@@ -330,7 +343,7 @@
 						$check="";
 						if ($filtro_sele=="1") $check="checked";
 					?>					
-					<div class="col-lg-2">
+					<div class="col-lg-1">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="filtro_sele" name="filtro_sele" onchange="$('#elem_sele').val(localStorage.elem_sele);$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="filtro_sele">Filtra selezionati</label>

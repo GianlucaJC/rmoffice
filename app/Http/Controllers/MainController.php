@@ -137,6 +137,10 @@ public function __construct()
 		if (request()->has("solo_contatti")) $solo_contatti=request()->input("solo_contatti");
 		if ($solo_contatti=="on") $solo_contatti=1;		
 
+		$solo_miei_contatti=0;
+		if (request()->has("solo_miei_contatti")) $solo_miei_contatti=request()->input("solo_miei_contatti");
+		if ($solo_miei_contatti=="on") $solo_miei_contatti=1;	
+
 		$solo_frt=0;
 		if (request()->has("solo_frt")) $solo_frt=request()->input("solo_frt");
 		if ($solo_frt=="on") $solo_frt=1;		
@@ -180,13 +184,19 @@ public function __construct()
 
 		$tb="t4_lazi_a";
 		
+		if ($solo_miei_contatti==1)
+			$only_my_contact=$this->only_contact(1);
+		else
+			$only_my_contact=array();
+
+
 		if ($solo_contatti==1)
-			$only_contact=$this->only_contact();
+			$only_contact=$this->only_contact(0);
 		else
 			$only_contact=array();
 		
 		if ($solo_non_contatti==1)
-			$only_no_contact=$this->only_contact();
+			$only_no_contact=$this->only_contact(0);
 		else
 			$only_no_contact=array();
 
@@ -196,6 +206,7 @@ public function __construct()
 		$only_no_contact=array_filter($only_no_contact);
 		$only_select=array_filter($only_select);
 		if (count($only_contact)==0) $solo_contatti=0;
+		if (count($only_my_contact)==0) $solo_miei_contatti=0;
 		if (count($only_no_contact)==0) $solo_non_contatti=0;
 		if (count($only_select)==0) $filtro_sele=0;
 		
@@ -217,7 +228,7 @@ public function __construct()
 		
 		$cond="1";$filtro_p=0;
 		
-		if ($solo_contatti==0 && $solo_non_contatti==0 && $filtro_sele==0 && $cerca_speed==0 && $solo_frt==0 && $solo_fillea==0) {
+		if ($solo_contatti==0 && $solo_miei_contatti==0 && $solo_non_contatti==0 && $filtro_sele==0 && $cerca_speed==0 && $solo_frt==0 && $solo_fillea==0) {
 			if (strlen($rilasci)!=0) {
 				$entr=false;
 				$arr_r=explode(";",$rilasci);
@@ -240,7 +251,7 @@ public function __construct()
 		}
 
 		$filtro_base=true;
-		if ($solo_contatti==1 ||  $filtro_sele==1 || $cerca_speed==1) {
+		if ($solo_contatti==1 || $solo_miei_contatti==1 ||  $filtro_sele==1 || $cerca_speed==1) {
 			$filtro_base=false;
 		}
 
@@ -320,6 +331,9 @@ public function __construct()
 		if ($solo_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
 			$cond.=" and (`id_anagr` in (".implode(",",$only_contact).")) ";
 		
+		if ($solo_miei_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
+			$cond.=" and (`id_anagr` in (".implode(",",$only_my_contact).")) ";
+
 		if ($solo_non_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
 			$cond.=" and (`id_anagr` not in (".implode(",",$only_no_contact).")) ";
 
@@ -348,7 +362,7 @@ public function __construct()
 		
 		
 		//per inviare altri parametri in $_GET oltre la paginazione
-		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti,'solo_frt'=>$solo_frt,'solo_non_contatti'=>$solo_non_contatti,'solo_fillea'=>$solo_fillea]);
+		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti,'solo_miei_contatti'=>$solo_miei_contatti,'solo_frt'=>$solo_frt,'solo_non_contatti'=>$solo_non_contatti,'solo_fillea'=>$solo_fillea]);
 		
 		
 		$frt=$this->frt($tabulato);
@@ -363,7 +377,7 @@ public function __construct()
 		//$altrove_fillea=$this->altrove_fillea();
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec'));
 	}
 
 	public function iscr_altrove($tabulato) {
@@ -402,7 +416,8 @@ public function __construct()
 	}
 
 
-	public function only_contact() {
+	public function only_contact($from) {
+		$id_user=$this->id_user;
 		$info = DB::table('rm_office.note as n')
         ->join("anagrafe.t4_lazi_a as t",function($join){
             $join->on("n.nome","=","t.nome")
@@ -410,6 +425,9 @@ public function __construct()
 				->on("n.ente","=","t.ente");
         })
 		->select('t.id_anagr')
+		->when($from!="0", function($info) use ($id_user){
+			return $info->where('n.id_user','=',$id_user);
+		})
 		->get();
 		$arr=array();
 		foreach($info as $a) {
