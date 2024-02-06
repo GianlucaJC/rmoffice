@@ -356,9 +356,11 @@ public function __construct()
 		$fgo=$this->info_fgo($tabulato);
 		$zone=$this->zone();
 		$iscr_altrove=$this->iscr_altrove($tabulato);
+		
 
 		$user_frt=$this->user_frt();
 		$passaggi=$this->passaggi;
+		//$altrove_fillea=$this->altrove_fillea();
 		
 		$utenti=$this->utenti("all");
 		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec'));
@@ -389,6 +391,17 @@ public function __construct()
 		return $resp;
 	}
 	
+	public function altrove_fillea() {
+		$resp=array();
+		$info = DB::table('anagrafe.t4_lazi_a as t')
+		->join('anagrafe.nazionale as n','n.codfisc','t.codfisc')
+		->select('t.ID_anagr')
+		->where('n.IDARC','<>','t4_lazi_a')
+		->get();
+		return $resp;
+	}
+
+
 	public function only_contact() {
 		$info = DB::table('rm_office.note as n')
         ->join("anagrafe.t4_lazi_a as t",function($join){
