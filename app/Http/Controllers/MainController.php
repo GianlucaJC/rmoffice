@@ -210,6 +210,7 @@ public function __construct()
 		if (count($only_no_contact)==0) $solo_non_contatti=0;
 		if (count($only_select)==0) $filtro_sele=0;
 		
+		
 
 		$cerca_nome="";$cerca_speed=0;$cerca_denom="";
 		if (request()->has("nome_speed") || request()->has("denom_speed")) {
@@ -370,16 +371,45 @@ public function __construct()
 		$fgo=$this->info_fgo($tabulato);
 		$zone=$this->zone();
 		$iscr_altrove=$this->iscr_altrove($tabulato);
+		$iscr_enti=$this->iscr_enti($tabulato);
 		
 
 		$user_frt=$this->user_frt();
 		$passaggi=$this->passaggi;
 		//$altrove_fillea=$this->altrove_fillea();
 		
+		
+		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti'));
 	}
 
+
+	public function iscr_enti($tabulato) {
+		$resp=array();
+		foreach ($tabulato as $tab)	{
+			$id_ref=$tab->ID_anagr;
+			$nome=$tab->NOME;
+			$datanasc=$tab->DATANASC;
+			$ente=$tab->ENTE;
+			$sindacato=$tab->SINDACATO;
+			
+			$info = DB::table('anagrafe.t4_lazi_a')
+			->select('sindacato','ente')
+			->where('nome','=',$nome)
+			->where('datanasc','=',$datanasc)
+			->where('ente','<>',$ente);
+			
+			$info_count=$info->count();
+			if ($info_count>0) {
+				$info_dati=$info->first();
+				$resp[$id_ref]['ente']=$info_dati->ente;
+				$resp[$id_ref]['sindacato']=$info_dati->sindacato;
+			}
+		}
+		return $resp;
+	}	
+	
 	public function iscr_altrove($tabulato) {
 		$resp=array();
 		foreach ($tabulato as $tab)	{

@@ -588,6 +588,12 @@
 									if (isset($iscr_altrove[$tab->ID_anagr])) {
 										echo lav_altrove($iscr_altrove,$tab->ID_anagr);
 									}
+									if (isset($iscr_enti[$tab->ID_anagr])) {
+
+										echo enti_altrove($iscr_enti,$tab->ID_anagr);
+									}
+
+									
 									?>
 									
 								</td>	
@@ -845,6 +851,28 @@
  @endsection
  
  <?php
+	function enti_altrove($iscr_enti,$id_anagr) {
+		
+		$view="";
+		$ente=$iscr_enti[$id_anagr]['ente'];
+		$sind=$iscr_enti[$id_anagr]['sindacato'];
+
+		$d_sind="";$colo="";
+		$ente_descr="";
+		if ($ente=="C") $ente_descr="Cassa edile - ";
+		if ($ente=="A") $ente_descr="Edilcassa - ";
+		if ($sind=="" || $sind==" ") {$colo="#c0c0c0";$d_sind="Non Spec.";}
+		if ($sind=="0") {$colo="#ffd700";$d_sind="Non iscritto";}
+		if ($sind=="1") {$colo="#ff0000";$d_sind="Fillea";}
+		if ($sind=="2") {$colo="green";$d_sind="Filca";}
+		if ($sind=="3") {$colo="blue";$d_sind="Feneal";}
+		
+		$circle="fas";
+		
+		$view.=" <i class='fas fa-star fa-sm mb-2' style='color: $colo;' title='$ente_descr $d_sind'></i>";
+		
+		return $view;
+	}
 	function lav_altrove($iscr_altrove,$id_anagr) {
 		
 		$view="";
