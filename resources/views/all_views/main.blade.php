@@ -874,7 +874,7 @@
 		$circle="fas";
 		if ($from=="2") {
 			$ente_descr="Presente in altro tabulato - ";
-			exit;
+
 		}	
 		
 		$view.=" <i class='fas fa-star fa-sm mb-2' style='color: $colo;' title='$ente_descr $d_sind'></i>";
