@@ -372,6 +372,7 @@ public function __construct()
 		$zone=$this->zone();
 		$iscr_altrove=$this->iscr_altrove($tabulato);
 		$iscr_enti=$this->iscr_enti($tabulato);
+		$iscr_altri_rilasci=$this->iscr_altri_rilasci($tabulato,$rilasci);
 		
 
 		$user_frt=$this->user_frt();
@@ -381,10 +382,48 @@ public function __construct()
 		
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci'));
 	}
 
 
+	public function iscr_altri_rilasci($tabulato,$rilasci) {
+		$arr_r=explode(";",$rilasci);$condx="";
+		for ($sca=0;$sca<=count($arr_r)-1;$sca++) {
+			if ($arr_r[$sca]=="all") continue;
+			$sind_cur=substr($arr_r[$sca],7,1);
+			$periodo_tab=intval(substr($arr_r[$sca],0,2));
+			if ($sca>0 && strlen($condx)>0) $condx.=" or ";
+			if (strlen($sind_cur)>0) {
+				$condx.="(substr(sind_mens$sind_cur,$periodo_tab,1)<>'*' and length(sind_mens$sind_cur)>0) ";
+			}				
+		}
+		$resp=array();
+		if (strlen($condx)==0) return $resp;
+
+		
+		foreach ($tabulato as $tab)	{
+			$id_ref=$tab->ID_anagr;
+			$nome=$tab->NOME;
+			$datanasc=$tab->DATANASC;
+			$ente=$tab->ENTE;
+			$sindacato=$tab->SINDACATO;
+			$cond=" not ($condx)";
+			
+			$info = DB::table('anagrafe.t4_lazi_a')
+			->select('sindacato','ente')
+			->where('nome','=',$nome)
+			->where('datanasc','=',$datanasc)
+			->whereRaw($cond);
+			$info_count=$info->count();
+			if ($info_count>0) {
+				$info_dati=$info->first();
+				$resp[$id_ref]['ente']=$info_dati->ente;
+				$resp[$id_ref]['sindacato']=$info_dati->sindacato;
+			}
+		}
+		return $resp;			
+	}
+	
 	public function iscr_enti($tabulato) {
 		$resp=array();
 		foreach ($tabulato as $tab)	{

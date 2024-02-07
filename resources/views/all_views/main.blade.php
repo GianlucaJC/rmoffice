@@ -590,7 +590,11 @@
 									}
 									if (isset($iscr_enti[$tab->ID_anagr])) {
 
-										echo enti_altrove($iscr_enti,$tab->ID_anagr);
+										echo enti_altrove($iscr_enti,$tab->ID_anagr,1);
+									}
+									if (isset($iscr_altri_rilasci[$tab->ID_anagr]) && !(isset($iscr_enti[$tab->ID_anagr]))) {
+
+										echo enti_altrove($iscr_altri_rilasci,$tab->ID_anagr,2);
 									}
 
 									
@@ -851,7 +855,7 @@
  @endsection
  
  <?php
-	function enti_altrove($iscr_enti,$id_anagr) {
+	function enti_altrove($iscr_enti,$id_anagr,$from) {
 		
 		$view="";
 		$ente=$iscr_enti[$id_anagr]['ente'];
@@ -868,6 +872,10 @@
 		if ($sind=="3") {$colo="blue";$d_sind="Feneal";}
 		
 		$circle="fas";
+		if ($from=="2") {
+			$ente_descr="Presente in altro tabulato - ";
+			exit;
+		}	
 		
 		$view.=" <i class='fas fa-star fa-sm mb-2' style='color: $colo;' title='$ente_descr $d_sind'></i>";
 		
