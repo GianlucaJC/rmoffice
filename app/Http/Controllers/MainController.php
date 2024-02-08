@@ -348,8 +348,8 @@ public function __construct()
 		
 		if ($view_null=="1") $cond.=" and (LENGTH($campo_ord) > 0) ";
 		
-		if ($solo_frt=="2") $cond.=" and frt.tb_fo='t4_lazi_a' ";
-		if ($solo_frt=="3") $cond.=" and frt.tb_fo<>'t4_lazi_a' ";
+		if ($solo_frt=="2") $cond.=" and frt.tb_user='t4_lazi_a' ";
+		if ($solo_frt=="3") $cond.=" and frt.tb_user<>'t4_lazi_a' ";
 		
 		$tabulato = DB::table('anagrafe.'.$tb.' as rm')
 		->select('rm.*')
