@@ -339,16 +339,21 @@
 						</div>
 					</div>	
 					
+	
+				</div>
+
+				
+				<div class="row">
 					<?php
 						$check="";
 						if ($filtro_sele=="1") $check="checked";
 					?>					
-					<div class="col-lg-1">
+					<div class="col-lg-2 ml-4">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="filtro_sele" name="filtro_sele" onchange="$('#elem_sele').val(localStorage.elem_sele);$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="filtro_sele">Filtra selezionati</label>
 							
-							<div id='div_alert_sele' style='display:none'>
+							<div id='div_alert_sele' style='display:none' class='mb-3'>
 								<span class='ml-3'>
 									<font color='blue'>
 										Selezione attiva
@@ -359,18 +364,14 @@
 						
 						
 						</div>
-					</div>		
-				</div>
-
-				
-				<div class="row">
+					</div>	
 
 					<?php
 						$check="";
 						if ($view_null=="1") $check="checked";
 						
 					?>	
-					<div class="col-lg-2 ml-4">
+					<div class="col-lg-2">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="view_null" name="view_null" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="view_null">No righe nulle</label>
@@ -435,7 +436,16 @@
 				?>
 				<div class="row mt-2">
 				  <div class="col-lg-12">
+					
 					{{ $tabulato->links() }}
+					<div class="form-check ml-2">
+					  <input class="form-check-input" type="checkbox" value="" id="selall" onchange='sel_all()'>
+					  <label class="form-check-label" for="selall">
+						Seleziona tutti (nella pagina)
+					  </label>
+					</div>					
+
+					
 					
 					<table id='tbl_list' class="display">
 						<thead>
@@ -526,7 +536,9 @@
 								</td>
 								<td>
 									<?php 
+									echo "<span title='".$tab->data_iban."'>";
 									echo renderview($campo_ord,$tab->iban,"iban");
+									echo "</span>";
 									?>
 								</td>
 								<td>
@@ -1075,7 +1087,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.138"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.142"></script>
 
 @endsection
 

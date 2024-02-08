@@ -47,6 +47,7 @@ public function __construct()
 		echo "F0919 	Paudice Mauro".bcrypt('51273')."<hr>";
 		echo "F3388 	ANDREONI MARCO".bcrypt('AM130477')."<hr>";
 		echo "F3485 	SERJANAJ XHESILDO".bcrypt('JJ121996')."<hr>";
+		echo "F0425 	DI MARCO SIMONE".bcrypt('NI121721')."<hr>";
 		*/
 		$this->middleware('auth')->except(['index']);
 		
@@ -349,6 +350,7 @@ public function __construct()
 	
 
 		$tabulato = DB::table('anagrafe.'.$tb.' as rm')
+		->select('rm.*')
 		->when($solo_frt=="1", function($tabulato){
 			return $tabulato->join('frt.generale as frt','frt.codfisc','rm.codfisc');
 		})
@@ -357,6 +359,7 @@ public function __construct()
 			return $tabulato->orderBy("rm.c3",'asc');
 		})
 		->orderBy($campo_ord,$t_ord)
+		->groupBy('rm.ID_anagr')
 		->paginate($per_page)
 		->withQueryString();
 

@@ -149,6 +149,22 @@ $(document).ready( function () {
 		
 } );
 
+
+function sel_all(value) {
+	if ($( "#selall" ).is( ":checked" )) {
+		$('.selezione').each(function(index, obj){
+			$(this).prop('checked', true)
+			sele_anagr(this.value,true)
+		});	
+	}
+	else {
+		$('.selezione').each(function(index, obj){
+			$(this).prop('checked', false)
+			sele_anagr(this.value,false)
+		});	
+	}	
+}
+
 function dele_sele() {
 	if (!confirm("Sicuri di annullare la selezione in corso?")) return false;
 	$("#elem_sele").val('')
