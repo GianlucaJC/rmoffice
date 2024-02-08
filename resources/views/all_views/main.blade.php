@@ -514,10 +514,12 @@
 									?>
 								
 									
+									<div class='class_view'>
 									@if ($tab->SINDACATO!="1")
 									<a href="javascript:void(0)"  onclick="insert_frt({{$tab->ID_anagr}})">
 										<button type="button" class="btn btn-success btn-sm mb-2">Iscrivi FRT</button>
 									</a>
+									</div>
 									@endif
 									
 									
