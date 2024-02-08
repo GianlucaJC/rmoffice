@@ -568,16 +568,14 @@ public function __construct()
 			->where('codfisc','=',$codfisc)
 			->orderBy("data_update","desc")
 			->get();
-			$rm=0;$entr=0;
+			$al=0;$entr=0;
 			foreach ($info as $extra)	{				
-				$entr=1;
-				if (strtolower($extra->tb_user)=="t4_lazi_a") $rm=1;
+				if (strtolower($extra->tb_user)!="t4_lazi_a") $al=1;
 				$frt[$tab->ID_anagr][$sca]['utente']=strtoupper($extra->utente);
 				$frt[$tab->ID_anagr][$sca]['data_update']=$extra->data_update_it;
+				$frt[$tab->ID_anagr][$sca]['codfisc']=$codfisc;
 				$sca++;
 			}
-			$al=0;
-			if ($rm==0 && $entr==1) $al=1;
 			$altrove[$tab->ID_anagr]=$al;
 
 		}
