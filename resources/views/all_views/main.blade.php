@@ -519,7 +519,7 @@
 									<a href="javascript:void(0)"  onclick="insert_frt({{$tab->ID_anagr}})">
 										<button type="button" class="btn btn-success btn-sm mb-2">Iscrivi FRT</button>
 									</a>
-									</div>
+									
 									@endif
 									
 									
@@ -527,7 +527,7 @@
 										if (isset($frt_info[$tab->ID_anagr]))
 											echo render_frt($frt,$tab,$user_frt);
 									?>
-									
+									</div>
 									
 								</td>
 								<td id='contact{{$tab->ID_anagr}}'>
