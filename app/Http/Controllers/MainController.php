@@ -144,7 +144,7 @@ public function __construct()
 
 		$solo_frt=0;
 		if (request()->has("solo_frt")) $solo_frt=request()->input("solo_frt");
-		if ($solo_frt=="on") $solo_frt=1;		
+	
 
 		$solo_fillea=0;
 		if (request()->has("solo_fillea")) $solo_fillea=request()->input("solo_fillea");
@@ -347,11 +347,13 @@ public function __construct()
 		
 		
 		if ($view_null=="1") $cond.=" and (LENGTH($campo_ord) > 0) ";
-	
-
+		
+		if ($solo_frt=="2") $cond.=" and frt.tb_fo='t4_lazi_a' ";
+		if ($solo_frt=="3") $cond.=" and frt.tb_fo<>'t4_lazi_a' ";
+		
 		$tabulato = DB::table('anagrafe.'.$tb.' as rm')
 		->select('rm.*')
-		->when($solo_frt=="1", function($tabulato){
+		->when($solo_frt>0, function($tabulato){
 			return $tabulato->join('frt.generale as frt','frt.codfisc','rm.codfisc');
 		})
 		->whereRaw($cond)

@@ -326,24 +326,30 @@
 						</div>
 					</div>
 
-					
-					<?php
-						$check="";
-						if ($solo_frt=="1") $check="checked";
-						
-					?>	
-					<div class="col-lg-2">
-						<div class="form-check form-switch">
-						  <input class="form-check-input" type="checkbox" id="solo_frt" name="solo_frt" onchange="$('#frm_tab').submit()" {{$check}}>
-						  <label class="form-check-label" for="solo_frt">Solo FRT</label>
+
+					<div class="col-md-2">
+					  <div class="form-floating mb-3 mb-md-0">
+						<select class="form-select" id="solo_frt" aria-label="solo_frt" name='solo_frt' onchange="$('#frm_tab').submit()">
+							<option value=0>Nessuna selezione</option>
+							<option value=1
+							@if ($solo_frt=="1") selected @endif
+							>Solo FRT</option>
+							<option value=2 
+							@if ($solo_frt=="2") selected @endif
+							>Solo FRT RM</option>
+							<option value=3 
+							@if ($solo_frt=="3") selected @endif
+							>Solo FRT altrove</option>
+						</select>
+						<label for="solo_frt">Opzioni FRT</label>
 						</div>
-					</div>	
+					</div>					
 					
-	
 				</div>
 
 				
 				<div class="row">
+
 					<?php
 						$check="";
 						if ($filtro_sele=="1") $check="checked";
