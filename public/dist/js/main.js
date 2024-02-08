@@ -132,6 +132,19 @@ $(document).ready( function () {
 		}
 
 	}
+
+	if( typeof localStorage.extra_intest != 'undefined' )  {
+		if (localStorage.extra_intest==1) {
+			$("#btn_intest").text("Nascondi intestazioni")
+			$('#div_intest').show()
+		}
+		if (localStorage.extra_intest==0) {
+			$("#btn_intest").text("Mostra intestazioni")
+			$('#div_intest').hide()
+		}
+
+	} else $('#div_intest').show()
+
 		
 	//Initialize Select2 Elements
 	$('.select2bs4').select2({
@@ -173,6 +186,23 @@ function dele_sele() {
 	});	
 	localStorage.elem_sele=""
 	$("#div_alert_sele").hide(150)
+	
+}
+
+function show_intest() {
+	
+	if ($("#btn_intest").text()=="Nascondi intestazioni") {
+		$("#btn_intest").text("Mostra intestazioni")
+		localStorage.extra_intest=0
+		$('#div_intest').hide()
+	}	
+	else {
+		$("#btn_intest").text("Nascondi intestazioni")
+		localStorage.extra_intest=1
+		$('#div_intest').show()
+	}
+	
+	console.log("set extra: ",localStorage.extra)
 	
 }
 

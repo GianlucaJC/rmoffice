@@ -359,9 +359,9 @@ public function __construct()
 			return $tabulato->orderBy("rm.c3",'asc');
 		})
 		->orderBy($campo_ord,$t_ord)
-		->groupBy('rm.ID_anagr')
-		->paginate($per_page)
-		->withQueryString();
+		->groupBy('rm.ID_anagr');
+		$tabulato=$tabulato->paginate($per_page)->withQueryString();
+		$num_rec=$tabulato->total();;
 
 		
 		
@@ -385,7 +385,7 @@ public function __construct()
 		
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec'));
 	}
 
 

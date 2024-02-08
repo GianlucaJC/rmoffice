@@ -49,7 +49,7 @@
 		<form method='post' action="" id='frm_tab' name='frm_tab' autocomplete="off">
 		<input name="_token" type="hidden" value="{{ csrf_token() }}" id='token_csrf'>	  
 
-  
+		<div id='div_intest' style='display:none'>
 			<input type='hidden' name='ref_ordine' id='ref_ordine' value='{{$ref_ordine}}'>
 			<input type="hidden" value="{{url('/')}}" id="url" name="url">
 			<input type='hidden' name='cerca_nome' id='cerca_nome'>
@@ -410,10 +410,11 @@
 				
 			
 			</div>
+		</div>	
 			
 
 			
-			<div id='div_main'>
+				<div id='div_main'>
 				<?php
 				
 					$frt_info=$frt['dati'];
@@ -434,10 +435,11 @@
 				for ($aa=0;$aa<=16;$aa++) {$ord_col[$aa]="";}
 				if (isset($ref_ordine)) $ord_col[$ref_ordine]="active_th";
 				?>
-				<div class="row mt-2">
-				  <div class="col-lg-12">
-					
-					{{ $tabulato->links() }}
+
+					{{ $tabulato->links() }} 
+					<p class='p0 text-left'>
+						<small>{{$num_rec}} nominativi filtrati</small>
+					</p>
 					<div class="form-check ml-2">
 					  <input class="form-check-input" type="checkbox" value="" id="selall" onchange='sel_all()'>
 					  <label class="form-check-label" for="selall">
@@ -505,7 +507,7 @@
 										echo " <i class='fas fa-square fa-sm mb-2' style='color: green' title='Nessuna sottoscrizione FRT'></i>";
 									?>
 								
-									<div class='class_view'>
+									
 									@if ($tab->SINDACATO!="1")
 									<a href="javascript:void(0)"  onclick="insert_frt({{$tab->ID_anagr}})">
 										<button type="button" class="btn btn-success btn-sm mb-2">Iscrivi FRT</button>
@@ -699,18 +701,11 @@
 					
 					</table>
 					{{ $tabulato->links() }}	
-				  </div>
-				  
-				  
-
 				</div>
-			</div>
-			<!-- /.row -->
-
-
+			</div><!-- div_main -->
 		</form>
-      </div><!-- /.container-fluid -->
-    </div>
+      
+    </div><!-- /.container-fluid -->
     <!-- /.content -->
 		<form method='post' action="" id='frm_tab1' name='frm_tab1' autocomplete="off">
 			<input name="_token" type="hidden" value="{{ csrf_token() }}" id='token_csrf'>
@@ -1087,7 +1082,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.142"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.147"></script>
 
 @endsection
 

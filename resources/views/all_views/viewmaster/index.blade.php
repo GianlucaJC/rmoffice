@@ -64,16 +64,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			
 		?>
 	</li>	
-	<li class="nav-item d-none d-sm-inline-block">	
+	  <li class="nav-item d-none d-sm-inline-block">	
         <a href="{{ route('main_view') }}" class="nav-link">
-			<button type="button" class="btn btn-primary btn-sm">Homepage</button>	
+			<button type="button"  class="btn btn-primary btn-sm">Homepage</button>	
 		</a>
       </li>
-	  <!--
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
+
+	  <li class="nav-item d-none d-sm-inline-block">	
+        <a href="javascript:void(0)" class="nav-link">
+			<button type="button" id='btn_intest' class="btn btn-outline-primary btn-sm" onclick="show_intest()">Nascondi intestazioni</button>
+		</a>	
+
       </li>
-	  !-->
+	 
+	 
+	 
     </ul>
 
     <!-- Right navbar links -->
