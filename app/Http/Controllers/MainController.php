@@ -351,6 +351,8 @@ public function __construct()
 		if ($solo_frt=="2") $cond.=" and frt.tb_user='t4_lazi_a' ";
 		if ($solo_frt=="3") $cond.=" and frt.tb_user<>'t4_lazi_a' ";
 		
+	
+		
 		$tabulato = DB::table('anagrafe.'.$tb.' as rm')
 		->select('rm.*')
 		->when($solo_frt>0, function($tabulato){
@@ -485,6 +487,7 @@ public function __construct()
 		->join('anagrafe.nazionale as n','n.codfisc','t.codfisc')
 		->select('t.ID_anagr')
 		->where('n.IDARC','<>','t4_lazi_a')
+		->where('t.c3','=','2') //solo fillea altrove nuovi assunti
 		->get();
 		return $resp;
 	}

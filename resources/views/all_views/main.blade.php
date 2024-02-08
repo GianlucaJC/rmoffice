@@ -319,12 +319,14 @@
 						if ($solo_fillea=="1") $check="checked";
 						
 					?>						
+					<!--
 					<div class="col-lg-2">
 						<div class="form-check form-switch">
 						  <input class="form-check-input" type="checkbox" id="solo_fillea" name="solo_fillea" onchange="$('#frm_tab').submit()" {{$check}}>
 						  <label class="form-check-label" for="solo_fillea">Fillea altrove</label>
 						</div>
 					</div>
+					!-->
 
 
 					<div class="col-md-2">
