@@ -558,12 +558,12 @@ public function __construct()
 		
 		foreach ($tabulato as $tab)	{
 			$sca=0;
-			$nome=$tab->NOME;
-			$datanasc=substr($tab->DATANASC,0,10);
+			$codfisc=$tab->CODFISC;
+			//$nome=$tab->NOME;
+			//$datanasc=substr($tab->DATANASC,0,10);
 			$info = DB::table('frt.generale')
 			->select('utente','tb_user','data_update',DB::raw("DATE_FORMAT(data_update,'%d-%m-%Y') as data_update_it"))
-			->where('nome','=',$nome)
-			->where('natoil','=',$datanasc)
+			->where('codfisc','=',$codfisc)
 			->orderBy("data_update","desc")
 			->get();
 			$rm=0;$entr=0;
