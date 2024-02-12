@@ -653,7 +653,7 @@
 										echo " <i class='fas fa-square fa-sm mb-2' style='color: #ff0000;' title='presenza servizi CGIL'></i>";
 									}
 									if (in_array($tab->ID_anagr,$disdette)){
-										echo " <i class='fas fa-star fa-sm mb-2' style='color: black;' title='Disdetta'></i>";
+										echo " <i class='fas fa-exclamation-triangle fa-sm mb-2' style='color: black;' title='Disdetta'></i>";
 										
 									}										
 										
