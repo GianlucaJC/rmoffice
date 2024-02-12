@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\note;
 use App\Models\generale;
+use App\Models\aziende_frt_alert;
 use Illuminate\Support\Facades\Auth;
 use DB;
 
@@ -36,6 +37,7 @@ class AjaxController extends Controller
 		$sesso_frt=$request->input('sesso_frt');
 		$sind_frt=$request->input('sind_frt');
 		$ente_frt=$request->input('ente_frt');
+		$id_azienda=$request->input('id_azienda');
 
 
 		$today=date("Y-m-d");
@@ -66,9 +68,11 @@ class AjaxController extends Controller
 		$frt->semestre=0;
 		$frt->dati_grezzi="Delega FRT da RM_Office";
 		$frt->ente_origine=$ente_frt;
+		$frt->save();
 		
-		
-		$frt->save();	
+		$alert=new aziende_frt_alert;
+		$alert->id_azienda=$id_azienda;
+		$alert->save();
 		
 		$risp=array();
 		$risp['esito']="OK";

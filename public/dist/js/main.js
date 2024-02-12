@@ -252,6 +252,7 @@ function insert_frt(id_anagr) {
 	sindacato=ref.data('sindacato')
 	ente=ref.data('ente')
 	telefoni=ref.data('telefoni')
+	id_azienda=ref.data('id_azienda')
 	sesso="M"
 	if (codfisc.length>0) {
 		if (parseInt(codfisc.substr(9,2))>31) sesso="F"
@@ -265,6 +266,7 @@ function insert_frt(id_anagr) {
 	$("#sind_frt").val(sindacato)
 	$("#ente_frt").val(ente)
 	$("#tel_frt").val(telefoni)
+	$("#id_azienda").val(id_azienda)
 	
 	$('#modal_frt').modal('toggle')
 	$("#title_modal_frt").html("Inserisci <b>"+nome+"</b> in FilleaRealTime<b>")
@@ -285,6 +287,7 @@ function save_frt() {
 	sind_frt=$("#sind_frt").val()
 	ente_frt=$("#ente_frt").val()
 	tel_frt=$("#tel_frt").val()
+	id_azienda=$("#id_azienda").val()
 
 	$("#btn_save_frt").html('Attendere...'); 
 	$("#btn_save_frt").prop('disabled', true);
@@ -303,7 +306,7 @@ function save_frt() {
 		$.ajax({
 			type: 'POST',
 			url: base_path+"/ins_frt",
-			data: {_token: CSRF_TOKEN,nome_frt:nome_frt,natoil_frt:natoil_frt,codfisc_frt:codfisc_frt,sesso_frt:sesso_frt,sind_frt:sind_frt,ente_frt:ente_frt,tel_frt:tel_frt},
+			data: {_token: CSRF_TOKEN,nome_frt:nome_frt,natoil_frt:natoil_frt,codfisc_frt:codfisc_frt,sesso_frt:sesso_frt,sind_frt:sind_frt,ente_frt:ente_frt,tel_frt:tel_frt,id_azienda:id_azienda},
 			success: function (data) {
 				html="";
 				html+=`<a href='#' onclick="$('#frm_tab').submit()">

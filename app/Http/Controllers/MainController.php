@@ -386,11 +386,24 @@ public function __construct()
 		$passaggi=$this->passaggi;
 		//$altrove_fillea=$this->altrove_fillea();
 		
+		$info_count_notif = DB::table('alert_new_ass')
+		->select('id_azienda')->count();
+
+		$aziende_alert=array();
+		if ($info_count_notif>0) {
+			$aziende_alert = DB::table('alert_new_ass as a')
+			->join('anagrafe.t4_lazi_a as t','a.id_azienda','t.c2')
+			->select('a.id_azienda','t.denom')
+			->groupBy('a.id_azienda')
+			->get();
+		}
+		
 		
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette','info_count_notif','aziende_alert'));
 	}
+
 
 	public function disdette($tabulato) {
 		$resp=array();

@@ -26,6 +26,49 @@
 }
 </style>
 
+@section('notifiche')
+	@if ($info_count_notif>0)
+	  <!-- Messages Dropdown Menu -->
+	  <li class="nav-item dropdown">
+		<a class="nav-link" data-toggle="dropdown" href="#">
+		  <i class="far fa-comments"></i>
+		  <span class="badge badge-danger navbar-badge">{{$info_count_notif}}</span>
+		</a>
+		<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+		  
+		<?php $num_not=0; ?>
+		@foreach($aziende_alert as $azienda_alert) 
+		  <?php
+			$num_not++; 
+			//if ($num_not>10) break;
+		  ?>
+
+		   <a href='javascript:void(0)' class="dropdown-item" onclick="$('#a_all').val('{{$azienda_alert->denom}}');$( '#a_all' ).trigger( 'paste' );">
+
+			<!-- Message Start -->
+			<div class="media">
+			  
+			  <div class="media-body">
+				<h3 class="dropdown-item-title">
+					<i class="fas fa-info-circle"></i>  {{$azienda_alert->denom}}
+				</h3>
+			  </div>
+			</div>
+			<!-- Message End -->
+		  </a>
+		  <div class="dropdown-divider"></div>
+		@endforeach  
+		
+		  <!--
+		  <a href="#" class="dropdown-item dropdown-footer">Vedi tutte le aziende interessate</a>
+		  !-->
+	  
+		</div>
+	  </li>
+	@endif
+	
+@endsection
+
 @section('content_main')
 
   <!-- Content Wrapper. Contains page content -->
@@ -705,7 +748,9 @@
 								data-codfisc='{{ $tab->CODFISC }}'
 								data-sindacato='{{ $tab->SINDACATO }}'
 								data-ente='{{ $tab->ENTE }}'
-								data-telefoni='{{ $tel_all }}'>
+								data-telefoni='{{ $tel_all }}'
+								data-id_azienda='{{ $tab->C2 }}'
+								>
 								</span>
 								
 								</td>
@@ -779,7 +824,7 @@
 	
 				 <div class="modal-body" id='body_modal_edit_frt'>
 					<div class='row mb-2'>
-						
+						<input type='hidden' name='id_azienda' id='id_azienda'>
 						<div class="col-md-8">
 							<div class="form-floating">
 								<input class="form-control" id="nome_frt" name='nome_frt' type="text" placeholder="Nominativo" maxlength=100 required />
@@ -1098,7 +1143,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.147"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.149"></script>
 
 @endsection
 
