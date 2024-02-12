@@ -76,7 +76,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		</a>	
 
       </li>
-	 
+	  
+	  <li class="nav-item d-none d-sm-inline-block">
+		<a href="https://edilcassalazio.cassaedile.cloud/SportelloWeb/index.php" class="nav-link ml-5" target='_blank'>
+		<button type="button" class="btn btn-info btn-sm">Edilcassa</button>
+		</a>
+	  </li>
+
+	  <li class="nav-item d-none d-sm-inline-block">
+		<a href="https://roma.cassaedile.net/login" class="nav-link" target='_blank'>
+		<button type="button"  class="btn btn-info btn-sm">Cassa edile</button>
+		</a>
+	  </li>	 
 	 
 	 
     </ul>
