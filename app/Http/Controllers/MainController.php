@@ -380,7 +380,7 @@ public function __construct()
 		$iscr_altrove=$this->iscr_altrove($tabulato);
 		$iscr_enti=$this->iscr_enti($tabulato);
 		$iscr_altri_rilasci=$this->iscr_altri_rilasci($tabulato,$rilasci);
-		
+		$disdette=$this->disdette($tabulato);
 
 		$user_frt=$this->user_frt();
 		$passaggi=$this->passaggi;
@@ -389,10 +389,35 @@ public function __construct()
 		
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette'));
 	}
 
-
+	public function disdette($tabulato) {
+		$resp=array();
+		foreach ($tabulato as $tab)	{
+			$sindacato=$tab->SINDACATO;
+			if ($sindacato=="1") continue;
+			$id_ref=$tab->ID_anagr;
+			$trovato=false;
+			for ($s=5;$s>=1;$s--) {
+				$sind="SIND_MENS$s";
+				$sind_mens=$tab->$sind;
+				if (strlen($sind_mens>0)) {
+					for ($sca=11;$sca>=0;$sca--) {
+						$sindac=substr($sind_mens,$sca,1);
+						if ($sindac=="1") {
+							$trovato=true;
+							break;
+						}
+					}
+				}
+				if ($trovato==true) break;
+			}
+			if ($trovato==true) $resp[]=$id_ref;
+		}			
+		return $resp;
+	}
+	
 	public function iscr_altri_rilasci($tabulato,$rilasci) {
 		$arr_r=explode(";",$rilasci);$condx="";
 		for ($sca=0;$sca<=count($arr_r)-1;$sca++) {
