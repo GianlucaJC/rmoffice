@@ -1065,7 +1065,7 @@
 
 					$view.="</td>";
 					$view.="<td style='vertical-align: middle;'>";
-					if (count($note[$tab->ID_anagr])>1 && $note_dati['id_user']==$id_user) {
+					if (count($note[$tab->ID_anagr])>1 && ($note_dati['id_user']==$id_user || $id_user==1)) {
 						$id_nota=$note_dati['id_nota'];
 						$view.="<a href='javascript:void(0)' onclick='dele_nota($id_nota,".$tab->ID_anagr.")'>";
 							$view.="<i class='far fa-trash-alt'></i>";
