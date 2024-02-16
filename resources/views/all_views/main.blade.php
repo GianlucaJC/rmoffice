@@ -196,6 +196,31 @@
 						
 					</select>
 					
+
+
+				<?php
+					$check="";
+					if ($incroci=="1") $check="checked";
+				?>	
+				<div class="col-lg-2 ml-4">
+					<div class="form-check form-switch">
+					  <input class="form-check-input" type="checkbox" id="incroci" name="incroci" onchange="$('#frm_tab').submit()" {{$check}}>
+					  <label class="form-check-label" for="incroci">Incroci 1A</label>
+					</div>
+				</div>	
+
+				<?php
+					$check="";
+					if ($solo_servizi=="1") $check="checked";
+					
+				?>		
+				<div class="col-lg-2 ml-2">
+					<div class="form-check form-switch">
+					  <input class="form-check-input" type="checkbox" id="solo_servizi" name="solo_servizi" onchange="$('#frm_tab').submit()" {{$check}}>
+					  <label class="form-check-label" for="solo_servizi">Solo con servizi</label>
+					</div>
+				</div>				
+				
 					
 
 				</ul>
@@ -237,9 +262,7 @@
 
 			</nav>
 			<div class='row mb-1 mt-1'>
-
-
-				<div class="col-md-3">
+				<div class="col-md-3"> 
 					<div class="form-floating mb-3 mb-md-0">
 						
 						<select class="form-select" name='filtro_ente' id='filtro_ente' data-placeholder="Filtro ente" onchange="$('#frm_tab').submit()" >
@@ -357,17 +380,7 @@
 						</div>
 					</div>					
 
-					<?php
-						$check="";
-						if ($solo_servizi=="1") $check="checked";
-						
-					?>		
-					<div class="col-lg-2">
-						<div class="form-check form-switch">
-						  <input class="form-check-input" type="checkbox" id="solo_servizi" name="solo_servizi" onchange="$('#frm_tab').submit()" {{$check}}>
-						  <label class="form-check-label" for="solo_servizi">Solo con servizi</label>
-						</div>
-					</div>
+
 
 					<?php
 						$check="";
@@ -450,6 +463,9 @@
 						  <label class="form-check-label" for="tipo_ord">Ordinamento decrescente</label>
 						</div>
 					</div>
+					
+
+					
 				</div>	
 				
 				<div class='row'>
