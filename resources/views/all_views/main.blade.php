@@ -262,7 +262,7 @@
 
 			</nav>
 			<div class='row mb-1 mt-1'>
-				<div class="col-md-3"> 
+				<div class="col-md-2"> 
 					<div class="form-floating mb-3 mb-md-0">
 						
 						<select class="form-select" name='filtro_ente' id='filtro_ente' data-placeholder="Filtro ente" onchange="$('#frm_tab').submit()" >
@@ -279,8 +279,22 @@
 						<label for="filtro_ente">Ente</label>
 					</div>
 			  </div>
+			  
 
-				<div class="col-md-3">
+				<?php
+					$check="";
+					if ($ente_altrove=="1") $check="checked";
+					
+				?>		
+				<div class="col-lg-2 ml-4">
+					<div class="form-check form-switch">
+					  <input class="form-check-input" type="checkbox" id="ente_altrove" name="ente_altrove" onchange="$('#frm_tab').submit()" {{$check}}>
+					  <label class="form-check-label" for="ente_altrove">Filtro ente altrove</label>
+					</div>
+				</div>	
+			  
+
+				<div class="col-md-2">
 					<div class="form-floating mb-3 mb-md-0">
 						
 						<select class="form-select" name='filtro_tel' id='filtro_tel' data-placeholder="Filtro telefoni" onchange="$('#frm_tab').submit()" >
@@ -298,7 +312,7 @@
 					</div>
 			  </div>	
 			  
-				<div class="col-md-3">
+				<div class="col-md-2">
 					<div class="form-floating mb-3 mb-md-0">
 						
 						<select class="form-select" name='filtro_giac' id='filtro_giac' data-placeholder="Filtro giacenza" onchange="$('#frm_tab').submit()" >

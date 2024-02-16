@@ -166,6 +166,11 @@ public function __construct()
 		$view_null=0;
 		if (request()->has("view_null")) $view_null=request()->input("view_null");
 		if ($view_null=="on") $view_null=1;		
+
+		$ente_altrove=0;
+		if (request()->has("ente_altrove")) $ente_altrove=request()->input("ente_altrove");
+		if ($ente_altrove=="on") $ente_altrove=1;	
+
 		
 		$tipo_ord="";
 		$tipo_ord=request()->input("tipo_ord");
@@ -362,11 +367,15 @@ public function __construct()
 		if ($solo_servizi=="1") $cond.=" and (`rm`.fisco=1 or `rm`.inca=1) ";
 		
 		if ($incroci=="1") $cond.=" and n.IDARC<>'t4_lazi_a' ";
+		if (strlen($filtro_ente)!=0 && $filtro_ente!="all" && $ente_altrove=="1") $cond.=" and rm.ente<>rm1.ente ";
 		
 		$tabulato = DB::table('anagrafe.'.$tb.' as rm')
 		->select('rm.*')
 		->when($incroci=="1", function($tabulato) {
 			return $tabulato->join('anagrafe.nazionale as n','n.codfisc','rm.codfisc');
+		})
+		->when(strlen($filtro_ente)!=0 && $filtro_ente!="all" && $ente_altrove=="1", function($tabulato) {
+			return $tabulato->join('anagrafe.t4_lazi_a as rm1','rm.codfisc','rm1.codfisc');
 		})
 		->when($solo_frt>0, function($tabulato){
 			return $tabulato->join('frt.generale as frt','frt.codfisc','rm.codfisc');
@@ -377,13 +386,19 @@ public function __construct()
 		})
 		->orderBy($campo_ord,$t_ord)
 		->groupBy('rm.ID_anagr');
+		
+		/* rawQuery
+		$rawSql = vsprintf(str_replace(['?'], ['\'%s\''], $tabulato->toSql()), $tabulato->getBindings());
+		echo $rawSql;
+		*/
+				
+		
 		$tabulato=$tabulato->paginate($per_page)->withQueryString();
-		$num_rec=$tabulato->total();;
+		$num_rec=$tabulato->total();
 
 		
-		
 		//per inviare altri parametri in $_GET oltre la paginazione
-		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti,'solo_miei_contatti'=>$solo_miei_contatti,'solo_frt'=>$solo_frt,'solo_non_contatti'=>$solo_non_contatti,'solo_fillea'=>$solo_fillea,'solo_servizi'=>$solo_servizi,'incroci'=>$incroci]);
+		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti,'solo_miei_contatti'=>$solo_miei_contatti,'solo_frt'=>$solo_frt,'solo_non_contatti'=>$solo_non_contatti,'solo_fillea'=>$solo_fillea,'solo_servizi'=>$solo_servizi,'incroci'=>$incroci,'ente_altrove'=>$ente_altrove]);
 		
 		
 		$frt=$this->frt($tabulato);
@@ -415,7 +430,7 @@ public function __construct()
 		
 		$utenti=$this->utenti("all");
 		$id_user=$this->id_user;
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','solo_servizi','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette','info_count_notif','aziende_alert','incroci','id_user'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','solo_servizi','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette','info_count_notif','aziende_alert','incroci','id_user','ente_altrove'));
 	}
 
 
