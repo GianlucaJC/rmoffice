@@ -154,6 +154,9 @@ public function __construct()
 		if (request()->has("solo_non_contatti")) $solo_non_contatti=request()->input("solo_non_contatti");
 		if ($solo_non_contatti=="on") $solo_non_contatti=1;		
 
+		$solo_servizi=0;
+		if (request()->has("solo_servizi")) $solo_servizi=request()->input("solo_servizi");
+		if ($solo_servizi=="on") $solo_servizi=1;
 
 		$view_null=0;
 		if (request()->has("view_null")) $view_null=request()->input("view_null");
@@ -230,7 +233,7 @@ public function __construct()
 		
 		$cond="1";$filtro_p=0;
 		
-		if ($solo_contatti==0 && $solo_miei_contatti==0 && $solo_non_contatti==0 && $filtro_sele==0 && $cerca_speed==0 && $solo_frt==0 && $solo_fillea==0) {
+		if ($solo_contatti==0 && $solo_miei_contatti==0 && $solo_non_contatti==0 && $filtro_sele==0 && $cerca_speed==0 && $solo_frt==0 && $solo_fillea==0 && $solo_servizi==0) {
 			if (strlen($rilasci)!=0) {
 				$entr=false;
 				$arr_r=explode(";",$rilasci);
@@ -351,7 +354,7 @@ public function __construct()
 		if ($solo_frt=="2") $cond.=" and frt.tb_user='t4_lazi_a' ";
 		if ($solo_frt=="3") $cond.=" and frt.tb_user<>'t4_lazi_a' ";
 		
-	
+		if ($solo_servizi=="1") $cond.=" and (`rm`.fisco=1 or `rm`.inca=1) ";
 		
 		$tabulato = DB::table('anagrafe.'.$tb.' as rm')
 		->select('rm.*')
@@ -370,7 +373,7 @@ public function __construct()
 		
 		
 		//per inviare altri parametri in $_GET oltre la paginazione
-		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti,'solo_miei_contatti'=>$solo_miei_contatti,'solo_frt'=>$solo_frt,'solo_non_contatti'=>$solo_non_contatti,'solo_fillea'=>$solo_fillea]);
+		$tabulato->appends(['ref_ordine' => $ref_ordine, 'view_null'=>$view_null, 'tipo_ord'=>$tipo_ord, 'per_page'=>$per_page, 'elem_sele'=>$elem_sele, 'filtro_sele'=>$filtro_sele, 'rilasci'=>$rilasci, 'zona'=>$zona, 'filtro_base'=>$filtro_base,'filtro_sind'=>$filtro_sind, 'filtro_ente'=>$filtro_ente,'filtro_tel'=>$filtro_tel,'filtro_giac'=>$filtro_giac,'filtro_iban'=>$filtro_iban,'solo_contatti'=>$solo_contatti,'solo_miei_contatti'=>$solo_miei_contatti,'solo_frt'=>$solo_frt,'solo_non_contatti'=>$solo_non_contatti,'solo_fillea'=>$solo_fillea,'solo_servizi'=>$solo_servizi]);
 		
 		
 		$frt=$this->frt($tabulato);
@@ -401,7 +404,7 @@ public function __construct()
 		
 		
 		$utenti=$this->utenti("all");
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette','info_count_notif','aziende_alert'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','solo_servizi','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette','info_count_notif','aziende_alert'));
 	}
 
 
