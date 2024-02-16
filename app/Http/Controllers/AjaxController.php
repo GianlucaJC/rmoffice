@@ -108,6 +108,12 @@ class AjaxController extends Controller
 		->get();		
 		return json_encode($risp);		
 	}		
+
+	public function dele_nota(Request $request) {
+		$id_nota=$request->input('id_nota');
+		$risp = DB::table('note')->where('id',"=",$id_nota)->update(['dele' => 1]);
+		return json_encode($risp);		
+	}
 	
 	public function cerca_azi(Request $request) {
 		$value=$request->input('value');

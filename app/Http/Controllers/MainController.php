@@ -589,16 +589,18 @@ public function __construct()
 			$id_anagr=$tab->ID_anagr;
 			
 			$info = DB::table('rm_office.note')
-			->select('id_user','note','stato_nota',DB::raw("DATE_FORMAT(updated_at,'%d-%m-%Y') as data"))
+			->select('id','id_user','note','stato_nota',DB::raw("DATE_FORMAT(updated_at,'%d-%m-%Y') as data"))
 			->where('nome','=',$nome)
 			->where('datanasc','=',$datanasc)
 			->where('ente','=',$ente)
+			->where('dele','=',0)
 			->orderBy("updated_at","desc")
 			->get();
 			
 			$sca=0;
 			
 			foreach ($info as $extra)	{
+				$note[$id_anagr][$sca]['id_nota']=$extra->id;
 				$note[$id_anagr][$sca]['id_user']=$extra->id_user;
 				$note[$id_anagr][$sca]['note']=$extra->note;
 				$note[$id_anagr][$sca]['stato_nota']=$extra->stato_nota;

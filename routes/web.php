@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
 //onlylog
 Route::middleware('auth')->group(function () {
 	//ajax routing
+	Route::post('dele_nota', 'App\Http\Controllers\AjaxController@dele_nota');
 	Route::post('cerca_fo', 'App\Http\Controllers\AjaxController@cerca_fo');
 	Route::post('cerca_azi', 'App\Http\Controllers\AjaxController@cerca_azi');
 	Route::post('save_note', 'App\Http\Controllers\AjaxController@save_note');

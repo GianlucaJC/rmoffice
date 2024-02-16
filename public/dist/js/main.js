@@ -477,6 +477,29 @@ function save_note() {
 }
 
 
+function dele_nota(id_nota,ref_e) {
+	if(!confirm('Sicuri di cancellare la nota?')) return false;
+	base_path = $("#url").val();
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
+	let CSRF_TOKEN = $("#token_csrf").val();
+	$.ajax({
+		type: 'POST',
+		url: base_path+"/dele_nota",
+		data: {_token: CSRF_TOKEN,id_nota:id_nota},
+		success: function (data) {
+			html="";
+			html+=`<a href='#' onclick="$('#frm_tab').submit()">
+					Refresh pagina dopo inserimento
+				</a>`	
+			$("#contact"+ref_e).html(html)			
+		}
+	})	
+}
+
 function dele_element(value) {
 	if(!confirm('Sicuri di eliminare l\'elemento?')) 
 		event.preventDefault() 

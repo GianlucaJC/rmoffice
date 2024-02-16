@@ -1027,6 +1027,7 @@
 					$view.="<th>Utente</th>";
 					$view.="<th>Data</th>";
 					$view.="<th>Nota</th>";
+					$view.="<th>#</th>";
 				$view.="</tr>";
 			$view.="</thead>";
 
@@ -1062,6 +1063,14 @@
 								$view.="<i class='fas fa-circle fa-lg mt-3' style='color: #00ca00;' ></i>";
 						}
 
+					$view.="</td>";
+					$view.="<td style='vertical-align: middle;'>";
+					if (count($note[$tab->ID_anagr])>1) {
+						$id_nota=$note_dati['id_nota'];
+						$view.="<a href='javascript:void(0)' onclick='dele_nota($id_nota,".$tab->ID_anagr.")'>";
+							$view.="<i class='far fa-trash-alt'></i>";
+						$view.="</a>";	
+					}
 					$view.="</td>";
 											
 				$view.="</tr>";
@@ -1194,7 +1203,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.159"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.162"></script>
 
 @endsection
 
