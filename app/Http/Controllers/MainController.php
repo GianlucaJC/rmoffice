@@ -302,7 +302,7 @@ public function __construct()
 
 
 			if (strlen($filtro_ente)!=0 && $filtro_ente!="all") {
-				$cond.=" and (ente='$filtro_ente') ";
+				$cond.=" and (`rm`.ente='$filtro_ente') ";
 			}
 			if ($filtro_tel=="1") 
 				$cond.=" and 
@@ -339,18 +339,18 @@ public function __construct()
 		if ($filtro_base==true && $filtro_p==0) $cond.=" and (`rm`.c3 is not null) ";
 		
 		if ($solo_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
-			$cond.=" and (`id_anagr` in (".implode(",",$only_contact).")) ";
+			$cond.=" and (`rm`.`id_anagr` in (".implode(",",$only_contact).")) ";
 		
 		if ($solo_miei_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
-			$cond.=" and (`id_anagr` in (".implode(",",$only_my_contact).")) ";
+			$cond.=" and (`rm`.`id_anagr` in (".implode(",",$only_my_contact).")) ";
 
 		if ($solo_non_contatti==1 && $filtro_sele==0 && $cerca_speed==0) 
-			$cond.=" and (`id_anagr` not in (".implode(",",$only_no_contact).")) ";
+			$cond.=" and (`rm`.`id_anagr` not in (".implode(",",$only_no_contact).")) ";
 
 		if ($filtro_sele==1 && $cerca_speed==0) 
-			$cond.=" and (`id_anagr` in (".implode(",",$only_select).")) ";
+			$cond.=" and (`rm`.`id_anagr` in (".implode(",",$only_select).")) ";
 		
-		if ($cerca_speed==1 && strlen($cerca_nome)!=0) $cond.=" and (`id_anagr`=$cerca_nome) ";
+		if ($cerca_speed==1 && strlen($cerca_nome)!=0) $cond.=" and (`rm`.`id_anagr`=$cerca_nome) ";
 		if ($cerca_speed==1 && strlen($cerca_denom)!=0) $cond.=" and (`rm`.`denom`='$cerca_denom') ";
 		
 		
