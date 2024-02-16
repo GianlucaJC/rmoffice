@@ -612,7 +612,7 @@
 									<div class='class_view'>
 									<?php
 										if (isset($note[$tab->ID_anagr]))
-											echo render_note($note,$tab,$utenti);
+											echo render_note($note,$tab,$utenti,$id_user);
 									?>
 									</div>
 								
@@ -1018,7 +1018,7 @@
 		return $view;
 	}
  
-	function render_note($note,$tab,$utenti) {
+	function render_note($note,$tab,$utenti,$id_user) {
 		$view=null;
 		
 		$view.="<table class='table table-bordered'>";
@@ -1065,7 +1065,7 @@
 
 					$view.="</td>";
 					$view.="<td style='vertical-align: middle;'>";
-					if (count($note[$tab->ID_anagr])>1) {
+					if (count($note[$tab->ID_anagr])>1 && $note_dati['id_user']==$id_user) {
 						$id_nota=$note_dati['id_nota'];
 						$view.="<a href='javascript:void(0)' onclick='dele_nota($id_nota,".$tab->ID_anagr.")'>";
 							$view.="<i class='far fa-trash-alt'></i>";
