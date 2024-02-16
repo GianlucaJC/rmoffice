@@ -789,15 +789,26 @@
 					<div class='row mt-2'>
 						<div class='col-sm-12'>
 							<div class='form-floating'>					
-							<textarea class='form-control' id='note' name='note' rows='6' style='height:100px' required></textarea>
+							<textarea class='form-control' id='note' name='note' rows='6' style='height:100px'></textarea>
 							<label for='note'>Note</label>
 							</div>
 						</div>
-					</div>						
+					</div>	
+					<div class='row mt-2'>
+						<input type='hidden' name='stato_nota' id='stato_nota'>
+					
+						Impostazione stato: 
+						<a href='javascript:void(0)'>
+						<i class="far fa-circle fa-lg mt-3 semaforo" style="color: #ff0000;" id="sem1" onclick='set_stato(1)'></i></a>
+						<a href='javascript:void(0)'>
+						<i class="far fa-circle fa-lg mt-3 semaforo" style="color: #FFD43B;" id="sem2" onclick='set_stato(2)'></i></a>
+						<a href='javascript:void(0)'>
+						<i class="far fa-circle fa-lg mt-3 semaforo" style="color: #00ca00;" id="sem3" onclick='set_stato(3)'></i></a>
+					</div>
 				  </div>
 				  <div class="modal-footer">
 					
-					<button type="submit" onclick='save_note()' class="btn btn-primary" id='btn_save'>Salva</button>
+					<button type="button" onclick='save_note()' class="btn btn-primary" id='btn_save'>Salva</button>
 					
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
 					
@@ -1011,6 +1022,18 @@
 
 					$view.="<td>";
 						$view.="<br><small><i>".$note_dati['note']."</i></small>";
+						if (($note_dati['stato_nota'])!=null) {
+							if ($note_dati['note']!=null)
+								$view.="<br>";
+							$stato_nota=$note_dati['stato_nota'];
+							if ($stato_nota==1) 
+								$view.="<i class='fas fa-circle fa-lg mt-3' style='color: #ff0000;'></i>";
+							if ($stato_nota==2) 
+								$view.="<i class='fas fa-circle fa-lg mt-3' style='color: #FFD43B;'></i>";
+							if ($stato_nota==3) 
+								$view.="<i class='fas fa-circle fa-lg mt-3' style='color: #00ca00;' ></i>";
+						}
+
 					$view.="</td>";
 											
 				$view.="</tr>";
@@ -1143,7 +1166,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.149"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.159"></script>
 
 @endsection
 

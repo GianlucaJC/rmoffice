@@ -84,6 +84,7 @@ class AjaxController extends Controller
 		$datanasc_edit=$request->input('datanasc_edit');
 		$ente_edit=$request->input('ente_edit');
 		$note_edit=$request->input('note');
+		$stato_nota=$request->input('stato_nota');
 		$id_user=Auth::user()->id;
 		$note=new note;
 		$note->id_user=$id_user;
@@ -91,6 +92,7 @@ class AjaxController extends Controller
 		$note->datanasc=$datanasc_edit;
 		$note->ente=$ente_edit;
 		$note->note=$note_edit;
+		$note->stato_nota=$stato_nota;
 		$note->save();	
 		$risp=array();
 		$risp['esito']="OK";

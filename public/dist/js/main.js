@@ -163,6 +163,14 @@ $(document).ready( function () {
 } );
 
 
+function set_stato(from) {
+	$(".semaforo").removeClass("fas fa-circle")
+	$(".semaforo").removeClass("far fa-circle")
+	$(".semaforo").addClass("far fa-circle")
+	$("#sem"+from).addClass("fas fa-circle")
+	$("#stato_nota").val(from)
+}
+
 function sel_all(value) {
 	if ($( "#selall" ).is( ":checked" )) {
 		$('.selezione').each(function(index, obj){
@@ -415,6 +423,11 @@ function edit_element(id_anagr) {
 	$("#datanasc_edit").val(datanasc)
 	$("#ente_edit").val(ente)
 	
+	$(".semaforo").removeClass("fas fa-circle")
+	$(".semaforo").removeClass("far fa-circle")
+	$(".semaforo").addClass("far fa-circle")
+	$("#stato_nota").val("")
+
 	$('#modal_edit').modal('toggle')
 	$("#title_modal_edit").html("Impostazione Note/Contatti per: <b>"+nome+"</b>")
 	//$("#body_modal_edit").html("Caricamento informazioni in corso...")	
@@ -426,10 +439,13 @@ function save_note() {
 	datanasc_edit=$("#datanasc_edit").val()
 	ente_edit=$("#ente_edit").val()
 	note=$("#note").val()
-	
-	if (note.length>0) 
+	stato_nota=$("#stato_nota").val()
+	if (note.length==0 && stato_nota.length==0) {
 		event.preventDefault()
-	else return false;
+		alert("E' necessario compilare la nota o indicare uno stato!");
+		return false
+	}
+
 	$("#btn_save").html('Attendere...'); 
 	$("#btn_save").prop('disabled', true);
 	
@@ -447,7 +463,7 @@ function save_note() {
 		$.ajax({
 			type: 'POST',
 			url: base_path+"/save_note",
-			data: {_token: CSRF_TOKEN,nome_edit:nome_edit,datanasc_edit:datanasc_edit,ente_edit:ente_edit,note:note},
+			data: {_token: CSRF_TOKEN,nome_edit:nome_edit,datanasc_edit:datanasc_edit,ente_edit:ente_edit,note:note,stato_nota:stato_nota},
 			success: function (data) {
 				html="";
 				html+=`<a href='#' onclick="$('#frm_tab').submit()">
