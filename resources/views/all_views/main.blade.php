@@ -122,10 +122,6 @@
 				
 
 					<?php
-						echo "<option value='tab' ";
-						if ($rilasci=='tab') echo " selected ";
-						echo ">Nuovi assunti da confronto tabulato";
-						echo "</option>";
 						for ($sca=0;$sca<=count($passaggi)-1;$sca++) {
 							$id_per=$passaggi[$sca];
 							echo "<option value=$id_per ";
@@ -137,7 +133,11 @@
 							if ($id_per=="all") {
 								if (strlen($rilasci)==0) echo " selected ";
 								echo ">Nuovi assunti mediante storicità</option>";
-							}	
+							}
+							elseif ($id_per=="tab") {
+								echo ">Nuovi assunti da confronto tabulato";
+								echo "</option>";
+							}
 							else {
 								$vx=substr($id_per,0,7);
 								$view_per=$vx;

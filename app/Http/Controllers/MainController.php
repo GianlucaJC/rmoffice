@@ -102,7 +102,7 @@ public function __construct()
 			if (is_array($ril)) $rilasci=implode(";",$ril);
 			else $rilasci=$ril;
 		}	
-		if (strpos($rilasci,"tab")!==false) $rilasci="tab";
+		
 		$ril_ce=$this->rilasci_ente('C');
 		$ril_ec=$this->rilasci_ente('A');
 		
@@ -246,11 +246,11 @@ public function __construct()
 		$cond="1";$filtro_p=0;
 		
 		if ($solo_contatti==0 && $solo_miei_contatti==0 && $solo_non_contatti==0 && $filtro_sele==0 && $cerca_speed==0 && $solo_frt==0 && $solo_fillea==0) {
-			if (strlen($rilasci)!=0 && $rilasci!="tab") {
+			if (strlen($rilasci)!=0) {
 				$entr=false;
 				$arr_r=explode(";",$rilasci);
 				for ($sca=0;$sca<=count($arr_r)-1;$sca++) {
-					if ($arr_r[$sca]=="all") continue;
+					if ($arr_r[$sca]=="all" || $arr_r[$sca]=="tab") continue;
 					if ($entr==false) {
 						$cond.=" and (";
 					}	
@@ -266,9 +266,9 @@ public function __construct()
 				if ($entr==true) $cond.=") ";
 			}
 		}
-		if ($rilasci=="tab") {
-			$cond=" `rm`.no_old_tab=1 ";
-		}
+		if (strpos($rilasci,"tab")!==false) 
+			$cond.=" and `rm`.no_old_tab=1 ";
+
 
 		$filtro_base=true;
 		if ($solo_contatti==1 || $solo_miei_contatti==1 ||  $filtro_sele==1 || $cerca_speed==1) {
@@ -744,7 +744,7 @@ public function __construct()
 			}								
 			krsort($storia_new);
 			
-			$passaggi="all"; // ricostruisco la stringa passaggi da array ordinato
+			$passaggi="tab;all"; // ricostruisco la stringa passaggi da array ordinato
 			foreach($storia_new as $tab){
 				$passaggi.=";";
 				$passaggi.="$tab";
