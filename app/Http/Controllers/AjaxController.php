@@ -38,7 +38,15 @@ class AjaxController extends Controller
 		$sind_frt=$request->input('sind_frt');
 		$ente_frt=$request->input('ente_frt');
 		$id_azienda=$request->input('id_azienda');
-
+		if (strlen($id_azienda)>0) {
+			$zeri="";
+			if (strlen($id_azienda)<11) {
+				for ($x=strlen($id_azienda);$x<=10;$x++) {
+					$zeri.="0";
+				}
+			}
+			$id_azienda=$zeri.$id_azienda;
+		}
 
 		$today=date("Y-m-d");
 		$operatore=Auth::user()->email;
@@ -69,10 +77,11 @@ class AjaxController extends Controller
 		$frt->dati_grezzi="Delega FRT da RM_Office";
 		$frt->ente_origine=$ente_frt;
 		$frt->save();
-		
-		$alert=new aziende_frt_alert;
-		$alert->id_azienda=$id_azienda;
-		$alert->save();
+		if (strlen($id_azienda)>0) {
+			$alert=new aziende_frt_alert;
+			$alert->id_azienda=$id_azienda;
+			$alert->save();
+		}
 		
 		$risp=array();
 		$risp['esito']="OK";

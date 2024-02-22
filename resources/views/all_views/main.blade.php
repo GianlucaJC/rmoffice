@@ -122,6 +122,10 @@
 				
 
 					<?php
+						echo "<option value='tab' ";
+						if ($rilasci=='tab') echo " selected ";
+						echo ">Nuovi assunti da confronto tabulato";
+						echo "</option>";
 						for ($sca=0;$sca<=count($passaggi)-1;$sca++) {
 							$id_per=$passaggi[$sca];
 							echo "<option value=$id_per ";
@@ -132,7 +136,7 @@
 							
 							if ($id_per=="all") {
 								if (strlen($rilasci)==0) echo " selected ";
-								echo ">Nuovi assunti</option>";
+								echo ">Nuovi assunti mediante storicità</option>";
 							}	
 							else {
 								$vx=substr($id_per,0,7);
@@ -144,6 +148,7 @@
 						}
 					?>
 					</select>
+					<li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Zone</a>
 					</li>					
@@ -755,7 +760,7 @@
 								</td>
 								<td title="{{$tab->C2}}">
 									<?php
-									
+									echo $tab->C2." ->";
 									if (strlen($tab->C2)>0) 
 									echo "<a href='https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&p_iva=".$tab->C2."' target='_blank'>";
 										echo renderview($campo_ord,$tab->DENOM,"denom");

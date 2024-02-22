@@ -102,6 +102,7 @@ public function __construct()
 			if (is_array($ril)) $rilasci=implode(";",$ril);
 			else $rilasci=$ril;
 		}	
+		if (strpos($rilasci,"tab")!==false) $rilasci="tab";
 		$ril_ce=$this->rilasci_ente('C');
 		$ril_ec=$this->rilasci_ente('A');
 		
@@ -241,10 +242,11 @@ public function __construct()
 					
 		}
 		
+
 		$cond="1";$filtro_p=0;
 		
 		if ($solo_contatti==0 && $solo_miei_contatti==0 && $solo_non_contatti==0 && $filtro_sele==0 && $cerca_speed==0 && $solo_frt==0 && $solo_fillea==0) {
-			if (strlen($rilasci)!=0) {
+			if (strlen($rilasci)!=0 && $rilasci!="tab") {
 				$entr=false;
 				$arr_r=explode(";",$rilasci);
 				for ($sca=0;$sca<=count($arr_r)-1;$sca++) {
@@ -263,6 +265,9 @@ public function __construct()
 				}
 				if ($entr==true) $cond.=") ";
 			}
+		}
+		if ($rilasci=="tab") {
+			$cond=" `rm`.no_old_tab=1 ";
 		}
 
 		$filtro_base=true;
@@ -419,6 +424,7 @@ public function __construct()
 
 		$aziende_alert=array();
 		if ($info_count_notif>0) {
+			//azzeramento e calcolo alert in new_ass ->model (M_new_ass)
 			$aziende_alert = DB::table('alert_new_ass as a')
 			->join('anagrafe.t4_lazi_a as t','a.id_azienda','t.c2')
 			->select('a.id_azienda','t.denom')
