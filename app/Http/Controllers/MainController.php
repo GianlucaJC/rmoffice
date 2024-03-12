@@ -232,11 +232,11 @@ public function __construct()
 		
 
 		$cerca_nome="";$cerca_speed=0;$cerca_denom="";
-		if (request()->has("nome_speed") || request()->has("denom_speed")) {
+		if (request()->has("nome_speed") || request()->has("cerca_denom")) {
 			$cerca_speed=1;
 			if (request()->has("cerca_nome")) 
 				$cerca_nome=request()->input("cerca_nome");
-			if (request()->has("denom_speed")) 
+			if (request()->has("cerca_denom")) 
 				 $cerca_denom=request()->input("cerca_denom");
 		
 			$cPage=1;
@@ -397,10 +397,12 @@ public function __construct()
 		->orderBy($campo_ord,$t_ord)
 		->groupBy('rm.ID_anagr');
 		
-		/* rawQuery
+		/*
+			//rawQuery
 		$rawSql = vsprintf(str_replace(['?'], ['\'%s\''], $tabulato->toSql()), $tabulato->getBindings());
 		echo $rawSql;
 		*/
+		
 				
 		
 		$tabulato=$tabulato->paginate($per_page)->withQueryString();

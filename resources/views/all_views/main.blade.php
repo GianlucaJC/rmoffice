@@ -96,7 +96,7 @@
 			<input type='hidden' name='ref_ordine' id='ref_ordine' value='{{$ref_ordine}}'>
 			<input type="hidden" value="{{url('/')}}" id="url" name="url">
 			<input type='hidden' name='cerca_nome' id='cerca_nome'>
-			<input type='hidden' name='cerca_denom' id='cerca_denom'>
+			<input type='hidden' name='cerca_denom' id='cerca_denom' value='{{$cerca_denom}}'>
 			
 			<input type='hidden' name='elem_sele' id='elem_sele' value='{{$elem_sele}}'>
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -500,6 +500,7 @@
 						<div class="input-group mb-3">
 						  <span class="input-group-text" id="basic-addon1">Ricerca rapida Azienda</span>
 						  <input type="text" name='a_all' id='a_all' class="form-control" placeholder="Cerca Azienda globalmente">
+					
 						</div>
 						
 						<div id='resp_cerca_a'></div>			
@@ -521,7 +522,7 @@
 						$referer = $_SERVER['HTTP_REFERER'] ?? null;
 						$uri_complete = request()->path();
 						$referer="#";
-						echo "<a href='$referer' onclick='history.back()' >";	
+						echo "<a href='$referer' onclick=\"$('#cerca_denom').val('');history.back();\" >";	
 							echo "<button type='button' class='btn btn-success btn-sm'>Torna elenco precedente</button>";
 						echo "</a>";
 					}
@@ -1252,7 +1253,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.162"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.166"></script>
 
 @endsection
 

@@ -583,7 +583,7 @@ function render_all_a(data) {
 
 				html+=`<tr>
 					<td>
-						<button type="submit" name='denom_speed' class="btn  btn-primary btn-sm btn-block" onclick="$('#cerca_denom').val('`+denom+`')">`+denom+`</button>
+						<button type="submit" name='denom_speed' class="btn  btn-primary btn-sm btn-block" onclick="$('#cerca_denom').val('`+denom+`');">`+denom+`</button>
 					</td>
 				</tr>`
 
