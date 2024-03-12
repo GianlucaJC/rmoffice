@@ -760,7 +760,7 @@
 								</td>
 								<td title="{{$tab->C2}}">
 									<?php
-									echo $tab->C2." ->";
+									echo render_iscr($tab->iscrizioni);
 									if (strlen($tab->C2)>0) 
 									echo "<a href='https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&p_iva=".$tab->C2."' target='_blank'>";
 										echo renderview($campo_ord,$tab->DENOM,"denom");
@@ -981,6 +981,36 @@
  @endsection
  
  <?php
+ 
+	function render_iscr($iscrizioni) {
+		$tot=0;
+		$arr_iscr=array();$arr_info=array();
+
+		$arr_info=explode("|",$iscrizioni);
+		$arr_iscr=explode(";",$arr_info[0]);
+
+	
+		
+		$v_col="<small>";
+		$view=null;
+		
+		for ($sca=0;$sca<=count($arr_iscr)-1;$sca++) {
+			$elem=$arr_iscr[$sca];
+
+			$elem.=" ";
+			$tot+=intval($elem);
+			if ($sca==0) $v_col.="<div class='d-inline bg-warning text-black'><b>$elem</b></div>";
+			if ($sca==1) $v_col.="<div class='d-inline bg-danger text-light'><b>$elem</b></div>";
+			if ($sca==2) $v_col.="<div class='d-inline bg-success text-light'><b>$elem</b></div>";
+			if ($sca==3) $v_col.="<div class='d-inline bg-primary text-light'><b>$elem</b></div>";
+			if ($sca==4) $v_col.="<div class='d-inline bg-secondary text-light'><b>$elem</b></div>";
+			
+		}
+		$v_col.="</small><br>";
+
+		return $v_col;		
+	}
+ 
 	function enti_altrove($iscr_enti,$id_anagr,$from) {
 		
 		$view="";

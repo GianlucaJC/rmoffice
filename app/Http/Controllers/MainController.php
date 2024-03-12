@@ -48,7 +48,11 @@ public function __construct()
 		echo "F3388 	ANDREONI MARCO".bcrypt('AM130477')."<hr>";
 		echo "F3485 	SERJANAJ XHESILDO".bcrypt('JJ121996')."<hr>";
 		echo "F0425 	DI MARCO SIMONE".bcrypt('NI121721')."<hr>";
+		echo "F3523 	BUX ANTONIO".bcrypt('627384BX')."<hr>";
 		*/
+		
+		
+		
 		$this->middleware('auth')->except(['index']);
 		
 		$this->middleware(function ($request, $next) {			
@@ -375,7 +379,8 @@ public function __construct()
 		if (strlen($filtro_ente)!=0 && $filtro_ente!="all" && $ente_altrove=="1") $cond.=" and rm.ente<>rm1.ente ";
 		
 		$tabulato = DB::table('anagrafe.'.$tb.' as rm')
-		->select('rm.*')
+		->select('rm.*','az.iscrizioni')
+		->leftjoin('filleago.aziende as az','rm.c2','az.p_iva')
 		->when($incroci=="1", function($tabulato) {
 			return $tabulato->join('anagrafe.nazionale as n','n.codfisc','rm.codfisc');
 		})
