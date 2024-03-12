@@ -113,6 +113,8 @@ class AjaxController extends Controller
 		$risp = DB::table('anagrafe.t4_lazi_a')
 		->select('id_anagr','nome',DB::raw("DATE_FORMAT(datanasc,'%d-%m-%Y') as datanasc"),'codfisc','loc','pro','c1')
 		->where('nome',"like","%$value%")
+		->orWhere('codfisc',"like","%$value%")
+		->orWhere('datanasc',"like","%$value%")
 		->offset(0)->limit(30)
 		->get();		
 		return json_encode($risp);		
