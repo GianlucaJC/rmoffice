@@ -232,7 +232,9 @@ public function __construct()
 		
 
 		$cerca_nome="";$cerca_speed=0;$cerca_denom="";
-		if (request()->has("nome_speed") || request()->has("cerca_denom")) {
+		
+
+		if (strlen(request()->input("cerca_denom"))!=0 || strlen(request()->input("cerca_nome"))!=0 ) {
 			$cerca_speed=1;
 			if (request()->has("cerca_nome")) 
 				$cerca_nome=request()->input("cerca_nome");
@@ -402,6 +404,7 @@ public function __construct()
 		$rawSql = vsprintf(str_replace(['?'], ['\'%s\''], $tabulato->toSql()), $tabulato->getBindings());
 		echo $rawSql;
 		*/
+	
 		
 				
 		
