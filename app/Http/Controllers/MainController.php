@@ -67,7 +67,15 @@ public function __construct()
 				$this->id_user=$id;
 				$userid=$user[0]->email;
 			}
-			
+
+			$qw_zona=DB::table('frt.utenti_zona')
+			->select("id_zona")
+			->where('tessera','=',$userid)
+			->first();
+			$zona_user=0;
+			if (isset($qw_zona->id_zona))
+				$zona_user=$qw_zona->id_zona;
+			$this->zona_user=$zona_user;
 			
 			$t_att=DB::table('online.db')
 			->select("id")
@@ -432,6 +440,24 @@ public function __construct()
 		$info_count_notif = DB::table('alert_new_ass')
 		->select('id_azienda')->count();
 
+		$zona_user=$this->zona_user;
+		$count_azzonamenti = DB::table('azzonamenti_custom')
+		->where('view_alert','=',0)
+		->where('zona','=',$zona_user)
+		->count();
+		
+		$alert_azzonamenti=array();
+		if ($count_azzonamenti>0) {
+			$alert_azzonamenti = DB::table('azzonamenti_custom as a')
+			->join('anagrafe.t4_lazi_a as t','a.id_fiscale','t.c2')
+			->select('a.id_fiscale','t.denom')
+			->groupBy('a.id_fiscale')
+			->where('a.view_alert','=',0)
+			->where('a.zona','=',$zona_user)
+			->get();
+		}
+
+
 		$aziende_alert=array();
 		if ($info_count_notif>0) {
 			//azzeramento e calcolo alert in new_ass ->model (M_new_ass)
@@ -446,7 +472,7 @@ public function __construct()
 		
 		$utenti=$this->utenti("all");
 		$id_user=$this->id_user;
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','solo_servizi','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette','info_count_notif','aziende_alert','incroci','id_user','ente_altrove'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','solo_servizi','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette','info_count_notif','count_azzonamenti','aziende_alert','alert_azzonamenti','incroci','id_user','ente_altrove'));
 	}
 
 

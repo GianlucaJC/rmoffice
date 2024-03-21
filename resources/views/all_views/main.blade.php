@@ -67,6 +67,48 @@
 	  </li>
 	@endif
 	
+
+	@if ($count_azzonamenti>0)
+	  <!-- Messages Dropdown Menu -->
+	  <li class="nav-item dropdown">
+		<a class="nav-link" data-toggle="dropdown" href="#">
+		  <i class="far fa-bell"></i>
+		  <span class="badge badge-danger navbar-badge">{{$count_azzonamenti}}</span>
+		</a>
+		<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+		  
+		<?php $num_not=0; ?>
+		@foreach($alert_azzonamenti as $alert_a) 
+		  <?php
+			$num_not++; 
+			//if ($num_not>10) break;
+		  ?>
+
+		   <a href='javascript:void(0)' class="dropdown-item" onclick="$('#a_all').val('{{$alert_a->denom}}');$( '#a_all' ).trigger( 'paste' );">
+
+			<!-- Message Start -->
+			<div class="media">
+			  
+			  <div class="media-body">
+				<h3 class="dropdown-item-title">
+					<i class="fas fa-info-circle"></i>  {{$alert_a->denom}}
+				</h3>
+			  </div>
+			</div>
+			<!-- Message End -->
+		  </a>
+		  <div class="dropdown-divider"></div>
+		@endforeach  
+		
+		  <!--
+		  <a href="#" class="dropdown-item dropdown-footer">Vedi tutte le aziende interessate</a>
+		  !-->
+	  
+		</div>
+	  </li>
+	@endif	
+	
+	
 @endsection
 
 @section('content_main')
