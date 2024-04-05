@@ -22,35 +22,44 @@ public function __construct()
 		$this->passaggi=$passaggi;
 		
 		/*
-		echo "F0030:".bcrypt('202310SC')."<hr>";
-		echo "F0418:".bcrypt('456890XX')."<hr>";
-		echo "F0573:".bcrypt('160369DA')."<hr>";
-		echo "F0579".bcrypt('30387')."<hr>";
-		echo "F0830".bcrypt('53315')."<hr>";
-		echo "F0838".bcrypt('44720')."<hr>";
-		echo "F0910".bcrypt('77653')."<hr>";
-		echo "F3114".bcrypt('567890LA')."<hr>";
-		echo "F3398".bcrypt('RM987654')."<hr>";
-		echo "F0147 	Bagalà Genni".bcrypt('BA970484')."<hr>";
-		echo "F0336 	Liotino Marco".bcrypt('LI192021')."<hr>";
-		echo "F0482 	BURATTI ANDREA".bcrypt('BA135792')."<hr>";
-		echo "F0829 	Proietti Bruno".bcrypt('140623')."<hr>";
-		echo "F0830 	De Vecchis Alioscia".bcrypt('53315')."<hr>";
-		echo "F0831 	TESTI GIULIO".bcrypt('87602')."<hr>";
-		echo "F0832 	Nicoletti Antonio".bcrypt('47564')."<hr>";
-		echo "F0834 	Orfiz Luis Manuel".bcrypt('46245')."<hr>";
-		echo "F0840 	Nika Agim".bcrypt('03701')."<hr>";
-		echo "F0841 	Ferrari fabio".bcrypt('AB123456')."<hr>";
-		echo "F0908 	Wibabara Eric".bcrypt('64702')."<hr>";
-		echo "F0909 	Broccatelli Claudio".bcrypt('47087')."<hr>";
-		echo "F0911 	Enache Maricel".bcrypt('48407')."<hr>";
-		echo "F0919 	Paudice Mauro".bcrypt('51273')."<hr>";
-		echo "F3388 	ANDREONI MARCO".bcrypt('AM130477')."<hr>";
-		echo "F3485 	SERJANAJ XHESILDO".bcrypt('JJ121996')."<hr>";
-		echo "F0425 	DI MARCO SIMONE".bcrypt('NI121721')."<hr>";
-		echo "F3523 	BUX ANTONIO".bcrypt('627384BX')."<hr>";
+			//tessere abilitate al servizio
+			
+			SELECT db.N_TESSERA,db.pin FROM `users` u
+			inner join `online`.db on u.email=db.N_TESSERA
+			where db.attiva=1
+			order by db.N_TESSERA
+			LIMIT 0,100		
 		*/
-		
+		/*
+		echo "<hr>F0001:".bcrypt('27387');
+		echo "<hr>F0030:".bcrypt('202310SC');
+		echo "<hr>F0147:".bcrypt('BA979JEN');
+		echo "<hr>F0336:".bcrypt('LT1920LA');
+		echo "<hr>F0418:".bcrypt('4567XYZQ');
+		echo "<hr>F0425:".bcrypt('RI2RI3LA');
+		echo "<hr>F0482:".bcrypt('15378');
+		echo "<hr>F0573:".bcrypt('160GRIGU');
+		echo "<hr>F0579:".bcrypt('RUS571GA');
+		echo "<hr>F0633:".bcrypt('DM0011FB');
+		echo "<hr>F0829:".bcrypt('SPQR23PB');
+		echo "<hr>F0830:".bcrypt('533DVSRM');
+		echo "<hr><b>F0831</b>:".bcrypt('TEST56TT');
+		echo "<hr>F0832:".bcrypt('47NIK48A');
+		echo "<hr>F0834:".bcrypt('ORT88LAZ');
+		echo "<hr>F0838:".bcrypt('PETRA96X');
+		echo "<hr>F0840:".bcrypt('03NNKKJJ');
+		echo "<hr>F0841:".bcrypt('AB123QWZ');
+		echo "<hr><b>F0908</b>:".bcrypt('65W66I67');
+		echo "<hr>F0909:".bcrypt('ROMA99BR');
+		echo "<hr>F0910:".bcrypt('28384');
+		echo "<hr>F0911:".bcrypt('ENAV88XY');
+		echo "<hr>F0919:".bcrypt('51PDRM51');
+		echo "<hr>F3114:".bcrypt('28689');
+		echo "<hr>F3388:".bcrypt('AM13ROMA');
+		echo "<hr>F3398:".bcrypt('ROMA45ZZ');
+		echo "<hr>F3484:".bcrypt('EC567LOM');
+		echo "<hr>F3523:".bcrypt('RM7384BX');
+		*/
 		
 		
 		$this->middleware('auth')->except(['index']);

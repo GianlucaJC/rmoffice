@@ -35,8 +35,8 @@
 		  <span class="badge badge-danger navbar-badge">{{$info_count_notif}}</span>
 		</a>
 		<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-		  
-		<?php $num_not=0; ?>
+		<?php $num_not=0; ?> 
+
 		@foreach($aziende_alert as $azienda_alert) 
 		  <?php
 			$num_not++; 
@@ -77,7 +77,9 @@
 		</a>
 		<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 		  
-		<?php $num_not=0; ?>
+		<?php 
+		$num_not=0;
+		?>
 		@foreach($alert_azzonamenti as $alert_a) 
 		  <?php
 			$num_not++; 
@@ -130,6 +132,20 @@
     <div class="content">
 
       <div class="container-fluid">
+
+		<?php
+		
+		if ($count_azzonamenti>0) {
+			$art="Ci sono";$art_a="aziende";
+			if ($count_azzonamenti==1) {$art="C'è";$art_a="azienda";}
+			echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
+			  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+				<span aria-hidden='true'>&times;</span>
+			  </button>			
+			  <b>Attenzione!</b> $art <b>$count_azzonamenti</b> $art_a da verificare
+			</div>";			
+		}
+		?>
 
 		<form method='post' action="" id='frm_tab' name='frm_tab' autocomplete="off">
 		<input name="_token" type="hidden" value="{{ csrf_token() }}" id='token_csrf'>	  
