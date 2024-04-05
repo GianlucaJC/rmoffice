@@ -133,6 +133,36 @@
 
       <div class="container-fluid">
 
+
+		<?php
+		
+		if ($count_alert_zone>0) {
+			$art="Ci sono";$art_a="messaggi";
+			if ($count_alert_zone==1) {$art="C'è";$art_a="messaggio";}
+			echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
+			  <button type='button' class='close' data-dismiss='alert' aria-label='Close' onclick=\"$('#div_view_message').hide(150)\">
+				<span aria-hidden='true'>&times;</span>
+			  </button>			
+			  <b>Attenzione!</b> $art <b>$count_alert_zone</b> $art_a per la tua zona 
+			  <button type='button' class='btn btn-success' onclick=\"$('#div_view_message').toggle(150)\">Vedi $art_a</button>
+			</div>";			
+		}
+		?>
+		<div id='div_view_message' style='display:none'>
+			@foreach ($message_zone as $messaggio)
+				<?php 
+					echo "<div class='alert alert-info' role='alert'>";
+						echo "<i>#ID Messaggio:</i> ".$messaggio->id;
+						echo " del : ".$messaggio->data_ref;
+						echo "<hr>";
+						echo $messaggio->message;
+					echo "</div>";
+					
+				?>	
+			@endforeach
+		</div>
+		
+
 		<?php
 		
 		if ($count_azzonamenti>0) {

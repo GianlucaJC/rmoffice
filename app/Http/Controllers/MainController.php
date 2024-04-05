@@ -449,12 +449,23 @@ public function __construct()
 		$info_count_notif = DB::table('alert_new_ass')
 		->select('id_azienda')->count();
 
+
 		$zona_user=$this->zona_user;
 		$count_azzonamenti = DB::table('azzonamenti_custom')
 		->where('view_alert','=',0)
 		->where('zona','=',$zona_user)
 		->count();
 		
+		$count_alert_zone = DB::table('alert_zone')
+		->where('view','=',0)
+		->where('id_zona','=',$zona_user)
+		->count();
+		$message_zone= DB::table('alert_zone')
+		->where('view','=',0)
+		->where('id_zona','=',$zona_user)
+		->orderBy('id','desc')
+		->get();
+
 		$alert_azzonamenti=array();
 		if ($count_azzonamenti>0) {
 			$alert_azzonamenti = DB::table('azzonamenti_custom as a')
@@ -481,7 +492,7 @@ public function __construct()
 		
 		$utenti=$this->utenti("all");
 		$id_user=$this->id_user;
-		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','solo_servizi','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette','info_count_notif','count_azzonamenti','aziende_alert','alert_azzonamenti','incroci','id_user','ente_altrove'));
+		return view('all_views/main',compact('tb','tabulato','ref_ordine','view_null','campo_ord','tipo_ord','frt','user_frt','note','per_page','solo_contatti','solo_miei_contatti','solo_frt','solo_non_contatti','solo_fillea','solo_servizi','elem_sele','filtro_sele','cerca_nome','cerca_denom','utenti','fgo','passaggi','rilasci','zona','zone','filtro_base','filtro_sind','filtro_ente','filtro_tel','filtro_giac','filtro_iban','iscr_altrove','ril_ce','ril_ec','iscr_enti','iscr_altri_rilasci','num_rec','disdette','info_count_notif','count_azzonamenti','aziende_alert','alert_azzonamenti','incroci','id_user','ente_altrove','count_alert_zone','message_zone'));
 	}
 
 
