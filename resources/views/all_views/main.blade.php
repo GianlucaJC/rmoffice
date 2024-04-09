@@ -144,18 +144,28 @@
 				<span aria-hidden='true'>&times;</span>
 			  </button>			
 			  <b>Attenzione!</b> $art <b>$count_alert_zone</b> $art_a per la tua zona 
-			  <button type='button' class='btn btn-success' onclick=\"$('#div_view_message').toggle(150)\">Vedi $art_a</button>
+			  <button type='button' class='btn btn-success' onclick=\"$('#div_view_message').show(150);$('.div_al').show()\">Vedi $art_a</button>
 			</div>";			
 		}
 		?>
 		<div id='div_view_message' style='display:none'>
 			@foreach ($message_zone as $messaggio)
 				<?php 
-					echo "<div class='alert alert-info' role='alert'>";
-						echo "<i>#ID Messaggio:</i> ".$messaggio->id;
+
+				$view = (string) $messaggio->message;
+				$namef=$messaggio->id.".html";
+				file_put_contents("master/$namef", $view);
+
+					echo "<div class='div_al' id='div_al".$messaggio->id."' class='alert alert-light' role='alert' style='border:solid 1px'>";
+						echo "<b><i>#ID Messaggio:</i> ".$messaggio->id;
 						echo " del : ".$messaggio->data_ref;
+						echo "</b>";
+						
+						echo "<button type='button' class='ml-3 mt-2 btn btn-info btn-sm' onclick=\"$('#div_al".$messaggio->id."').hide(100)\">Chiudi alert</button>";
+
 						echo "<hr>";
-						echo $messaggio->message;
+						echo "<iframe src='master/".$namef."' width='100%' height='300' style='border:1px solid black;'></iframe>";
+						
 					echo "</div>";
 					
 				?>	
