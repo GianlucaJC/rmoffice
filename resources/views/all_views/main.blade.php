@@ -1351,7 +1351,7 @@
 	<!-- fine DataTables !-->
 
 
-	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.166"></script>
+	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.168"></script>
 
 @endsection
 

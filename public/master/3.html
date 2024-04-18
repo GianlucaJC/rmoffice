@@ -1,0 +1,1398 @@
+                
+              <style>
+.filtri {
+  border: 2px outset blue;
+  padding:10px;
+}
+.active_th {
+	border: 1px outset blue;
+}
+</style>
+
+
+ 
+  
+ 
+
+
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RM_Office</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="http://localhost:8012/rmview/public/plugins/fontawesome-free/css/all.min.css">
+  
+
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+	 
+<!-- x button export -->
+
+  <!-- Select2 -->
+  <link rel="stylesheet" href="http://localhost:8012/rmview/public/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="http://localhost:8012/rmview/public/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+
+<link href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css" rel="stylesheet">
+<!-- -->
+  
+
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="http://localhost:8012/rmview/public/dist/css/styles.css">
+  <link rel="stylesheet" href="http://localhost:8012/rmview/public/dist/css/adminlte.min.css">
+
+
+
+
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+		<a href="#" onclick="history.back()" class="nav-link"><button type="button" class="btn btn-secondary btn-sm">Indietro</button></a>	</li>	
+	  <li class="nav-item d-none d-sm-inline-block">	
+        <a href="http://localhost:8012/rmview/public/main_view" class="nav-link">
+			<button type="button" class="btn btn-primary btn-sm">Homepage</button>	
+		</a>
+      </li>
+
+	  <li class="nav-item d-none d-sm-inline-block">	
+        <a href="javascript:void(0)" class="nav-link">
+			<button type="button" id="btn_intest" class="btn btn-outline-primary btn-sm" onclick="show_intest()">Nascondi intestazioni</button>
+		</a>	
+
+      </li>
+	  
+	  <li class="nav-item d-none d-sm-inline-block">
+		<a href="https://edilcassalazio.cassaedile.cloud/SportelloWeb/index.php" class="nav-link ml-5" target="_blank">
+		<button type="button" class="btn btn-info btn-sm">Edilcassa</button>
+		</a>
+	  </li>
+
+	  <li class="nav-item d-none d-sm-inline-block">
+		<a href="https://roma.cassaedile.net/login" class="nav-link" target="_blank">
+		<button type="button" class="btn btn-info btn-sm">Cassa edile</button>
+		</a>
+	  </li>	 
+	 
+	 
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+
+      <!-- Notifications Dropdown Menu -->
+				  <!-- Messages Dropdown Menu -->
+	  <li class="nav-item dropdown">
+		<a class="nav-link" data-toggle="dropdown" href="#">
+		  <i class="far fa-comments"></i>
+		  <span class="badge badge-danger navbar-badge">1</span>
+		</a>
+		<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+		 
+
+		 
+		  
+		   <a href="javascript:void(0)" class="dropdown-item" onclick="$('#a_all').val('COSTRUZIONI FORSA S.R.L.');$( '#a_all' ).trigger( 'paste' );">
+
+			<!-- Message Start -->
+			<div class="media">
+			  
+			  <div class="media-body">
+				<h3 class="dropdown-item-title">
+					<i class="fas fa-info-circle"></i>  COSTRUZIONI FORSA S.R.L.
+				</h3>
+			  </div>
+			</div>
+			<!-- Message End -->
+		  </a>
+		  <div class="dropdown-divider"></div>
+		  
+		
+		  <!--
+		  <a href="#" class="dropdown-item dropdown-footer">Vedi tutte le aziende interessate</a>
+		  !-->
+	  
+		</div>
+	  </li>
+		
+
+		
+	
+	
+
+      <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+          <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+          <i class="fas fa-th-large"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+  
+
+   
+
+   
+   
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="background-color:white">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+
+
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+
+      <div class="container-fluid">
+
+
+		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			  <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="$('#div_view_message').hide(150)">
+				<span aria-hidden="true">Ã—</span>
+			  </button>			
+			  <b>Attenzione!</b> Ci sono <b>2</b> messaggi per la tua zona 
+			  <button type="button" class="btn btn-success" onclick="$('#div_view_message').show(150);$('.div_al').show()">Vedi messaggi</button>
+			</div>		<div id="div_view_message" style="display:none">
+							<div class="div_al" id="div_al2" role="alert" style="border:solid 1px"><b><i>#ID Messaggio:</i> 2 del : 2024-04-09 10:49:12</b><button type="button" class="ml-3 mt-2 btn btn-info btn-sm" onclick="$('#div_al2').hide(100)">Chiudi alert</button><hr><br><div id="tbl_list_wrapper" class="dataTables_wrapper no-footer"><div class="row mb-1 mt-1">				  
+			  
+			  
+			</div>  
+			
+			<div class="filtri mb-3" id="div_filtri">
+				<div class="alert alert-info p-1" role="alert">
+				  <small>Filtri selettivi (Questi filtri disattivano gli altri filtri impostati)</small></div></div><div id="div_intest" style=""><div class="filtri mb-3" id="div_filtri"><div class="row"><div class="col-lg-6"><div class="input-group mb-3">
+						  <input type="text" name="a_all" id="a_all" class="form-control" placeholder="Cerca Azienda globalmente">
+					
+						</div>
+						
+						<div id="resp_cerca_a"></div>			
+					</div>					
+				</div>
+				
+			
+			</div>
+		</div>	
+			
+
+			
+				<div id="div_main">
+								
+				
+					<nav>
+        <ul class="pagination"><li class="page-item disabled" aria-disabled="true" aria-label="Ã‚Â« Previous">
+                    <span class="page-link" aria-hidden="true">Ã¢â‚¬Â¹</span>
+                </li><li class="page-item active" aria-current="page"><span class="page-link">1</span></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=2">2</a></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=3">3</a></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=4">4</a></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=5">5</a></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=6">6</a></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=7">7</a></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=8">8</a></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=9">9</a></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=10">10</a></li><li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=80">80</a></li><li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=81">81</a></li><li class="page-item">
+                    <a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;rilasci=&amp;zona=&amp;filtro_base=1&amp;filtro_sind=&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=2" rel="next" aria-label="Next Ã‚Â»">Ã¢â‚¬Âº</a>
+                </li></ul>
+    </nav>
+ 
+					<p class="p0 text-left">
+						<small>4013 nominativi filtrati</small>
+					</p>
+					<div class="form-check ml-2">
+					  <input class="form-check-input" type="checkbox" value="" id="selall">
+					  <label class="form-check-label" for="selall">
+						Seleziona tutti (nella pagina)
+					  </label>
+					</div>					
+
+					
+					
+					<div id="tbl_list_wrapper" class="dataTables_wrapper no-footer"><div class="dt-buttons"> </div></div></div><div id="tbl_list_filter" class="dataTables_filter"><label>Cerca nella pagina:<input type="search" class="" placeholder="" aria-controls="tbl_list"></label></div><table id="tbl_list" class="display dataTable no-footer" aria-describedby="tbl_list_info">
+						<thead>
+							<tr><th style="min-width: 80px; width: 80px;" class="sorting sorting_asc" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Operazioni: activate to sort column descending">Operazioni</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 200.833px;" aria-label="FRT: activate to sort column ascending">FRT</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 236.667px;" aria-label="Contatto: activate to sort column ascending">Contatto</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 34.3px;" aria-label="IBAN: activate to sort column ascending">IBAN</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 63.0667px;" aria-label="Giacenza: activate to sort column ascending">Giacenza</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 47.0833px;" aria-label="Codice: activate to sort column ascending">Codice</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 99.4px;" aria-label="Nominativo: activate to sort column ascending">Nominativo</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 76.0833px;" aria-label="Luogo nascita: activate to sort column ascending">Luogo nascita</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 57.5667px;" aria-label="Data nascita: activate to sort column ascending">Data nascita</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 131.683px;" aria-label="CF: activate to sort column ascending">CF</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 101.033px;" aria-label="LocalitÃƒ : activate to sort column ascending">LocalitÃƒ </th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 66.7333px;" aria-label="Provincia: activate to sort column ascending">Provincia</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 87.35px;" aria-label="Telefoni: activate to sort column ascending">Telefoni</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 70.25px;" aria-label="Sindacato: activate to sort column ascending">Sindacato</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 116.6px;" aria-label="Azienda: activate to sort column ascending">Azienda</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 53.4333px;" aria-label="Ente: activate to sort column ascending">Ente</th><th class="sorting" tabindex="0" aria-controls="tbl_list" rowspan="1" colspan="1" style="width: 45.25px;" aria-label="Zona: activate to sort column ascending">Zona</th></tr>
+						</thead>
+						<tbody>
+
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+													
+						<tr class="odd">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="574430">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_574430">
+																	
+									
+									
+									
+								<br></td>
+								<td id="contact574430">
+									 <i class="fas fa-square fa-sm mb-2" style="color: green"></i>									
+								
+								<br></td>
+								<td>
+									<span title="">S</span>								</td>
+								<td>
+									0								
+								</td>
+								<td>
+									5009929								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABBATELLI MATTIA&amp;comunenasc=ROMA&amp;pro=RM&amp;da_na=1997-07-08&amp;loc=ROMA&amp;via=VIA RAIMONDO SCINTU 92&amp;denom=ABBATELLI - S.R.L.&amp;codfisc=BBTMTT97L08H501B" target="_blank">ABBATELLI MATTIA</a>								</td>	
+
+								<td>
+									ROMA								</td>
+							
+								
+								<td>
+									1997-07-08								</td>
+
+								<td>
+									BBTMTT97L08H501B<br> <i class="fas fa-circle fa-sm mb-2" style="color: green;" title="Iscrizione altrove AREZZO - Filca"></i> <i class="far fa-circle fa-sm mb-2" style="color: #ff0000;" title="Iscrizione altrove AREZZO - Fillea"></i>									
+								</td>	
+								<td>
+									ROMA								</td>
+								<td>
+									RM								</td>
+								<td>
+																	
+								<br></td>
+																<td style="color:white;background-color:red">
+									FilleaCGIL								
+								</td>
+								<td title="15983051002">
+									<small><div class="d-inline bg-warning text-black"><b>1&nbsp;</b></div><div class="d-inline bg-danger text-light"><b>3&nbsp;</b></div><div class="d-inline bg-success text-light"><b>1&nbsp;</b></div><div class="d-inline bg-primary text-light"><b>0&nbsp;</b></div><div class="d-inline bg-secondary text-light"><b>0&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=15983051002" target="_blank">ABBATELLI - S.R.L.</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								POMEZIA								
+								<span id="id_ref574430" data-nome="ABBATELLI MATTIA" data-datanasc="1997-07-08" data-codfisc="BBTMTT97L08H501B" data-sindacato="1" data-ente="C" data-telefoni="" data-id_azienda="15983051002">
+								</span>
+								
+								</td>
+								
+							</tr><tr class="even">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="607572">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_607572">
+									 <i class="fas fa-square fa-sm mb-2" style="color: green" title="Nessuna sottoscrizione FRT"></i>								
+									
+									
+									
+								<br></td>
+								<td id="contact607572">
+									 <i class="fas fa-square fa-sm mb-2" style="color: green"></i>									
+								
+								<br></td>
+								<td>
+									<span title=""></span>								<br></td>
+								<td>
+									0								
+								</td>
+								<td>
+									5213984								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABBATINI CLAUDIO&amp;comunenasc=GENZANO DI ROMA&amp;pro=RM&amp;da_na=1982-11-13&amp;loc=GENZANO DI ROMA&amp;via=VIA ITALO BELARDI N. 81&amp;denom=SE.GI. S.P.A.&amp;codfisc=BBTCLD82S13D972X" target="_blank">ABBATINI CLAUDIO</a>								</td>	
+
+								<td>
+									GENZANO DI ROMA								</td>
+							
+								
+								<td>
+									1982-11-13								</td>
+
+								<td>
+									BBTCLD82S13D972X<br>									
+								</td>	
+								<td>
+									GENZANO DI ROMA								</td>
+								<td>
+									RM								</td>
+								<td>
+																	
+								<br></td>
+																<td style="background-color:yellow">
+									Libero								
+								</td>
+								<td title="02457280580">
+									<small><div class="d-inline bg-warning text-black"><b>28&nbsp;</b></div><div class="d-inline bg-danger text-light"><b>18&nbsp;</b></div><div class="d-inline bg-success text-light"><b>21&nbsp;</b></div><div class="d-inline bg-primary text-light"><b>9&nbsp;</b></div><div class="d-inline bg-secondary text-light"><b>0&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=02457280580" target="_blank">SE.GI. S.P.A.</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								ROMA NORD								
+								<span id="id_ref607572" data-nome="ABBATINI CLAUDIO" data-datanasc="1982-11-13" data-codfisc="BBTCLD82S13D972X" data-sindacato="0" data-ente="C" data-telefoni="" data-id_azienda="02457280580">
+								</span>
+								
+								</td>
+								
+							</tr><tr class="odd">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="607571">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_607571">
+									 <i class="fas fa-square fa-sm mb-2" style="color: green" title="Nessuna sottoscrizione FRT"></i>								
+									
+									
+									
+								<br></td>
+								<td id="contact607571">
+									 <i class="fas fa-square fa-sm mb-2" style="color: green"></i>									
+								
+								<br></td>
+								<td>
+									<span title=""></span>								<br></td>
+								<td>
+									0								
+								</td>
+								<td>
+									5213985								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABBATINI MARIO&amp;comunenasc=GENZANO DI ROMA&amp;pro=RM&amp;da_na=1981-08-06&amp;loc=ALBANO LAZIALE&amp;via=VIA LATINA N. 16&amp;denom=SE.GI. S.P.A.&amp;codfisc=BBTMRA81M06D972U" target="_blank">ABBATINI MARIO</a>								</td>	
+
+								<td>
+									GENZANO DI ROMA								</td>
+							
+								
+								<td>
+									1981-08-06								</td>
+
+								<td>
+									BBTMRA81M06D972U<br>									
+								</td>	
+								<td>
+									ALBANO LAZIALE								</td>
+								<td>
+									RM								</td>
+								<td>
+																	
+								<br></td>
+																<td style="background-color:yellow">
+									Libero								
+								</td>
+								<td title="02457280580">
+									<small><div class="d-inline bg-warning text-black"><b>28&nbsp;</b></div><div class="d-inline bg-danger text-light"><b>18&nbsp;</b></div><div class="d-inline bg-success text-light"><b>21&nbsp;</b></div><div class="d-inline bg-primary text-light"><b>9&nbsp;</b></div><div class="d-inline bg-secondary text-light"><b>0&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=02457280580" target="_blank">SE.GI. S.P.A.</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								ROMA NORD								
+								<span id="id_ref607571" data-nome="ABBATINI MARIO" data-datanasc="1981-08-06" data-codfisc="BBTMRA81M06D972U" data-sindacato="0" data-ente="C" data-telefoni="" data-id_azienda="02457280580">
+								</span>
+								
+								</td>
+								
+							</tr><tr class="even">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="607854">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_607854">
+																	
+									
+									
+									
+								<br></td>
+								<td id="contact607854">
+																		
+								
+								<br></td>
+								<td>
+									<span title=""></span>								<br></td>
+								<td>
+									0								
+								</td>
+								<td>
+									5212893								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABD AL WAHED HAMID ABD AL HAMID H&amp;comunenasc=EGITTO&amp;pro=LU&amp;da_na=1991-07-15&amp;loc=EGITTO)&amp;via=&amp;denom=MISS COSTRUZIONI SRLS&amp;codfisc=BDLHDB91L15Z336I" target="_blank">ABD AL WAHED HAMID ABD AL HAMID H</a>								</td>	
+
+								<td>
+									EGITTO								</td>
+							
+								
+								<td>
+									1991-07-15								</td>
+
+								<td>
+									BDLHDB91L15Z336I<br> <i class="fas fa-star fa-sm mb-2" style="color: #ffd700;" title="Edilcassa -  Non iscritto"></i>									
+								</td>	
+								<td>
+									EGITTO)								</td>
+								<td>
+									LU								</td>
+								<td>
+									+393510760763								
+								</td>
+																<td style="color:white;background-color:red">
+									FilleaCGIL								
+								</td>
+								<td title="17353611001">
+									<small><div class="d-inline bg-warning text-black"><b>&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=17353611001" target="_blank">MISS COSTRUZIONI SRLS</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								ROMA COL								
+								<span id="id_ref607854" data-nome="ABD AL WAHED HAMID ABD AL HAMID H" data-datanasc="1991-07-15" data-codfisc="BDLHDB91L15Z336I" data-sindacato="1" data-ente="C" data-telefoni="+393510760763 " data-id_azienda="17353611001">
+								</span>
+								
+								</td>
+								
+							</tr><tr class="odd">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="497369">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_497369">
+									 <i class="fas fa-square fa-sm mb-2" style="color: green" title="Nessuna sottoscrizione FRT"></i>								
+									
+									
+									
+								<br></td>
+								<td id="contact497369">
+																		
+								
+								<br></td>
+								<td>
+									<span title="">S</span>								</td>
+								<td>
+									0								
+								</td>
+								<td>
+									3211014								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABDAOUI FATHI&amp;comunenasc=TUNISIA&amp;pro=RM&amp;da_na=1963-02-20&amp;loc=FIUMICINO&amp;via=VIA VALDERDA 250&amp;denom=SA. SA. IMMOBILIARE SRL&amp;codfisc=BDAFTH63B20Z352P" target="_blank">ABDAOUI FATHI</a>								</td>	
+
+								<td>
+									TUNISIA								</td>
+							
+								
+								<td>
+									1963-02-20								</td>
+
+								<td>
+									BDAFTH63B20Z352P<br> <i class="fas fa-square fa-sm mb-2" style="color: #ff0000;" title="presenza servizi CGIL"></i>									
+								</td>	
+								<td>
+									FIUMICINO								</td>
+								<td>
+									RM								</td>
+								<td>
+									+393483893800								
+								</td>
+																<td style="color:white;background-color:green">
+									FilcaCISL								
+								</td>
+								<td title="12642191006">
+									<small><div class="d-inline bg-warning text-black"><b>0&nbsp;</b></div><div class="d-inline bg-danger text-light"><b>0&nbsp;</b></div><div class="d-inline bg-success text-light"><b>1&nbsp;</b></div><div class="d-inline bg-primary text-light"><b>0&nbsp;</b></div><div class="d-inline bg-secondary text-light"><b>0&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=12642191006" target="_blank">SA. SA. IMMOBILIARE SRL</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								ROMA NORD								
+								<span id="id_ref497369" data-nome="ABDAOUI FATHI" data-datanasc="1963-02-20" data-codfisc="BDAFTH63B20Z352P" data-sindacato="2" data-ente="C" data-telefoni="+393483893800 " data-id_azienda="12642191006">
+								</span>
+								
+								</td>
+								
+							</tr><tr class="even">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="607643">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_607643">
+									 <i class="fas fa-square fa-sm mb-2" style="color: green" title="Nessuna sottoscrizione FRT"></i>								
+									
+									
+									
+								<br></td>
+								<td id="contact607643">
+																		
+								
+								<br></td>
+								<td>
+									<span title=""></span>								<br></td>
+								<td>
+									0								
+								</td>
+								<td>
+									5213881								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABDEL FATTAH MOHAMED EUTH AL BADRY&amp;comunenasc=EGITTO&amp;pro=VT&amp;da_na=2004-01-19&amp;loc=MONTEFIASCONE&amp;via=VIA DELL" target="_blank">ABDEL FATTAH MOHAMED EUTH AL BADRY</a>								</td>	
+
+								<td>
+									EGITTO								</td>
+							
+								
+								<td>
+									2004-01-19								</td>
+
+								<td>
+									BDLLDR04A19Z336Q<br>									
+								</td>	
+								<td>
+									MONTEFIASCONE								</td>
+								<td>
+									VT								</td>
+								<td>
+																	
+								<br></td>
+																<td style="background-color:yellow">
+									Libero								
+								</td>
+								<td title="02282230511">
+									<small><div class="d-inline bg-warning text-black"><b>3&nbsp;</b></div><div class="d-inline bg-danger text-light"><b>0&nbsp;</b></div><div class="d-inline bg-success text-light"><b>0&nbsp;</b></div><div class="d-inline bg-primary text-light"><b>0&nbsp;</b></div><div class="d-inline bg-secondary text-light"><b>0&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=02282230511" target="_blank">ROSSI GROUP S.R.L.</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								ROMA NORD								
+								<span id="id_ref607643" data-nome="ABDEL FATTAH MOHAMED EUTH AL BADRY" data-datanasc="2004-01-19" data-codfisc="BDLLDR04A19Z336Q" data-sindacato="0" data-ente="C" data-telefoni="" data-id_azienda="02282230511">
+								</span>
+								
+								</td>
+								
+							</tr><tr class="odd">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="576030">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_576030">
+									 <i class="fas fa-square fa-sm mb-2" style="color: green" title="Nessuna sottoscrizione FRT"></i>								
+									
+									
+									
+								<br></td>
+								<td id="contact576030">
+																		
+								
+								<br></td>
+								<td>
+									<span title="">S</span>								</td>
+								<td>
+									0								
+								</td>
+								<td>
+									5026566								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABDELAZIZ FATHI GAMAL HEMEIDA&amp;comunenasc=EGITTO&amp;pro=RM&amp;da_na=1985-04-24&amp;loc=PALESTRINA&amp;via=VIA PRENESTINA NUOVA 279/A&amp;denom=SETIR S.R.L.S.&amp;codfisc=BDLFHG85D24Z336X" target="_blank">ABDELAZIZ FATHI GAMAL HEMEIDA</a>								</td>	
+
+								<td>
+									EGITTO								</td>
+							
+								
+								<td>
+									1985-04-24								</td>
+
+								<td>
+									BDLFHG85D24Z336X<br>									
+								</td>	
+								<td>
+									PALESTRINA								</td>
+								<td>
+									RM								</td>
+								<td>
+																	
+								<br></td>
+																<td style="background-color:yellow">
+									Libero								
+								</td>
+								<td title="03076840606">
+									<small><div class="d-inline bg-warning text-black"><b>3&nbsp;</b></div><div class="d-inline bg-danger text-light"><b>1&nbsp;</b></div><div class="d-inline bg-success text-light"><b>1&nbsp;</b></div><div class="d-inline bg-primary text-light"><b>1&nbsp;</b></div><div class="d-inline bg-secondary text-light"><b>0&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=03076840606" target="_blank">SETIR S.R.L.S.</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								ROMA NORD								
+								<span id="id_ref576030" data-nome="ABDELAZIZ FATHI GAMAL HEMEIDA" data-datanasc="1985-04-24" data-codfisc="BDLFHG85D24Z336X" data-sindacato="0" data-ente="C" data-telefoni="" data-id_azienda="03076840606">
+								</span>
+								
+								</td>
+								
+							</tr><tr class="even">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="607801">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_607801">
+									 <i class="fas fa-square fa-sm mb-2" style="color: #ff0000;" title="FRT altrove"></i>								
+									
+									
+									
+								<br></td>
+								<td id="contact607801">
+																		
+								
+								<br></td>
+								<td>
+									<span title=""></span>								<br></td>
+								<td>
+									0								
+								</td>
+								<td>
+									5213661								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABDELHALIM REDA MAGHAWRI ELSEN&amp;comunenasc=EGITTO&amp;pro=MI&amp;da_na=1993-05-03&amp;loc=MILANO&amp;via=VIA BESSARIONE 42&amp;denom=GSM CONTINENTAL LAVORI E SERVIZI SRL&amp;codfisc=BDLRMG93E03Z336I" target="_blank">ABDELHALIM REDA MAGHAWRI ELSEN</a>								</td>	
+
+								<td>
+									EGITTO								</td>
+							
+								
+								<td>
+									1993-05-03								</td>
+
+								<td>
+									BDLRMG93E03Z336I<br>									
+								</td>	
+								<td>
+									MILANO								</td>
+								<td>
+									MI								</td>
+								<td>
+									+393884216215								
+								</td>
+																<td style="background-color:yellow">
+									Libero								
+								</td>
+								<td title="14499041003">
+									<small><div class="d-inline bg-warning text-black"><b>3&nbsp;</b></div><div class="d-inline bg-danger text-light"><b>2&nbsp;</b></div><div class="d-inline bg-success text-light"><b>1&nbsp;</b></div><div class="d-inline bg-primary text-light"><b>0&nbsp;</b></div><div class="d-inline bg-secondary text-light"><b>0&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=14499041003" target="_blank">GSM CONTINENTAL LAVORI E SERVIZI SRL</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								ROMA COL								
+								<span id="id_ref607801" data-nome="ABDELHALIM REDA MAGHAWRI ELSEN" data-datanasc="1993-05-03" data-codfisc="BDLRMG93E03Z336I" data-sindacato="0" data-ente="C" data-telefoni="+393884216215 " data-id_azienda="14499041003">
+								</span>
+								
+								</td>
+								
+							</tr><tr class="odd">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="607609">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_607609">
+									 <i class="fas fa-square fa-sm mb-2" style="color: green" title="Nessuna sottoscrizione FRT"></i>								
+									
+									
+									
+								<br></td>
+								<td id="contact607609">
+																		
+								
+								<br></td>
+								<td>
+									<span title=""></span>								<br></td>
+								<td>
+									0								
+								</td>
+								<td>
+									5213920								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABDELHAMID ALY FAWZY ALY&amp;comunenasc=EGITTO&amp;pro=RM&amp;da_na=1988-02-15&amp;loc=ROMA&amp;via=VIA DEL VERZELLINO ,5&amp;denom=COSTRUZIONI MIRON SRLS&amp;codfisc=BDLLFW88B15Z336O" target="_blank">ABDELHAMID ALY FAWZY ALY</a>								</td>	
+
+								<td>
+									EGITTO								</td>
+							
+								
+								<td>
+									1988-02-15								</td>
+
+								<td>
+									BDLLFW88B15Z336O<br>									
+								</td>	
+								<td>
+									ROMA								</td>
+								<td>
+									RM								</td>
+								<td>
+																	
+								<br></td>
+																<td style="background-color:yellow">
+									Libero								
+								</td>
+								<td title="16904361009">
+									<small><div class="d-inline bg-warning text-black"><b>&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=16904361009" target="_blank">COSTRUZIONI MIRON SRLS</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								POMEZIA								
+								<span id="id_ref607609" data-nome="ABDELHAMID ALY FAWZY ALY" data-datanasc="1988-02-15" data-codfisc="BDLLFW88B15Z336O" data-sindacato="0" data-ente="C" data-telefoni="" data-id_azienda="16904361009">
+								</span>
+								
+								</td>
+								
+							</tr><tr class="even">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="607562">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_607562">
+																	
+									
+									
+									
+								<br></td>
+								<td id="contact607562">
+																		
+								
+								<br></td>
+								<td>
+									<span title=""></span>								<br></td>
+								<td>
+									0								
+								</td>
+								<td>
+									5213999								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABDELLATIF HESHAM MOHAMMAD ALI&amp;comunenasc=EGITTO&amp;pro=MI&amp;da_na=1996-09-30&amp;loc=MILANO&amp;via=VIA DEI BIANCOSPINI 2&amp;denom=GL APPALTI SRL&amp;codfisc=BDLHHM96P30Z336X" target="_blank">ABDELLATIF HESHAM MOHAMMAD ALI</a>								</td>	
+
+								<td>
+									EGITTO								</td>
+							
+								
+								<td>
+									1996-09-30								</td>
+
+								<td>
+									BDLHHM96P30Z336X<br>									
+								</td>	
+								<td>
+									MILANO								</td>
+								<td>
+									MI								</td>
+								<td>
+																	
+								<br></td>
+																<td style="background-color:yellow">
+									Libero								
+								</td>
+								<td title="15541221006">
+									<small><div class="d-inline bg-warning text-black"><b>2&nbsp;</b></div><div class="d-inline bg-danger text-light"><b>0&nbsp;</b></div><div class="d-inline bg-success text-light"><b>0&nbsp;</b></div><div class="d-inline bg-primary text-light"><b>0&nbsp;</b></div><div class="d-inline bg-secondary text-light"><b>0&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=15541221006" target="_blank">GL APPALTI SRL</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								ROMA COL								
+								<span id="id_ref607562" data-nome="ABDELLATIF HESHAM MOHAMMAD ALI" data-datanasc="1996-09-30" data-codfisc="BDLHHM96P30Z336X" data-sindacato="0" data-ente="C" data-telefoni="" data-id_azienda="15541221006">
+								</span>
+								
+								</td>
+								
+							</tr><tr class="odd">
+
+								<td style="min-width:80px;text-align:center" class="sorting_1">
+									<input class="form-check-input selezione" type="checkbox" value="598724">
+								
+									<a>
+										<i class="ml-2 fas fa-user-edit fa-lg" title="Imposta note"></i>
+									</a>
+									
+									
+									
+
+									
+								</td>
+								<td id="frt_598724">
+									 <i class="fas fa-square fa-sm mb-2" style="color: green" title="Nessuna sottoscrizione FRT"></i>								
+									
+									
+									
+								<br></td>
+								<td id="contact598724">
+																		
+								
+								<br></td>
+								<td>
+									<span title=""></span>								<br></td>
+								<td>
+									818								
+								</td>
+								<td>
+									5204151								
+								</td>
+
+								
+								<td style="background-color:gold">
+									<a href="http://www.filleaoffice.it/FO/deleghe/LAZI/menu.php?nome=ABDELMAWLA BAKRY MOETAMED ABDEL&amp;comunenasc=EGITTO&amp;pro=MI&amp;da_na=1989-06-28&amp;loc=MILANO&amp;via=VIA TREVISO, 4&amp;denom=WALL STARS S.R.L.&amp;codfisc=BDLBRY89H28Z336A" target="_blank">ABDELMAWLA BAKRY MOETAMED ABDEL</a>								</td>	
+
+								<td>
+									EGITTO								</td>
+							
+								
+								<td>
+									1989-06-28								</td>
+
+								<td>
+									BDLBRY89H28Z336A<br>									
+								</td>	
+								<td>
+									MILANO								</td>
+								<td>
+									MI								</td>
+								<td>
+																	
+								<br></td>
+																<td style="background-color:yellow">
+									Libero								
+								</td>
+								<td title="01860090339">
+									<small><div class="d-inline bg-warning text-black"><b>&nbsp;</b></div></small><br><a href="https://www.filleaoffice.it/anagrafe/pages/consultazioni/consultazioni.php?tb_fo=t4_lazi_a&amp;p_iva=01860090339" target="_blank">WALL STARS S.R.L.</a><a><i class="fas fa-sign-in-alt fa-xs ml-2"></i></a>								
+								</td>
+								<td>
+									cassaedile								
+								</td>
+								<td>
+								ROMA NORD								
+								</td></tr></tbody></table></div></div>	
+							<div class="div_al" id="div_al1" role="alert" style="border:solid 1px"><b><i>#ID Messaggio:</i> 1 del : 2024-04-05 17:16:59</b><button type="button" class="ml-3 mt-2 btn btn-info btn-sm" onclick="$('#div_al1').hide(100)">Chiudi alert</button><hr><font color="#000000" style="background-color: rgb(255, 255, 0);">test inserimento</font> <a href="http://www.google.it" target="_blank">messaggio</a> <u>per la zona</u><br></div>	
+					</div>
+		
+
+		
+		<form method="post" action="" id="frm_tab" name="frm_tab" autocomplete="off">
+		<input name="_token" type="hidden" value="z1PJi414Bm2T1mfHIRefoXAJLKCJlyHsAY6vNibD" id="token_csrf">	  
+
+		<div id="div_intest" style="display:none">
+			<input type="hidden" name="ref_ordine" id="ref_ordine" value="">
+			<input type="hidden" value="http://localhost:8012/rmview/public" id="url" name="url">
+			<input type="hidden" name="cerca_nome" id="cerca_nome">
+			<input type="hidden" name="cerca_denom" id="cerca_denom" value="">
+			
+			<input type="hidden" name="elem_sele" id="elem_sele" value="">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			
+			<button onclick="show_extra()" id="btn_extra" type="button" class="btn btn-outline-primary btn-sm">Nascondi extra</button>
+			
+			
+			<button onclick="location.href='main_view'" type="button" class="btn btn-outline-success btn-sm ml-3">Azzera filtri</button>
+						
+			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+
+
+			  <div class="collapse navbar-collapse" id="navbarText">
+				<ul class="navbar-nav mr-auto">
+				  <li class="nav-item">
+					<a class="nav-link" href="#">Tabulati</a>
+				  </li>
+
+					<select class="form-select select2" name="rilasci[]" id="rilasci" data-placeholder="Periodi di rilascio dei tabulati" multiple="" style="width:400px" onchange="$('#frm_tab').submit()">
+				
+
+					<option value="tab">Nuovi assunti da confronto tabulato</option><option value="all" selected="">Nuovi assunti mediante storicitÃ </option><option value="09-20235">09-2023 (CE) (EC)</option><option value="08-20235">08-2023 (CE) (EC)</option><option value="07-20235">07-2023 (CE) (EC)</option><option value="06-20235">06-2023 (CE) (EC)</option><option value="05-20235">05-2023 (CE) (EC)</option><option value="04-20235">04-2023 (CE) (EC)</option><option value="03-20235">03-2023 (CE) (EC)</option><option value="02-20235">02-2023 (CE) (EC)</option><option value="01-20235">01-2023 (CE) (EC)</option><option value="12-20224">12-2022 (CE) (EC)</option><option value="11-20224">11-2022 (CE) (EC)</option><option value="10-20224">10-2022 (CE)</option><option value="09-20224">09-2022 (CE) (EC)</option><option value="08-20224">08-2022 (CE) (EC)</option><option value="07-20224">07-2022 (CE) (EC)</option><option value="06-20224">06-2022 (CE) (EC)</option><option value="05-20224">05-2022 (CE)</option><option value="04-20224">04-2022 (CE)</option><option value="03-20224">03-2022 (CE) (EC)</option><option value="02-20224">02-2022 (CE) (EC)</option><option value="01-20224">01-2022 (CE) (EC)</option><option value="12-20213">12-2021 (CE)</option><option value="11-20213">11-2021 (CE)</option><option value="10-20213">10-2021 (CE) (EC)</option><option value="09-20213">09-2021 (CE)</option><option value="08-20213">08-2021 (CE) (EC)</option><option value="07-20213">07-2021 (CE) (EC)</option><option value="06-20213">06-2021 (CE)</option><option value="05-20213">05-2021 (CE)</option><option value="04-20213">04-2021 (CE) (EC)</option><option value="03-20213">03-2021 (CE)</option><option value="02-20213">02-2021 (CE)</option><option value="01-20213">01-2021 (CE) (EC)</option><option value="12-20202">12-2020 (CE) (EC)</option><option value="11-20202">11-2020 (CE)</option><option value="10-20202">10-2020 (CE)</option><option value="09-20202">09-2020 (CE)</option><option value="08-20202">08-2020 (CE) (EC)</option><option value="07-20202">07-2020 (CE)</option><option value="06-20202">06-2020 (CE) (EC)</option><option value="05-20202">05-2020 (CE)</option><option value="04-20202">04-2020 (CE) (EC)</option><option value="03-20202">03-2020 (CE) (EC)</option><option value="02-20202">02-2020 (CE) (EC)</option><option value="01-20202">01-2020 (CE) (EC)</option><option value="12-20191">12-2019 (CE)</option><option value="11-20191">11-2019 (CE) (EC)</option><option value="10-20191">10-2019 (CE) (EC)</option><option value="09-20191">09-2019 (CE) (EC)</option><option value="08-20191">08-2019 (CE)</option><option value="07-20191">07-2019 (CE)</option><option value="06-20191">06-2019 (CE)</option><option value="05-20191">05-2019 (CE)</option><option value="04-20191">04-2019 (CE)</option><option value="03-20191">03-2019 (CE) (EC)</option><option value="02-20191">02-2019 (CE)</option><option value="01-20191">01-2019 (CE)</option>					</select>
+					<li>
+					</li><li class="nav-item">
+						<a class="nav-link" href="#">Zone</a>
+					</li>					
+	
+					<select class="form-select select2" name="zona[]" id="zona" data-placeholder="Filtro zona" multiple="" style="width:200px" onchange="$('#frm_tab').submit()">
+				
+					
+					<option value="all" selected="">[Tutte]</option><option value="POMEZIA">POMEZIA</option><option value="ROMA COL">ROMA COL</option><option value="ROMA EST">ROMA EST</option><option value="ROMA NORD">ROMA NORD</option>					</select>
+					
+										<li class="nav-item">
+						<a class="nav-link" href="#">Sindacato</a>
+					</li>						
+					<select class="form-select select2" name="filtro_sind[]" id="filtro_sind" data-placeholder="Filtro sindacato" onchange="$('#frm_tab').submit()" style="width:200px" multiple="">
+						<option value="all" selected="">[Tutti]</option>
+						<option value="0">Liberi</option>
+						<option value="1">Fillea CGIL</option>
+						<option value="2">Filca CISL</option>
+						<option value="3">Feneal UIL</option>
+						<option value="ns">Non Specificati</option>							
+						
+					</select>
+					
+
+
+					
+				<div class="col-lg-2 ml-4">
+					<div class="form-check form-switch">
+					  <input class="form-check-input" type="checkbox" id="incroci" name="incroci" onchange="$('#frm_tab').submit()">
+					  <label class="form-check-label" for="incroci">Incroci 1A</label>
+					</div>
+				</div>	
+
+						
+				<div class="col-lg-2 ml-2">
+					<div class="form-check form-switch">
+					  <input class="form-check-input" type="checkbox" id="solo_servizi" name="solo_servizi" onchange="$('#frm_tab').submit()">
+					  <label class="form-check-label" for="solo_servizi">Solo con servizi</label>
+					</div>
+				</div>				
+				
+					
+
+				</ul>
+				
+				<span class="navbar-text">
+					Nominativi per pagina 
+				</span>				
+				
+				<select class="form-select form-select-xs ml-2" aria-label=".form-select-lg" style="width:200px" name="per_page" id="per_page" onchange="$('#frm_tab').submit()">
+					
+					<option value="20">20</option>
+					<option value="50" selected="">50</option>
+					<option value="100">100</option>
+					<option value="200">200</option>
+					<option value="500">500</option>
+					<option value="1000">1000</option>
+					<option value="2000">2000</option>
+					<option value="3000">3000</option>					
+
+				</select>
+			  </div>
+			  
+
+			</nav>
+			<div class="row mb-1 mt-1">
+				<div class="col-md-2"> 
+					<div class="form-floating mb-3 mb-md-0">
+						
+						<select class="form-select" name="filtro_ente" id="filtro_ente" data-placeholder="Filtro ente" onchange="$('#frm_tab').submit()">
+							<option value="all" selected="">[Tutti]</option>
+							<option value="C">CassaEdile</option>
+							<option value="A">Edilcassa</option>
+						</select>
+						<label for="filtro_ente">Ente</label>
+					</div>
+			  </div>
+			  
+
+						
+				<div class="col-lg-2 ml-4">
+					<div class="form-check form-switch">
+					  <input class="form-check-input" type="checkbox" id="ente_altrove" name="ente_altrove" onchange="$('#frm_tab').submit()">
+					  <label class="form-check-label" for="ente_altrove">Filtro ente altrove</label>
+					</div>
+				</div>	
+			  
+
+				<div class="col-md-2">
+					<div class="form-floating mb-3 mb-md-0">
+						
+						<select class="form-select" name="filtro_tel" id="filtro_tel" data-placeholder="Filtro telefoni" onchange="$('#frm_tab').submit()">
+							<option value="all" selected="">[Tutti]</option>
+							<option value="0">Senza telefoni</option>
+							<option value="1">Con telefoni (mostrati solo i validi)</option>
+						</select>
+						<label for="filtro_tel">Telefoni</label>
+					</div>
+			  </div>	
+			  
+				<div class="col-md-2">
+					<div class="form-floating mb-3 mb-md-0">
+						
+						<select class="form-select" name="filtro_giac" id="filtro_giac" data-placeholder="Filtro giacenza" onchange="$('#frm_tab').submit()">
+							<option value="all" selected="">[Tutti]</option>
+							<option value="0">Senza giacenza</option>
+							<option value="1">Con giacenza</option>
+						</select>
+						<label for="filtro_giac">Giacenza</label>
+					</div>
+			  </div>	
+
+				<div class="col-md-3">
+					<div class="form-floating mb-3 mb-md-0">
+						
+						<select class="form-select" name="filtro_iban" id="filtro_iban" data-placeholder="Filtro IBAN" onchange="$('#frm_tab').submit()">
+							<option value="all" selected="">[Tutti]</option>
+							<option value="0">Senza IBAN</option>
+							<option value="1">Con IBAN</option>
+						</select>
+						<label for="filtro_iban">IBAN</label>
+					</div>
+			  </div>				  
+			  
+			  
+			</div>  
+			
+			<div class="filtri mb-3" id="div_filtri">
+				<div class="alert alert-info p-1" role="alert">
+				  <small>Filtri selettivi (Questi filtri disattivano gli altri filtri impostati)</small>
+				</div>
+				<div class="row">
+						
+					<div class="col-lg-2 ml-4">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="solo_contatti" name="solo_contatti" onchange="$('#frm_tab').submit()">
+						  <label class="form-check-label" for="solo_contatti">Solo contattati</label>
+						</div>
+					</div>
+					
+						
+					<div class="col-lg-2">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="solo_miei_contatti" name="solo_miei_contatti" onchange="$('#frm_tab').submit()">
+						  <label class="form-check-label" for="solo_miei_contatti">Solo miei contattati</label>
+						</div>
+					</div>
+					
+
+				
+											
+					<div class="col-lg-2">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="solo_non_contatti" name="solo_non_contatti" onchange="$('#frm_tab').submit()">
+						  <label class="form-check-label" for="solo_non_contatti">Solo non contattati</label>
+						</div>
+					</div>					
+
+
+
+											
+					<!--
+					<div class="col-lg-2">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="solo_fillea" name="solo_fillea" onchange="$('#frm_tab').submit()" >
+						  <label class="form-check-label" for="solo_fillea">Fillea altrove</label>
+						</div>
+					</div>
+					!-->
+
+
+					<div class="col-md-2">
+					  <div class="form-floating mb-3 mb-md-0">
+						<select class="form-select" id="solo_frt" aria-label="solo_frt" name="solo_frt" onchange="$('#frm_tab').submit()">
+							<option value="0">Nessuna selezione</option>
+							<option value="1">Solo FRT</option>
+							<option value="2">Solo FRT RM</option>
+							<option value="3">Solo FRT altrove</option>
+						</select>
+						<label for="solo_frt">Opzioni FRT</label>
+						</div>
+					</div>					
+					
+				</div>
+
+				
+				<div class="row">
+
+										
+					<div class="col-lg-2 ml-4">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="filtro_sele" name="filtro_sele" onchange="$('#elem_sele').val(localStorage.elem_sele);$('#frm_tab').submit()">
+						  <label class="form-check-label" for="filtro_sele">Filtra selezionati</label>
+							
+							<div id="div_alert_sele" style="display:none" class="mb-3">
+								<span class="ml-3">
+									<font color="blue">
+										Selezione attiva
+									</font>
+									<button type="button" class="btn btn-primary ml-3" onclick="dele_sele()">Annulla selezione</button>
+								</span>
+							</div>
+						
+						
+						</div>
+					</div>	
+
+						
+					<div class="col-lg-2">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="view_null" name="view_null" onchange="$('#frm_tab').submit()">
+						  <label class="form-check-label" for="view_null">No righe nulle</label>
+						</div>
+					</div>
+						
+					<div class="col-lg-2">
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="tipo_ord" name="tipo_ord" onchange="$('#frm_tab').submit()">
+						  <label class="form-check-label" for="tipo_ord">Ordinamento decrescente</label>
+						</div>
+					</div>
+					
+
+					
+				</div>	
+				
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="input-group mb-3">
+						  <span class="input-group-text" id="basic-addon1">Ricerca rapida Nominativo</span>
+						  <input type="text" name="c_all" id="c_all" class="form-control" placeholder="Cerca Nominativo globalmente">
+						</div>
+						
+						<div id="resp_cerca_o"></div>			
+					</div>
+					<div class="col-lg-6">
+						<div class="input-group mb-3">
+						  <span class="input-group-text" id="basic-addon1">Ricerca rapida Azienda</span>
+						  <input type="text" name="a_all" id="a_all" class="form-control" placeholder="Cerca Azienda globalmente">
+					
+						</div>
+						
+						<div id="resp_cerca_a"></div>			
+					</div>					
+				</div>
+				
+			
+			</div>
+		</div>	
+			
+
+			
+				<div id="div_main">
+								
+				
+					<nav>
+        <ul class="pagination">
+            
+                            <li class="page-item">
+                    <a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=1" rel="prev" aria-label="Â« Previous">â€¹</a>
+                </li>
+            
+            
+                            
+                
+                
+                                                                                        <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=1">1</a></li>
+                                                                                                <li class="page-item active" aria-current="page"><span class="page-link">2</span></li>
+                                                                                                <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=3">3</a></li>
+                                                                                                <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=4">4</a></li>
+                                                                                                <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=5">5</a></li>
+                                                                                                <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=6">6</a></li>
+                                                                                                <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=7">7</a></li>
+                                                                                                <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=8">8</a></li>
+                                                                                                <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=9">9</a></li>
+                                                                                                <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=10">10</a></li>
+                                                                                        
+                                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+                
+                
+                                            
+                
+                
+                                                                                        <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=80">80</a></li>
+                                                                                                <li class="page-item"><a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=81">81</a></li>
+                                                                        
+            
+                            <li class="page-item">
+                    <a class="page-link" href="http://localhost:8012/rmview/public/main_view?view_null=0&amp;per_page=50&amp;filtro_sele=0&amp;filtro_base=1&amp;solo_contatti=0&amp;solo_miei_contatti=0&amp;solo_frt=0&amp;solo_non_contatti=0&amp;solo_fillea=0&amp;solo_servizi=0&amp;incroci=0&amp;ente_altrove=0&amp;page=3" rel="next" aria-label="Next Â»">â€º</a>
+                </li>
+                    </ul>
+    </nav>
+ 
+					<p class="p0 text-left">
+						<small>4013 nominativi filtrati</small>
+					</p>
+					<div class="form-check ml-2">
+					  <input class="form-check-input" type="checkbox" value="" id="selall" onchange="sel_all()">
+					  <label class="form-check-label" for="selall">
+						Seleziona tutti (nella pagina)
+					  </label>
+					</div>					
+
+					
+					
+					<table id="tbl_list" class="display">
+						<thead>
+							<tr>
+								<th style="min-width:80px

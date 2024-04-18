@@ -650,6 +650,7 @@ function render_all(data) {
 		<thead>
 			<tr>
 				<th>Nominativo</th>
+				<th>Ente</th>
 				<th>Nato il</th>
 				<th>Codice fiscale</th>
 				<th>Località</th>
@@ -661,8 +662,12 @@ function render_all(data) {
 			for (sca=0;sca<=obj.length-1;sca++) {
 				id_anagr=obj[sca].id_anagr
 				nome="";datanasc="";codfisc="";loc="";pro="";tel="";
+				ente="";
 				if (obj[sca].nome) nome=obj[sca].nome
-				
+				if (obj[sca].ente) ente=obj[sca].ente
+				ente_descr=""
+				if (ente=="C") ente_descr="Cassa Edile"
+				if (ente=="A") ente_descr="Edilcassa"
 				if (obj[sca].datanasc) datanasc=obj[sca].datanasc
 				if (obj[sca].codfisc) codfisc=obj[sca].codfisc
 				if (obj[sca].loc) loc=obj[sca].loc
@@ -673,6 +678,7 @@ function render_all(data) {
 					<td>
 						<button type="submit" name='nome_speed' class="btn  btn-primary btn-sm btn-block" onclick="$('#cerca_nome').val(`+id_anagr+`)">`+nome+`</button>
 					</td>
+					<td>`+ente_descr+`</td>
 					<td>`+datanasc+`</td>
 					<td>`+codfisc+`</td>
 					<td>`+loc+`</td>
