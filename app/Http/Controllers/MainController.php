@@ -391,6 +391,8 @@ public function __construct()
 		
 		if ($solo_frt=="2") $cond.=" and frt.tb_user='t4_lazi_a' ";
 		if ($solo_frt=="3") $cond.=" and frt.tb_user<>'t4_lazi_a' ";
+		if ($solo_frt=="4") $cond.=" and (frt.id is null or frt.tb_user<>'t4_lazi_a') ";
+		if ($solo_frt=="5") $cond.=" and frt.id is null ";
 		
 		if ($solo_servizi=="1") $cond.=" and (`rm`.fisco=1 or `rm`.inca=1) ";
 		
@@ -406,8 +408,11 @@ public function __construct()
 		->when(strlen($filtro_ente)!=0 && $filtro_ente!="all" && $ente_altrove=="1", function($tabulato) {
 			return $tabulato->join('anagrafe.t4_lazi_a as rm1','rm.codfisc','rm1.codfisc');
 		})
-		->when($solo_frt>0, function($tabulato){
-			return $tabulato->join('frt.generale as frt','frt.codfisc','rm.codfisc');
+		->when($solo_frt>0, function($tabulato) use ($solo_frt) {
+			if ($solo_frt==4 || $solo_frt==5)
+				return $tabulato->leftjoin('frt.generale as frt','frt.codfisc','rm.codfisc');
+			else 
+				return $tabulato->join('frt.generale as frt','frt.codfisc','rm.codfisc');
 		})
 		->whereRaw($cond)
 		->when($filtro_p=="0", function ($tabulato) {			

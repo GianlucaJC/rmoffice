@@ -527,6 +527,12 @@
 							<option value=3 
 							@if ($solo_frt=="3") selected @endif
 							>Solo FRT altrove</option>
+							<option value=4
+							@if ($solo_frt=="4") selected @endif
+							>Solo non FRT RM</option>
+							<option value=5
+							@if ($solo_frt=="5") selected @endif
+							>Solo non FRT ovunque</option>
 						</select>
 						<label for="solo_frt">Opzioni FRT</label>
 						</div>
