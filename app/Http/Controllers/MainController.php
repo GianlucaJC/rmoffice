@@ -409,10 +409,20 @@ public function __construct()
 			return $tabulato->join('anagrafe.t4_lazi_a as rm1','rm.codfisc','rm1.codfisc');
 		})
 		->when($solo_frt>0, function($tabulato) use ($solo_frt) {
-			if ($solo_frt==4 || $solo_frt==5)
-				return $tabulato->leftjoin('frt.generale as frt','frt.codfisc','rm.codfisc');
-			else 
-				return $tabulato->join('frt.generale as frt','frt.codfisc','rm.codfisc');
+			if ($solo_frt==4 || $solo_frt==5) {
+				$tabulato->leftJoin('frt.generale as frt', function($join) {
+					$join->on('frt.nome','=','rm.nome');
+					$join->on('frt.natoil','=','rm.datanasc');
+				});
+				return $tabulato;
+			}
+			else {
+				$tabulato->join('frt.generale as frt', function($join) {
+					$join->on('frt.nome','=','rm.nome');
+					$join->on('frt.natoil','=','rm.datanasc');
+				});
+				return $tabulato;
+			}
 		})
 		->whereRaw($cond)
 		->when($filtro_p=="0", function ($tabulato) {			
