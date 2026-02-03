@@ -59,7 +59,15 @@ public function __construct()
 		echo "<hr>F3398:".bcrypt('ROMA45ZZ');
 		echo "<hr>F3484:".bcrypt('EC567LOM');
 		echo "<hr>F3523:".bcrypt('RM7384BX');
+		echo "<hr>F3523:".bcrypt('RM7384BX');
+		echo "<hr>F3586:".bcrypt('FRA22FRA');
+		echo "<hr>F3587:".bcrypt('85067');
+		echo "<hr>F3637:".bcrypt('PAS92QUI');
+		echo "<hr>F3672:".bcrypt('FILIROM9');
+		echo "<hr>F3673:".bcrypt('AUROM987');
 		*/
+		
+		
 		
 		
 		$this->middleware('auth')->except(['index']);
@@ -751,47 +759,50 @@ public function __construct()
 	}
 	
 	public function info_fgo($tabulato) {
-		$fgo=array();
-		
-		foreach ($tabulato as $tab)	{
-			$sca=0;
-			$id_azienda=$tab->C2;
-				
-			//function ereditata da nuovi assunti
-			if (strlen($id_azienda)==0) continue;
-			$azienda=addslashes($id_azienda);
-			/*
-			$presenza=DB::statement("SELECT count(S.id) q FROM `filleago`.`aziende_segnalazioni` A_S
-			INNER JOIN `filleago`.`segnalazioni` S ON A_S.id_segnalazione=S.id
-			WHERE A_S.id_azienda='$id_azienda' and (fine_lavori is null or fine_lavori>=CURDATE()) and A_S.tb_fo is not null  
-			GROUP BY S.id;");
-			*/
+        if ($tabulato->isEmpty()) {
+            return [];
+        }
 
-			
-			$presenza=DB::table('filleago.aziende_segnalazioni as A_S')
-			->join("filleago.segnalazioni as S","A_S.id_segnalazione","S.id")
-			->select("S.id")
-			->where('A_S.id_azienda','=',$id_azienda)
-			->where(function ($count) {
-				$count->whereRaw("S.fine_lavori is null")
-				->orWhereRaw("S.fine_lavori>=curdate()");
-			})
-			->count();
+        $aziendeIds = $tabulato->pluck('C2')->filter()->unique()->all();
+        if (empty($aziendeIds)) {
+            return [];
+        }
 
+        // Get counts from 'aziende_segnalazioni'
+        $presenzaCounts = DB::table('filleago.aziende_segnalazioni as A_S')
+            ->join("filleago.segnalazioni as S", "A_S.id_segnalazione", "S.id")
+            ->select('A_S.id_azienda', DB::raw('count(S.id) as count'))
+            ->whereIn('A_S.id_azienda', $aziendeIds)
+            ->where(function ($query) {
+                $query->whereNull('S.fine_lavori')
+                    ->orWhere('S.fine_lavori', '>=', now()->toDateString());
+            })
+            ->groupBy('A_S.id_azienda')
+            ->pluck('count', 'id_azienda');
 
-			
-			//controllo esistenza azienda in archivio aziende (distinte) di FGO
-			
-			$count=DB::table('filleago.aziende')
-			->where('p_iva','=',$id_azienda)
-			->orWhere('cod_fisc','=',$id_azienda)
-			->count();
-			if ($count==0) $presenza=0;
+        // Get existing 'aziende' from FGO
+        $aziendeInFgo = DB::table('filleago.aziende')
+            ->where(function ($query) use ($aziendeIds) {
+                $query->whereIn('p_iva', $aziendeIds)
+                    ->orWhereIn('cod_fisc', $aziendeIds);
+            })
+            ->select('p_iva', 'cod_fisc')
+            ->get();
+        $existingAziende = $aziendeInFgo->pluck('p_iva')->merge($aziendeInFgo->pluck('cod_fisc'))->filter()->unique()->flip();
 
-			if ($presenza!=0) $fgo[$tab->ID_anagr]=$presenza;
-		}	
-		return $fgo;
-		
+        $fgo = [];
+        foreach ($tabulato as $tab) {
+            $id_azienda = $tab->C2;
+            if (!$id_azienda) continue;
+
+            if ($existingAziende->has($id_azienda) && $presenzaCounts->has($id_azienda)) {
+                $presenza = $presenzaCounts->get($id_azienda);
+                if ($presenza > 0) {
+                    $fgo[$tab->ID_anagr] = $presenza;
+                }
+            }
+        }
+        return $fgo;
 	}
 	
 	public function calc_sto_tab() {

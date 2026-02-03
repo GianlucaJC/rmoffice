@@ -1005,21 +1005,21 @@
 					</div>	
 					
 					<div class='row mb-2'>
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<div class="form-floating">
 								<input class="form-control" id="codfisc_frt" name='codfisc_frt' type="text" placeholder="CF" maxlength=16 required />
 								<label for="codfisc_frt">Codice Fiscale*</label>
 							</div>
 						</div>
 
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<div class="form-floating">
 								<input class="form-control" id="tel_frt" name='tel_frt' type="text" placeholder="Telefono" maxlength=50 required />
 								<label for="tel_frt">Telefono*</label>
 							</div>
 						</div>
 
-						<div class="col-md-4">
+						<div class="col-md-3">
 						  <div class="form-floating mb-3 mb-md-0">
 							<select class="form-select" id="sesso_frt" aria-label="Sesso" name='sesso_frt' required>
 								<option value=''>Select...</option>
@@ -1031,9 +1031,18 @@
 							<label for="sesso_frt">Sesso*</label>
 							</div>
 						</div>
-						<input type='hidden' name='sind_frt' id='sind_frt'>
-						<input type='hidden' name='ente_frt' id='ente_frt'>
 
+						<div class="col-md-3">
+							<div class="form-floating mb-3 mb-md-0">
+								<select class="form-select" id="ente_frt" name="ente_frt" required>
+									<option value="">Select...</option>
+									<option value="C">Cassa Edile</option>
+									<option value="A">Edilcassa</option>
+								</select>
+								<label for="ente_frt">Ente*</label>
+							</div>
+						</div>
+						<input type='hidden' name='sind_frt' id='sind_frt'>
 					</div>
 					<div class='row mb-2 ml-3'>
 						<div class="form-check form-switch">
@@ -1360,4 +1369,3 @@
 	<script src="{{ URL::asset('/') }}dist/js/main.js?ver=1.168"></script>
 
 @endsection
-
