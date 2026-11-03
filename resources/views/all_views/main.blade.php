@@ -677,11 +677,7 @@
 						<tbody>
 
 							@foreach ($tabulato as $tab)
-							<?php
-								if ($solo_fillea=="1") {
-									if (!array_key_exists($tab->ID_anagr,$iscr_altrove)) continue;
-								}
-							?>
+							@continue($solo_fillea == "1" && !array_key_exists($tab->ID_anagr, $iscr_altrove))
 							<tr>
 
 								<td style='min-width:80px;text-align:center'>
@@ -774,6 +770,7 @@
 									$dn="";
 									if (isset($tab->DATANASC)) {
 										$dn=substr($tab->DATANASC,0,10);
+									}
 									
 									$params="nome=".$tab->NOME."&comunenasc=".$tab->COMUNENASC."&pro=".$tab->PRO."&da_na=".$dn."&loc=".$tab->LOC."&via=".$tab->VIA."&denom=".$tab->DENOM."&codfisc=".$tab->CODFISC;
 									
@@ -792,8 +789,7 @@
 								
 								<td>
 									<?php
-											echo renderview($campo_ord,$dn,"datanasc");
-										}	
+									echo renderview($campo_ord,$dn,"datanasc");
 									?>
 								</td>
 
